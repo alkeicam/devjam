@@ -18,8 +18,6 @@ const manager = new Manager({});
 const app = express();
 
 
-
-
 let PORT = process.env.PORT || 5001;
 
 const apiName = "Hooks";
