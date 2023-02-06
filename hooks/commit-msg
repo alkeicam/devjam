@@ -1,1 +1,6 @@
 #!/bin/sh
+
+GIT_LOG=`git log -1 HEAD`
+echo $GITLOG
+
+exit 1
