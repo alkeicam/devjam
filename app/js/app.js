@@ -86,7 +86,7 @@ class AppDemo {
             electronAPI.seAPI.editorUIEvent("ui_dirty_count", a.model.editors.reduce((count,editor)=>{return editor.dirty?count+1:count},0));
         })
 
-        electronAPI.listenerAPI.onSaveFileSuccess((_event, message)=>{
+        electronAPI.listenerAPI.onCommitReceived((_event, message)=>{
             console.log(`Got message`, message);
             a.model.messages.push(message)
         })
