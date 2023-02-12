@@ -43,6 +43,22 @@
             </li>
           </ul>
     </section>
+    <section class="section">
+        <table class="table">
+            <thead>
+              <tr>
+                <th>When</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr rv-each-message="model.messages">
+                  <th>message.ct</th>                  
+                  <td>message.raw</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
     <section class="section" style="padding: 0.5rem 0.5rem;">
       <div class="notification is-danger is-hidden" rv-class-is-hidden="model.errorMessage | empty">
         <button class="delete" rv-on-click="handleCloseErrorMessage"></button>

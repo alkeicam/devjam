@@ -1,5 +1,6 @@
 //TODO - remove
 const { BrowserWindow } = require('electron')
+const persistentStore = require("../../logic/store")
 
 class Manager {
     constructor(api){
@@ -12,6 +13,7 @@ class Manager {
         const endOfCommitMessage = lines.indexOf("",4);
         
         const data = {
+            ct: Date.now(),
             raw: message,
             commit: lines[0],
             author: lines[1],
@@ -24,13 +26,6 @@ class Manager {
                 inserts: lines[lines.length-2].match(/(\d+ insertion)/ig)?lines[lines.length-2].match(/(\d+ insertion)/ig)[0].match(/(\d+)/ig)[0]:0,
                 deletions: lines[lines.length-2].match(/(\d+ deletion)/ig)?lines[lines.length-2].match(/(\d+ deletion)/ig)[0].match(/(\d+)/ig)[0]:0
             }
-
-
-            
-
-
-
-
         }
 
 
@@ -47,7 +42,7 @@ class Manager {
         const data = this._paseGitLog(message);
         console.log("Parsed", data);
 
-        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', message);
+        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', data);
         // console.log(`Commit received`, body);
     }
 
