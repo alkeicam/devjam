@@ -15,7 +15,7 @@ class Manager {
         const data = {
             ct: Date.now(),
             raw: message,
-            ticket: lines.slice(4,endOfCommitMessage).join("").match(/(\[w+\])/ig),
+            ticket: lines.slice(4,endOfCommitMessage).join("").match(/(\[.+\])/ig),
             commit: lines[0],
             author: lines[1],
             date: lines[2],
