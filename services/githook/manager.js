@@ -11,6 +11,7 @@ class Manager {
         const lines = message.split(/\r?\n/);
         console.log(lines);
         const endOfCommitMessage = lines.indexOf("",4);
+        // either first word of commit message or in brackets
         const ticket = lines.slice(4,endOfCommitMessage).join("").match(/(\[.+\])/ig)?lines.slice(4,endOfCommitMessage).join("").match(/(\[.+\])/ig)[0].replace(/[\[\]]/ig,""):lines.slice(4,endOfCommitMessage).join("").trim().split(/\s+/ig)[0];
         
 
