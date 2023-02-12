@@ -11,11 +11,13 @@ class Manager {
         const lines = message.split(/\r?\n/);
         console.log(lines);
         const endOfCommitMessage = lines.indexOf("",4);
+
+        const ticket = lines.slice(4,endOfCommitMessage).join("").match(/(\[.+\])/ig)?lines.slice(4,endOfCommitMessage).join("").match(/(\[.+\])/ig)[0].replace(/[\[\]]/ig,""):lines.slice(4,endOfCommitMessage).join("").split(/\s/ig)[0];
         
         const data = {
             ct: Date.now(),
             raw: message,
-            ticket: lines.slice(4,endOfCommitMessage).join("").match(/(\[.+\])/ig),
+            ticket: ticket,
             commit: lines[0],
             author: lines[1],
             date: lines[2],
