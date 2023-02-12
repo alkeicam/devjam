@@ -12,6 +12,7 @@ class Manager {
         const endOfCommitMessage = lines.indexOf("",4);
         
         const data = {
+            raw: message,
             commit: lines[0],
             author: lines[1],
             date: lines[2],
@@ -24,7 +25,7 @@ class Manager {
                 deletions: lines[lines.length-2].match(/(\d+ deletion)/ig)?lines[lines.length-2].match(/(\d+ deletion)/ig)[0].match(/(\d+)/ig)[0]:0
             }
 
-            
+
             
 
 
