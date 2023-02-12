@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const md5 = require("md5");
 var { expressjwt } = require("express-jwt");
 
+
+
 // Set up Global configuration access
 dotenv.config();
 
@@ -61,6 +63,7 @@ function attachNewGetOperation(appHandler, version, path, context, operationHand
 function attachNewPostOperation(appHandler, version, path, context, operationHandlerMethod){
     appHandler.post(`/${version}/${path}${context}`, (req, res) => {	
         try{
+            
             operationHandlerMethod(req.auth, req.params, req.body).then((items)=>{            
                 // const response = {
                 //     count: items.length,

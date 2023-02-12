@@ -22,7 +22,8 @@ class AppDemo {
             editors: [],
             untitledCnt: 1,
             // last error message
-            errorMessage: undefined
+            errorMessage: undefined,
+            messages: []
         }
 
 
@@ -85,7 +86,9 @@ class AppDemo {
             electronAPI.seAPI.editorUIEvent("ui_dirty_count", a.model.editors.reduce((count,editor)=>{return editor.dirty?count+1:count},0));
         })
 
-        
+        electronAPI.listenerAPI.onSaveFileSuccess((_event, message)=>{
+            a.model.messages.push(message)
+        })
         //
         
         await a.newEditor();

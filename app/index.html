@@ -37,6 +37,13 @@
   
 
     <section class="section" style="padding: 0.5rem 0.5rem;">
+        <ul>
+            <li rv-each-message="model.messages" >
+                {message}              
+            </li>
+          </ul>
+    </section>
+    <section class="section" style="padding: 0.5rem 0.5rem;">
       <div class="notification is-danger is-hidden" rv-class-is-hidden="model.errorMessage | empty">
         <button class="delete" rv-on-click="handleCloseErrorMessage"></button>
         {model.errorMessage}

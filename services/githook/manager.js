@@ -1,10 +1,14 @@
+//TODO - remove
+const { BrowserWindow } = require('electron')
+
 class Manager {
     constructor(api){
         this.api = api;
     }
 
     async commit(auth, params, body){
-        console.log(`Commit received`, body);
+        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', JSON.stringify(body));
+        // console.log(`Commit received`, body);
     }
 
     async tasksDelayed(auth){
