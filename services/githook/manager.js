@@ -19,7 +19,9 @@ class Manager {
             changes: lines.slice(endOfCommitMessage+1, lines.length-2),
             changeSummary: {
                 raw: lines[lines.length-2],
-                files: lines[lines.length-2].match(/(\d+ file)/ig)
+                files: lines[lines.length-2].match(/(\d+ file)/ig).match(/(\d+)/ig),
+                inserts: lines[lines.length-2].match(/(\d+ insertion)/ig).match(/(\d+)/ig) || 0,
+                deletions: lines[lines.length-2].match(/(\d+ deletion)/ig).match(/(\d+)/ig) || 0
             }
 
 
