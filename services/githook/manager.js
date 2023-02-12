@@ -9,6 +9,17 @@ class Manager {
     _paseGitLog(message){
         const lines = message.split(/\r?\n/);
         console.log(lines);
+        const lastNewLine = lines.lastIndexOf("");
+        
+        const data = {
+            commit: lines[0],
+            author: lines[1],
+            date: lines[2],
+            message: JSON.stringify(lines.slice(3,lastNewLine)),
+            changes: JSON.stringify(lines.slice(lastNewLine))
+        }
+
+        return data;
 
     }
 
@@ -18,7 +29,8 @@ class Manager {
         let buff = Buffer.from(body.gitlog, 'base64');  
         let message = buff.toString('utf-8');
 
-        this._paseGitLog(message);
+        const data = this._paseGitLog(message);
+        console.log("Parsed", data);
 
         BrowserWindow.fromId(1).webContents.send('listener_commitReceived', message);
         // console.log(`Commit received`, body);
