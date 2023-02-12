@@ -14,6 +14,7 @@ class Manager {
         const a = lines.slice(4,endOfCommitMessage).join("");
         const b = a.split(/\s*/ig)
 
+        
         console.log(a);
         console.log(b);
         const ticket = lines.slice(4,endOfCommitMessage).join("").match(/(\[.+\])/ig)?lines.slice(4,endOfCommitMessage).join("").match(/(\[.+\])/ig)[0].replace(/[\[\]]/ig,""):lines.slice(4,endOfCommitMessage).join("").split(/\s+/ig)[0];
