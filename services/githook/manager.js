@@ -20,8 +20,8 @@ class Manager {
             changeSummary: {
                 raw: lines[lines.length-2],
                 files: lines[lines.length-2].match(/(\d+ file)/ig).match(/(\d+)/ig),
-                inserts: lines[lines.length-2].match(/(\d+ insertion)/ig).match(/(\d+)/ig) || 0,
-                deletions: lines[lines.length-2].match(/(\d+ deletion)/ig).match(/(\d+)/ig) || 0
+                inserts: lines[lines.length-2].match(/(\d+ insertion)/ig),
+                deletions: lines[lines.length-2].match(/(\d+ deletion)/ig)
             }
 
 
