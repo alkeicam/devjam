@@ -24,6 +24,7 @@ class Manager {
                 deletions: lines[lines.length-2].match(/(\d+ deletion)/ig)[0]
             }
 
+            
 
 
 
