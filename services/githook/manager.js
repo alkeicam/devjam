@@ -15,9 +15,9 @@ class Manager {
             commit: lines[0],
             author: lines[1],
             date: lines[2],
-            message: lines.slice(4,endOfCommitMessage).join(" "),
-            changes: JSON.stringify(lines.slice(endOfCommitMessage+1))
-            
+            message: lines.slice(4,endOfCommitMessage).join(""),
+            changes: lines.slice(endOfCommitMessage+1)
+
         }
 
 
