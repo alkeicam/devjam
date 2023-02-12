@@ -14,8 +14,6 @@ const {Manager} = require('./manager')
 // const manager = new Manager(api);
 const manager = new Manager({});
 
-
-
 const app = express();
 
 let PORT = process.env.PORT || 5001;
