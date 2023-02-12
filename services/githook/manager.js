@@ -12,7 +12,7 @@ class Manager {
         console.log(lines);
         const endOfCommitMessage = lines.indexOf("",4);
         const a = lines.slice(4,endOfCommitMessage).join("");
-        const b = a.split(/\s+/ig)
+        const b = a.trim().split(/\s+/ig)
 
 
         console.log(a);
