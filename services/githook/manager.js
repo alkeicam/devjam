@@ -6,13 +6,19 @@ class Manager {
         this.api = api;
     }
 
+    _paseGitLog(message){
+        const lines = message.split(/\r?\n/);
+        console.log(lines);
+        
+    }
+
     async commit(auth, params, body){
         
 
         let buff = Buffer.from(body.gitlog, 'base64');  
         let message = buff.toString('utf-8');
 
-        
+
         BrowserWindow.fromId(1).webContents.send('listener_commitReceived', message);
         // console.log(`Commit received`, body);
     }
