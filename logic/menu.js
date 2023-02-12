@@ -81,6 +81,9 @@ class AppMenu {
                     id: "recent",
                     label: 'Recent',
                     submenu: []
+
+
+
                     
                 }
                 
