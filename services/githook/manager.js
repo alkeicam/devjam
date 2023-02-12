@@ -18,6 +18,7 @@ class Manager {
             message: JSON.stringify(lines.slice(4,endOfCommitMessage)),
             changes: JSON.stringify(lines.slice(endOfCommitMessage+1))
         }
+        
 
         return data;
 
