@@ -17,11 +17,14 @@ class Manager {
             date: lines[2],
             message: lines.slice(4,endOfCommitMessage).join(""),
             changes: lines.slice(endOfCommitMessage+1, lines.length-2),
-            changeSummary: lines[lines.length-2]
+            changeSummary: {
+                raw: lines[lines.length-2],
+                files: lines[lines.length-2].match(/(\d+ files)/ig)
+            }
 
 
 
-            
+
 
         }
 
