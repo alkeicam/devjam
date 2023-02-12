@@ -36,26 +36,34 @@
 <body id="app">
   
 
-    <section class="section" style="padding: 0.5rem 0.5rem;">
+    <!-- <section class="section" style="padding: 0.5rem 0.5rem;">
         <ul>
             <li rv-each-message="model.messages" >
                 {message}              
             </li>
           </ul>
-    </section>
+    </section> -->
     <section class="section">
         <table class="table is-striped">
             <thead>
               <tr>
                 <th>When</th>
-                <th>Details</th>
+                <th>Score</th>
+                <th>Files</th>
+                <th>Inserts</th>
+                <th>Deletions</th>
+                <th>Details</th>                
               </tr>
             </thead>
             <tbody>
                 <tr rv-each-message="model.messages">
-                  <th>{message.ct}</th>                  
+                  <th>{message.ct}</th> 
+                  <th>{message.score}</th>
+                  <th>{message.changeSummary.files}</th>                  
+                  <th>{message.changeSummary.inserts}</th>    
+                  <th>{message.changeSummary.deletions}</th>                  
                   <td>{message.raw}</td>
-                  
+
                 </tr>
             </tbody>
         </table>
