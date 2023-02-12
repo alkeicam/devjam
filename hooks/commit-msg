@@ -1,6 +1,10 @@
 #!/bin/sh
 
+echo "COMMIT-MSG LOG"
+
 GIT_LOG=`git log -1 HEAD`
 echo $GITLOG
 
-exit 1
+curl -H "Content-Type: application/json" -d '{"gitlog":"$GITLOG"}' http://localhost:5001/v1/hooks/commit
+
+exit 0

@@ -1,6 +1,8 @@
 #!/bin/sh
 
+echo "POST-COMMIT LOG"
+
 GIT_LOG=`git log -1 HEAD`
 echo $GITLOG
 
-exit 1
+exit 0

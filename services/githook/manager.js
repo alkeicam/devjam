@@ -3,6 +3,10 @@ class Manager {
         this.api = api;
     }
 
+    async commit(auth, params, body){
+        console.log(`Commit received`, body);
+    }
+
     async tasksDelayed(auth){
         
         const tasks = await this.api.tasksApi.tasksDelayed(auth.user.organization_id, auth.user.groups.map((item)=>item.group_id));

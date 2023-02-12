@@ -35,7 +35,7 @@ console.log(`${apiName} API Starting...`);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(expressjwt({secret: process.env.JWT_SECRET_KEY, algorithms: ["HS256"],credentialsRequired: true}));
+app.use(expressjwt({secret: process.env.JWT_SECRET_KEY, algorithms: ["HS256"],credentialsRequired: false}));
 
 
 function attachNewGetOperation(appHandler, version, path, context, operationHandlerMethod){
@@ -79,10 +79,10 @@ function attachNewPostOperation(appHandler, version, path, context, operationHan
 }
 
 
-attachNewGetOperation(app, version, path, "/one/:id", manager.task.bind(manager));
+attachNewGetOperation(app, version, path, "/commit", manager.task.bind(manager));
 
 attachNewGetOperation(app, version, path, "/form/:id", manager.form.bind(manager));
 
-attachNewGetOperation(app, version, path, "/entities/byType/:id", manager.entitiesByType.bind(manager));
+attachNewPostOperation(app, version, path, "/commit", manager.commit.bind(manager));
 
 

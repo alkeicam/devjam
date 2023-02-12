@@ -1,0 +1,199 @@
+openapi: 3.0.0
+info:
+  title: TipsApi
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:5003
+  - url: http://127.0.0.1:5000
+  - url: http://127.0.0.1:5002
+  - url: http://127.0.0.1:5001
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+tags:
+  - name: Auth  
+  - name: Team
+paths:
+  /v1/team/worklogs:
+    get:
+      tags:
+        - Team
+      summary: Retrieves all worklogs
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '5821'
+            ETag:
+              schema:
+                type: string
+                example: W/"16bd-EFWotwGF0t/GqmxVcmFRQTdI8Dc"
+            Date:
+              schema:
+                type: string
+                example: Sat, 01 Oct 2022 11:30:12 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                example-1:
+                  summary: Organizations
+                  value:
+                    count: 23567
+                    items:
+                      - person_id: '3'
+                        name: 'Jan Kowalski'
+                        date: 1676017917
+                        effort: 12.5
+                        role: 0
+                      - person_id: '4'
+                        name: 'Piotr Piotrowski'
+                        date: 1676017917
+                        effort: 7.2
+                        role: 1
+                      - person_id: '4'
+                        name: 'Piotr Piotrowski'
+                        date: 1640991600
+                        effort: 12.0
+                        role: 1
+                      - person_id: '3'
+                        name: 'Jan Kowalski'
+                        date: 1644274800
+                        effort: 14.0
+                        role: 0
+                      - person_id: '5'
+                        name: 'Kuba Kubalski'
+                        date: 1676017917
+                        effort: 9.1
+                        role: 1
+                      - person_id: '5'
+                        name: 'Kuba Kubalski'
+                        date: 1644361200
+                        effort: 8.0
+                        role: 1
+                      - person_id: '5'
+                        name: 'Kuba Kubalski'
+                        date: 1644274800
+                        effort: 8.0
+                        role: 1
+  /v1/auth/generateToken:
+    post:
+      tags:
+        - Auth
+      summary: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                login: kelner@knajpa.com.pl
+                password: pass
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Content-Type:
+              schema:
+                type: string
+                example: text/html; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '557'
+            ETag:
+              schema:
+                type: string
+                example: W/"22d-Ke/QX/leCHKe+XiLQ+OT046YVfY"
+            Date:
+              schema:
+                type: string
+                example: Sat, 01 Oct 2022 15:04:03 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: >-
+                eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoxNjY0NjM2NjQzNjI1LCJ1c2VyIjp7InVzZXJfaWQiOiI4ODY0OCIsImxvZ2luIjoia3VyaWVyMUBkcGQuY29tLnBsIiwib3JnYW5pemF0aW9uX2lkIjoiODg2MzAiLCJzdGF0dXMiOjAsImV4dGVybmFsX3VzZXJfaWQiOm51bGwsIm1haWwiOm51bGwsInV1aWQiOm51bGwsInJlc291cmNlX2lkcyI6Ijg4NjQ4IiwiZW5hYmxlZCI6dHJ1ZSwicm9sZXMiOlsiS3VyaWVyIl0sImdyb3VwcyI6W3siZ3JvdXBfbmFtZSI6Ikt1cmllcnp5IiwiZ3JvdXBfaWQiOiIxMDAzMDYifV0sInBhc3N3b3JkIjoiMWExZGM5MWM5MDczMjVjNjkyNzFkZGYwYzk0NGJjNzIifSwiaWF0IjoxNjY0NjM2NjQzLCJleHAiOjE2NjQ2NDM4NDN9.-vrmbAEl9VwR0D9x45VFjN0KVQsQBEt-fUq1vDKF_1k
+  /v1/auth/validate:
+    get:
+      tags:
+        - Auth
+      summary: UserValidate
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '15'
+            ETag:
+              schema:
+                type: string
+                example: W/"f-v/Y1JusChTxrQUzPtNAKycooOTA"
+            Date:
+              schema:
+                type: string
+                example: Sat, 01 Oct 2022 15:09:44 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: OK
+  
