@@ -87,6 +87,7 @@ class AppDemo {
         })
 
         electronAPI.listenerAPI.onSaveFileSuccess((_event, message)=>{
+            console.log(`Got message`, message);
             a.model.messages.push(message)
         })
         //
