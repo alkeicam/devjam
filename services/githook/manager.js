@@ -9,14 +9,14 @@ class Manager {
     _paseGitLog(message){
         const lines = message.split(/\r?\n/);
         console.log(lines);
-        const lastNewLine = lines.lastIndexOf("");
+        const endOfCommitMessage = lines.indexOf("",4);
         
         const data = {
             commit: lines[0],
             author: lines[1],
             date: lines[2],
-            message: JSON.stringify(lines.slice(3,lastNewLine)),
-            changes: JSON.stringify(lines.slice(lastNewLine))
+            message: JSON.stringify(lines.slice(3,endOfCommitMessage)),
+            changes: JSON.stringify(lines.slice(endOfCommitMessage))
         }
 
         return data;
