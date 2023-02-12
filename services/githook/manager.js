@@ -17,7 +17,7 @@ class Manager {
             date: lines[2],
             message: lines.slice(4,endOfCommitMessage).join(""),
             changes: lines.slice(endOfCommitMessage+1, lines.length-2),
-            changeSummary: lines[lines.length-1]
+            changeSummary: lines[lines.length-2]
 
         }
 
