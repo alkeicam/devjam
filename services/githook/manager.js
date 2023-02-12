@@ -19,7 +19,7 @@ class Manager {
             changes: lines.slice(endOfCommitMessage+1, lines.length-2),
             changeSummary: {
                 raw: lines[lines.length-2],
-                files: lines[lines.length-2].match(/(\d+ files)/ig)
+                files: lines[lines.length-2].match(/(\d+ file)/ig)
             }
 
 
