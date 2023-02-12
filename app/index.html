@@ -48,6 +48,7 @@
             <thead>
               <tr>
                 <th>When</th>
+                <th>Task</th>
                 <th>Comment</th>
                 <th>Score</th>
                 <th>Files</th>
@@ -59,6 +60,7 @@
             <tbody>
                 <tr rv-each-message="model.messages">
                   <td>{message.ct}</td> 
+                  <td>{message.ticket}</td>
                   <td>{message.message}</td>
                   <td>{message.score}</td>
                   <td>{message.changeSummary.files}</td>                  
