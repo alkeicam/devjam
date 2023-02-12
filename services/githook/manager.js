@@ -15,10 +15,10 @@ class Manager {
             commit: lines[0],
             author: lines[1],
             date: lines[2],
-            message: JSON.stringify(lines.slice(4,endOfCommitMessage)),
+            message: lines.slice(4,endOfCommitMessage).join(" "),
             changes: JSON.stringify(lines.slice(endOfCommitMessage+1))
         }
-        
+
 
         return data;
 
