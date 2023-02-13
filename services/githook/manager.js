@@ -77,7 +77,7 @@ class Manager {
 
         const decoded = this._decode(body);
         this._addScore(decoded);
-        
+        persistentStore.addEvent(decoded);
         BrowserWindow.fromId(1).webContents.send('listener_commitReceived', decoded);
         // console.log(`Commit received`, body);
     }
@@ -85,6 +85,7 @@ class Manager {
     async push(auth, params, body){
         const decoded = this._decode(body);
         this._addScore(decoded);
+        persistentStore.addEvent(decoded);
         BrowserWindow.fromId(1).webContents.send('listener_commitReceived', decoded);
         // console.log(`Commit received`, body);
     }
