@@ -102,7 +102,7 @@ class AppDemo {
         })
         //
         
-        await a.newEditor();
+        // await a.newEditor();
         return a;
     }
 
