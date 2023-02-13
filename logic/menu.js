@@ -84,7 +84,7 @@ class AppMenu {
 
 
 
-                    
+
                 }
                 
               ]
@@ -184,8 +184,8 @@ class AppMenu {
     }
 
     updateMenu(){
-        const menu = Menu.buildFromTemplate(this.template(this.store.recents()));
-        Menu.setApplicationMenu(menu);
+        // const menu = Menu.buildFromTemplate(this.template(this.store.recents()));
+        // Menu.setApplicationMenu(menu);
     }
 
     
