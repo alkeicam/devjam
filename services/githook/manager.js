@@ -41,11 +41,11 @@ class Manager {
 
     }
 
-    _addScore(decoded){
-        decoded.data.s = 0; // initialize score
-        decoded.oper == "push"?decoded.data.s+=10:decoded.data.s = decoded.data.s;
-        decoded.data.s += decoded.data.changeSummary.inserts;
-        decoded.data.s += decoded.data.changeSummary.deletions;
+    _addScore(item){
+        item.decoded.s = 0; // initialize score
+        item.oper == "push"?item.decoded.s+=10:item.decoded.s = item.decoded.s;
+        item.decoded.s += item.decoded.changeSummary.inserts;
+        item.decoded.s += item.decoded.changeSummary.deletions;
     }
 
     _decode(body){
