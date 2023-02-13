@@ -20,7 +20,10 @@ class Manager {
             raw: message,
             ticket: ticket,
             commit: lines[0],
-            author: lines[1],
+            author: {
+                name: lines[1].replace(/Author\:\s+/ig,"").replace(/\<S+\>.*/ig,""),
+                email: lines[1].replace(/.+\</ig,"").replace(/\>.+/ig,"")
+            },
             date: lines[2],
             message: lines.slice(4,endOfCommitMessage).join(""),
             changes: lines.slice(endOfCommitMessage+1, lines.length-2),
@@ -36,33 +39,38 @@ class Manager {
         return data;
 
     }
-    _addScore(gitData){
 
+    _addScore(decoded){
+        decoded.data.s = 0; // initialize score
+        decoded.oper == "push"?decoded.data.s+=10:decoded.data.s = decoded.data.s;
+        decoded.data.s += decoded.data.changeSummary.inserts;
+        decoded.data.s += decoded.data.changeSummary.deletions;
+    }
+
+    _decode(body){
+        let buff = Buffer.from(body.gitlog, 'base64');  
+        let message = buff.toString('utf-8');        
+        return {
+            message: message,
+            data: this._paseGitLog(message),
+            oper: body.oper
+        }
     }
 
     async commit(auth, params, body){
         
 
-        let buff = Buffer.from(body.gitlog, 'base64');  
-        let message = buff.toString('utf-8');
-
-        const data = this._paseGitLog(message);
-        console.log("Commit Parsed", data);
-
-        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', data);
+        const decoded = this._decode(body);
+        this._addScore(decoded);
+        
+        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', decoded);
         // console.log(`Commit received`, body);
     }
 
     async push(auth, params, body){
-        
-
-        let buff = Buffer.from(body.gitlog, 'base64');  
-        let message = buff.toString('utf-8');        
-
-        const data = this._paseGitLog(message);
-        console.log("Push Parsed", data);
-
-        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', data);
+        const decoded = this._decode(body);
+        this._addScore(decoded);
+        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', decoded);
         // console.log(`Commit received`, body);
     }
 

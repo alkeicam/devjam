@@ -88,7 +88,7 @@ class AppDemo {
 
         electronAPI.listenerAPI.onCommitReceived((_event, message)=>{
             console.log(`Got message`, message);            
-            a.model.messages.push(message)
+            a.model.messages.push(message.data)
         })
         //
         
