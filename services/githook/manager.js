@@ -21,7 +21,7 @@ class Manager {
             ticket: ticket,
             commit: lines[0],
             author: {
-                name: lines[1].replace(/Author\:\s+/ig,"").replace(/\<S+\>.*/ig,""),
+                name: lines[1].replace(/Author\:\s+/ig,"").replace(/\<\S+\>.*/ig,""),
                 email: lines[1].replace(/.+\</ig,"").replace(/\>.+/ig,"")
             },
             date: lines[2],
@@ -29,9 +29,9 @@ class Manager {
             changes: lines.slice(endOfCommitMessage+1, lines.length-2),
             changeSummary: {
                 raw: lines[lines.length-2],
-                files: lines[lines.length-2].match(/(\d+ file)/ig)?lines[lines.length-2].match(/(\d+ file)/ig)[0].match(/(\d+)/ig)[0]:0,
-                inserts: lines[lines.length-2].match(/(\d+ insertion)/ig)?lines[lines.length-2].match(/(\d+ insertion)/ig)[0].match(/(\d+)/ig)[0]:0,
-                deletions: lines[lines.length-2].match(/(\d+ deletion)/ig)?lines[lines.length-2].match(/(\d+ deletion)/ig)[0].match(/(\d+)/ig)[0]:0
+                files: parseInt(lines[lines.length-2].match(/(\d+ file)/ig)?lines[lines.length-2].match(/(\d+ file)/ig)[0].match(/(\d+)/ig)[0]:0),
+                inserts: parseInt(lines[lines.length-2].match(/(\d+ insertion)/ig)?lines[lines.length-2].match(/(\d+ insertion)/ig)[0].match(/(\d+)/ig)[0]:0),
+                deletions: parseInt(lines[lines.length-2].match(/(\d+ deletion)/ig)?lines[lines.length-2].match(/(\d+ deletion)/ig)[0].match(/(\d+)/ig)[0]:0)
             }
         }
 
