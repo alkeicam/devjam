@@ -1,8 +1,9 @@
 #!/bin/sh
-echo "PRE-PUSH LOG"
+# echo "PRE-PUSH LOG"
 
 GIT_LOG=`git log --stat -1 HEAD | base64`
-echo $GIT_LOG
+REMOTE=`git config --get remote.origin.url`
+# echo $GIT_LOG
 
 POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"push\",\"remote\":\"$REMOTE\"}"
 
