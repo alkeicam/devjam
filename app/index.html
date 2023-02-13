@@ -44,59 +44,53 @@
           </ul>
     </section> -->
     <section class="section">
-        <table class="table is-striped">
-            <thead>
-              <tr>
-                <th>When</th>
-                <th>Task</th>
-                <th>Comment</th>
-                <th>Score</th>
-                <th>Files</th>
-                <th>Inserts</th>
-                <th>Deletions</th>
-                <th>Details</th>   
-
-              </tr>
-            </thead>
-            <tbody>
-                <tr rv-each-message="model.messages">
-                  <td>{message.ct}</td> 
-                  <td>{message.ticket}</td>
-                  <td>{message.message}</td>
-                  <td>{message.s}</td>
-                  <td>{message.changeSummary.files}</td>                  
-                  <td>{message.changeSummary.inserts}</td>    
-                  <td>{message.changeSummary.deletions}</td>                  
-                  <td>{message.raw}</td>
-
-                </tr>
-            </tbody>
-        </table>
+        
     </section>
     <section class="section" style="padding: 0.5rem 0.5rem;">
       <div class="notification is-danger is-hidden" rv-class-is-hidden="model.errorMessage | empty">
         <button class="delete" rv-on-click="handleCloseErrorMessage"></button>
         {model.errorMessage}
       </div>
-      <div class="tabs is-left is-hidden" rv-class-is-hidden="model.editors | sizeLt 1">
+      <div class="tabs is-left is-hidden" rv-class-is-hidden="model.tabs | sizeLt 1">
         <ul>
-          <li rv-on-click="editor.parent.handleSwitchEditor" rv-each-editor="model.editors" rv-class-is-active="editor.active" >
-            <a>{editor.label}
-              <span style="margin-left: 0.25em;font-size: xx-small;" rv-class-is-hidden="editor.dirty"><i  class="fa fa-lock" aria-hidden="true"></i></span>
-              <span style="margin-left: 0.25em;font-size: xx-small;" rv-class-is-hidden="editor.dirty | eq false"><i class="fas fa-lock-open" aria-hidden="true"></i></span>
+          <li rv-on-click="item.that.handleSwitchEditor" rv-each-item="model.tabs" rv-class-is-active="item.active" >
+            <a>{item.label}
+              <!-- <span style="margin-left: 0.25em;font-size: xx-small;" rv-class-is-hidden="editor.dirty"><i  class="fa fa-lock" aria-hidden="true"></i></span> -->
+              <!-- <span style="margin-left: 0.25em;font-size: xx-small;" rv-class-is-hidden="editor.dirty | eq false"><i class="fas fa-lock-open" aria-hidden="true"></i></span> -->
               <!-- <span rv-class-is-hidden="editor.dirty | eq false">*</span> -->
-              <sup style="margin-left: 0.3em;" rv-on-click="editor.parent.handleCloseEditor">ⓧ</sup>
+              <!-- <sup style="margin-left: 0.3em;" rv-on-click="editor.parent.handleCloseEditor">ⓧ</sup> -->
             </a>
           </li>
         </ul>
-      </div>
-      <article rv-class-is-hidden="model.editors | sizeGte 1" class="message is-hidden">
-        <div class="message-body">
-          Secure Editor is ready. Pleas <strong>open a file</strong> or <strong>create a new one</strong> from application menu. 
-        </div>
-      </article>
-      <div id="editor-holder"></div>
+      </div>    
+      <table class="table is-striped is-hidden" rv-class-is-hidden="model.activeTab | ne 0">
+        <thead>
+          <tr>
+            <th>When</th>
+            <th>Task</th>
+            <th>Comment</th>
+            <th>Score</th>
+            <th>Files</th>
+            <th>Inserts</th>
+            <th>Deletions</th>
+            <th>Details</th>   
 
+          </tr>
+        </thead>
+        <tbody>
+            <tr rv-each-message="model.messages">
+              <td>{message.ct}</td> 
+              <td>{message.ticket}</td>
+              <td>{message.message}</td>
+              <td>{message.s}</td>
+              <td>{message.changeSummary.files}</td>                  
+              <td>{message.changeSummary.inserts}</td>    
+              <td>{message.changeSummary.deletions}</td>                  
+              <td>{message.raw}</td>
+
+            </tr>
+        </tbody>
+    </table>       
     </section>
         
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->

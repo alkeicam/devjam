@@ -23,7 +23,17 @@ class AppDemo {
             untitledCnt: 1,
             // last error message
             errorMessage: undefined,
-            messages: []
+            messages: [],
+            // id
+            // active
+            // label
+            tabs:[{
+                id: 0,
+                active: true,
+                label: "today",
+                that: this
+            }],
+            activeTab: 0
         }
 
 
