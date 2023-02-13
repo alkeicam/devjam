@@ -35,7 +35,7 @@ class Manager {
             }
         }
 
-        
+
 
         return data;
 
@@ -51,11 +51,18 @@ class Manager {
     _decode(body){
         let buff = Buffer.from(body.gitlog, 'base64');  
         let message = buff.toString('utf-8');        
-        return {
-            message: message,
-            data: this._paseGitLog(message),
-            oper: body.oper
-        }
+
+        const result = JSON.parse(JSON.stringify(body));
+        result.gitlog = message;
+        result.decoded = this._paseGitLog(message);
+
+        return result;
+        // return {
+        //     message: message,
+        //     data: this._paseGitLog(message),
+        //     oper: body.oper,
+            
+        // }
     }
 
     async commit(auth, params, body){
