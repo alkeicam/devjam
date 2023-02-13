@@ -82,10 +82,11 @@ function attachNewPostOperation(appHandler, version, path, context, operationHan
 }
 
 
-attachNewGetOperation(app, version, path, "/commit", manager.task.bind(manager));
+// attachNewGetOperation(app, version, path, "/commit", manager.task.bind(manager));
 
 attachNewGetOperation(app, version, path, "/form/:id", manager.form.bind(manager));
 
 attachNewPostOperation(app, version, path, "/commit", manager.commit.bind(manager));
+attachNewPostOperation(app, version, path, "/push", manager.push.bind(manager));
 
 

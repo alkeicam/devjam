@@ -47,7 +47,20 @@ class Manager {
         let message = buff.toString('utf-8');
 
         const data = this._paseGitLog(message);
-        console.log("Parsed", data);
+        console.log("Commit Parsed", data);
+
+        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', data);
+        // console.log(`Commit received`, body);
+    }
+
+    async push(auth, params, body){
+        
+
+        let buff = Buffer.from(body.gitlog, 'base64');  
+        let message = buff.toString('utf-8');        
+
+        const data = this._paseGitLog(message);
+        console.log("Push Parsed", data);
 
         BrowserWindow.fromId(1).webContents.send('listener_commitReceived', data);
         // console.log(`Commit received`, body);
