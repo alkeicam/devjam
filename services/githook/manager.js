@@ -43,7 +43,14 @@ class Manager {
 
     _addScore(item){
         item.decoded.s = 0; // initialize score
-        item.oper == "push"?item.decoded.s+=10:item.decoded.s = item.decoded.s;
+
+        // you get 10 points for each push
+        if(item.oper == "push"){
+            item.decoded.s+=10
+            return;
+        }
+        
+        // and point for each insertion, deletion
         item.decoded.s += item.decoded.changeSummary.inserts;
         item.decoded.s += item.decoded.changeSummary.deletions;
     }
