@@ -2,6 +2,7 @@ const FileManager = require("./file-manager");
 const { ipcMain, Menu} = require('electron')
 
 const fileManager = FileManager.getInstance();
+const persistentStore = require("./store")
 
 const AppMenu = require("./menu")
 
@@ -18,10 +19,16 @@ function handleUIEvent (eventName, data){
             break;
     }
 }
+
+function handleApiEffort(){
+    return persistentStore.events();
+}
 // 
 ipcMain.handle('seapi_saveFile', (electronEE, ...args)=>{return fileManager.saveFile(...args)});
 ipcMain.handle('seapi_loadFile', (electronEE, ...args)=>{return fileManager.loadFile(...args)});
 ipcMain.handle('seapi_editorUIEvent', (electronEE, ...args)=>{return handleUIEvent(...args)});
+
+ipcMain.handle('api_effort', (electronEE, ...args)=>{return handleApiEffort(...args)});
 
 
 

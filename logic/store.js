@@ -30,6 +30,10 @@ class PersistentStore{
             this.store.set("last31",[]);
     }
 
+    events(){
+        return this.store.get("last31");
+    }
+
     addEvent(item){        
         item.ttl = Date.now()+this.expiry31Ms;
         const items = this.store.get("last31");

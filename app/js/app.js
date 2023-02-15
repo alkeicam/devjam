@@ -98,7 +98,11 @@ class AppDemo {
 
         electronAPI.listenerAPI.onCommitReceived((_event, message)=>{
             console.log(`Got message`, message);            
-            a.model.messages.push(message.decoded)
+            a.model.messages.push(message.decoded);
+
+            const effortData = electronAPI.API.effort();
+            console.log(effortData);
+
         })
         //
         

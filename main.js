@@ -55,6 +55,9 @@ app.whenReady().then(() => {
 
   // githook microservice
   require("./services/githook")
+
+  // websockets
+  require("./services/ws")
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common

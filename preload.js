@@ -27,6 +27,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
     loadFile: () => ipcRenderer.invoke('seapi_loadFile'),
     editorUIEvent: (eventName, data) => ipcRenderer.invoke('seapi_editorUIEvent', eventName, data)
   },
+
+  API: {
+    effort: () => ipcRenderer.invoke('api_effort')
+  },
   // here we send data to callback functions in renderer/view js 
   listenerAPI: {
     onNewFile: (callback) => ipcRenderer.on('listener_newFile', callback),    
