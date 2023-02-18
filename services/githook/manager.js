@@ -158,7 +158,7 @@ class Manager {
         const startOfToday = moment().startOf("day").valueOf();
         
         const allEvents = persistentStore.events();
-        console.log(allEvents);
+        // console.log(allEvents);
         // get all events from today
         const todayEvents = allEvents.filter((item)=>{return item.ct>=startOfToday});
         console.log(todayEvents);
@@ -174,20 +174,23 @@ class Manager {
             }            
         })
 
+        console.log(events);
         // sort by date asc
         events.sort((a, b)=>{
             return a.ct-b.ct;
         })
 
+        console.log(events);
         let users = [];
 
         events.forEach((item)=>{
             users.push(item.email);
         })
 
+
         // unique users
         users = [...new Set(users)];
-
+        console.log(users);
 
         const result = {
             day: startOfToday,            
