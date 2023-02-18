@@ -136,7 +136,7 @@ class Manager {
         const gitEvent = this._decode(body);        
         persistentStore.addEvent(gitEvent);
         const dailyStats = await this._updateDayStats();
-        console.log(dailyStats);
+        // console.log(dailyStats);
         BrowserWindow.fromId(1).webContents.send('listener_commitReceived', gitEvent);
         // console.log(`Commit received`, body);
     }
@@ -204,7 +204,16 @@ class Manager {
                 // we get events for each of the users, events are time ordered
                 const duration = Math.max(item.time-time,0);
                 time = item.time;            
-                const userData = result.users[item.email] || {}
+                const userData = result.users[item.email] || {
+                    id: item.email,
+                    duration: 0,
+                    inserts: 0,
+                    deletions: 0,
+                    files: 0,
+                    score: 0,
+                    pace: 0,
+                    paceScore: 0
+                }
                 const userProject = userData[item.project] || {
                     id: item.project,
                     duration: 0,
