@@ -204,7 +204,7 @@ class Manager {
                 // console.log(`Processing ${JSON.stringify(item)} for user ${email}`);
                 // we get events for each of the users, events are time ordered
                 const duration = Math.max(item.time-time,0);
-                console.log(`Duration ${duration} from ${item.time} ${time}`);
+                console.log(`Duration ${duration} from ${item.time} ${time} ${item.time-time}`);
                 time = item.time;            
                 const userData = result.users[item.email] || {
                     id: item.email,
