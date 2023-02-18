@@ -135,7 +135,7 @@ class Manager {
     async change(auth, params, body){        
         const gitEvent = this._decode(body);        
         persistentStore.addEvent(gitEvent);
-        const dailyStats = this._updateDayStats();
+        const dailyStats = await this._updateDayStats();
         console.log(dailyStats);
         BrowserWindow.fromId(1).webContents.send('listener_commitReceived', gitEvent);
         // console.log(`Commit received`, body);
