@@ -197,8 +197,8 @@ class Manager {
             users: {}
         }
         
-        users.forEach((email)=>{            
-             let time = this._userStartOfWork(email);
+        users.forEach(async (email)=>{            
+             let time = await this._userStartOfWork(email);
 
             events.filter((item)=>item.email == email).forEach((item)=>{
                 console.log(`Processing ${JSON.stringify(item)} for user ${email}`);
