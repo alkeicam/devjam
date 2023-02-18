@@ -201,7 +201,7 @@ class Manager {
              let time = await this._userStartOfWork(email);
 
             events.filter((item)=>item.email == email).forEach((item)=>{
-                console.log(`Processing ${JSON.stringify(item)} for user ${email}`);
+                // console.log(`Processing ${JSON.stringify(item)} for user ${email}`);
                 // we get events for each of the users, events are time ordered
                 const duration = Math.max(item.time-time,0);
                 console.log(`Duration ${duration} from ${item.time} ${time}`);
