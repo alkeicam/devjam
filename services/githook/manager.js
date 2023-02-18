@@ -159,7 +159,7 @@ class Manager {
         
 
         // get all events from today
-        const todayEvents = persistentStore.events().filter((item)=>item.ct>=startOfToday);
+        const todayEvents = persistentStore.events().filter((item)=>{return item.ct>=startOfToday});
         console.log(todayEvents);
         const events = todayEvents.map((item)=>{
             return  {
