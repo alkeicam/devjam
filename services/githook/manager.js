@@ -1,23 +1,76 @@
+/**
+ * Author
+ * @typedef {Object} Author
+ * @property {string} name - name
+ * @property {string} email - email
+ */
+
+/**
+ * Summary of changes
+ * @typedef {Object} ChangeSummary
+ * @property {string} raw - raw changes message
+ * @property {number} files - files modified
+ * @property {number} inserts - inserts made
+ * @property {number} deletions - deletions made
+ */
+
+/**
+ * Person code action event
+ * @typedef {Object} GitLogDecoded
+ * @property {string} ticket - id of the ticket
+ * @property {string} commit - commit line with commit hash
+ * @property {Author} author - author data
+ * @property {string} date - date line
+ * @property {string} message - change message
+ * @property {string} changes - changes lines
+ * @property {ChangeSummary} changeSummary - summary of changes
+ */
+
+/**
+ * Person code action event
+ * @typedef {Object} GitEvent
+ * @property {number} ct - creation timestamp
+ * @property {number} s - score
+ * @property {string} gitlog - result of git log --stat -1 HEAD.
+ * @property {string} oper - one of "commit" and "push"
+ * @property {string} remote - result of git config --get remote.origin.url (may be empty when only local repo)
+ * @property {GitLogDecoded} decoded - decoded git log data
+ * 
+ */
+
 //TODO - remove
 const { BrowserWindow } = require('electron')
 const persistentStore = require("../../logic/store")
+var moment = require('moment');
 
 class Manager {
     constructor(api){
-        this.api = api;
+        this.api = api;        
     }
 
+    /**
+     * Parses original git log message
+     * @param {*} message raw git log command results
+     * @returns {GitLogDecoded} decoded git log data
+     */
     _paseGitLog(message){
         const lines = message.split(/\r?\n/);
         console.log(lines);
         const endOfCommitMessage = lines.indexOf("",4);
-        // either first word of commit message or in brackets
-        const ticket = lines.slice(4,endOfCommitMessage).join("").match(/(\[.+\])/ig)?lines.slice(4,endOfCommitMessage).join("").match(/(\[.+\])/ig)[0].replace(/[\[\]]/ig,""):lines.slice(4,endOfCommitMessage).join("").trim().split(/\s+/ig)[0];
+
+        const userMessage = lines.slice(4,endOfCommitMessage).join("");
+
+        
+        // either first uppercase word ending with number or in brackets    
+        const ticketFromUppercase = userMessage.match(/([A-Z]+\-\d+)/g)?userMessage.match(/([A-Z]+\-\d+)/g)[0]:undefined;
+        // either word in square brackets
+        const ticketFromSquareBrackets = userMessage.match(/(\[.+\])/ig)?userMessage.match(/(\[.+\])/ig)[0].replace(/[\[\]]/ig,""):undefined;
+
+        const ticket = ticketFromUppercase || ticketFromSquareBrackets;
         
 
-        const data = {
-            ct: Date.now(),
-            raw: message,
+
+        const data = {                     
             ticket: ticket,
             commit: lines[0],
             author: {
@@ -25,7 +78,7 @@ class Manager {
                 email: lines[1].replace(/.+\</ig,"").replace(/\>.+/ig,"")
             },
             date: lines[2],
-            message: lines.slice(4,endOfCommitMessage).join(""),
+            message: userMessage,
             changes: lines.slice(endOfCommitMessage+1, lines.length-2),
             changeSummary: {
                 raw: lines[lines.length-2],
@@ -34,60 +87,179 @@ class Manager {
                 deletions: parseInt(lines[lines.length-2].match(/(\d+ deletion)/ig)?lines[lines.length-2].match(/(\d+ deletion)/ig)[0].match(/(\d+)/ig)[0]:0)
             }
         }
-
-
-
         return data;
 
     }
 
-    _addScore(item){
-        item.decoded.s = 0; // initialize score
+    /**
+     * calculates effor score
+     * @param {GitEvent} item 
+     * @returns {number} calculated score
+     */
+    _score(item){
+        const score = 0; // initialize score
 
-        // you get 10 points for each push
+        // you get 100 points for each push
         if(item.oper == "push"){
-            item.decoded.s+=10
+            score+=100
             return;
         }
         
         // and point for each insertion, deletion
-        item.decoded.s += item.decoded.changeSummary.inserts;
-        item.decoded.s += item.decoded.changeSummary.deletions;
+        score += item.decoded.changeSummary.inserts;
+        score += item.decoded.changeSummary.deletions;
+
+        return score;
     }
 
+    /**
+     * Parses and decodes raw commit message from client endpoint
+     * @param {*} body - request body with json from client endpoint
+     * @returns {GitEvent} git event data
+     */
     _decode(body){
         let buff = Buffer.from(body.gitlog, 'base64');  
         let message = buff.toString('utf-8');        
 
         const result = JSON.parse(JSON.stringify(body));
         result.gitlog = message;
-        result.decoded = this._paseGitLog(message);
 
-        return result;
-        // return {
-        //     message: message,
-        //     data: this._paseGitLog(message),
-        //     oper: body.oper,
-            
-        // }
+        const decoded = this._paseGitLog(message);
+        result.decoded = decoded;
+        
+        result.ct = moment.valueOf();
+        result.s = this._score(result);
+        return result;        
     }
 
-    async commit(auth, params, body){
+    async change(auth, params, body){        
+        const gitEvent = this._decode(body);        
+        persistentStore.addEvent(gitEvent);
+        const dailyStats = this._updateDayStats();
+        console.log(dailyStats);
+        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', gitEvent);
+        // console.log(`Commit received`, body);
+    }
+
+    // async push(auth, params, body){
+    //     const gitEvent = this._decode(body);        
+    //     persistentStore.addEvent(gitEvent);
+    //     BrowserWindow.fromId(1).webContents.send('listener_commitReceived', gitEvent);
+    //     // console.log(`Commit received`, body);
+    // }
+
+    async _userStartOfWork(email){
+        // default start at 8 AM
+        const startOfWork = moment().startOf("day").add(8,"hours");
+        return startOfWork;
+    }
+
+    async _updateDayStats(){
+        const startOfToday = moment().startOf("day").valueOf();
         
 
-        const decoded = this._decode(body);
-        this._addScore(decoded);
-        persistentStore.addEvent(decoded);
-        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', decoded);
-        // console.log(`Commit received`, body);
-    }
+        // get all events from today
+        const todayEvents = persistentStore.events().filter((item)=>item.ct>=startOfToday);
 
-    async push(auth, params, body){
-        const decoded = this._decode(body);
-        this._addScore(decoded);
-        persistentStore.addEvent(decoded);
-        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', decoded);
-        // console.log(`Commit received`, body);
+        const events = todayEvents.map((item)=>{
+            return  {
+                project: item.remote,
+                task: item.decoded.ticket,
+                time: item.ct,
+                stats: item.decoded.changeSummary,
+                score: item.s,
+                name: item.decoded.author.name,
+                email: item.decoded.author.email,
+            }            
+        })
+
+        // sort by date asc
+        events.sort((a, b)=>{
+            return a.ct-b.ct;
+        })
+
+        let users = [];
+
+        events.forEach((item)=>{
+            users.push(item.email);
+        })
+
+        // unique users
+        users = [...new Set(users)];
+
+
+        const result = {
+            day: startOfToday,            
+            users: {}
+        }
+        
+        users.forEach((email)=>{            
+             let time = this._userStartOfWork(email);
+            events.filter((item)=>item.email == email).forEach((item)=>{
+                // we get events for each of the users, events are time ordered
+                const duration = Math.max(item.time-time,0);
+                time = item.time;            
+                const userData = result.users[item.email] || {}
+                const userProject = userData[item.project] || {
+                    id: item.project,
+                    duration: 0,
+                    inserts: 0,
+                    deletions: 0,
+                    files: 0,
+                    score: 0,
+                    pace: 0,
+                    paceScore: 0
+                }
+                const userTask = userProject[item.task] || {
+                    id: item.task,
+                    duration: 0,
+                    inserts: 0,
+                    deletions: 0,
+                    files: 0,
+                    score: 0,
+                    pace: 0,
+                    paceScore: 0
+                }
+
+                userTask.duration += duration;
+                userTask.inserts += item.stats.inserts;
+                userTask.deletions += item.stats.deletions;
+                userTask.files += item.stats.files;
+                userTask.score += item.score;
+                userTask.pace = 1/(userTask.duration/1000/60/60);
+                userTask.paceScore = score/(userTask.duration/1000/60/60);
+
+                userProject.duration += duration;
+                userProject.inserts += item.stats.inserts;
+                userProject.deletions += item.stats.deletions;
+                userProject.files += item.stats.files;
+                userProject.score += item.score;
+                userProject.pace = 1/(userTask.duration/1000/60/60);
+                userProject.paceScore = score/(userTask.duration/1000/60/60);
+
+                userData.duration += duration;
+                userData.inserts += item.stats.inserts;
+                userData.deletions += item.stats.deletions;
+                userData.files += item.stats.files;
+                userData.score += item.score;
+                userData.pace = 1/(userData.duration/1000/60/60);
+                userData.paceScore = score/(userData.duration/1000/60/60);
+
+            })
+        })        
+
+        return result;
+
+        // daily structure
+        //  user
+        //      project
+        //          task
+        //              task stat#1
+        //              task 
+
+        
+
+
     }
 
     async effort(auth, params, body){

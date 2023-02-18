@@ -103,6 +103,8 @@ class AppDemo {
             const effortData = await electronAPI.API.effort();
             console.log(effortData);
 
+            
+
         })
         //
         

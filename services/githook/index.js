@@ -88,7 +88,7 @@ function attachNewPostOperation(appHandler, version, path, context, operationHan
 
 attachNewGetOperation(app, version, path, "/effort", manager.effort.bind(manager));
 
-attachNewPostOperation(app, version, path, "/commit", manager.commit.bind(manager));
-attachNewPostOperation(app, version, path, "/push", manager.push.bind(manager));
+attachNewPostOperation(app, version, path, "/commit", manager.change.bind(manager));
+attachNewPostOperation(app, version, path, "/push", manager.change.bind(manager));
 
 

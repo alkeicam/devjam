@@ -75,7 +75,8 @@
     "express-jwt": "^7.7.5",
     "jsonwebtoken": "^8.5.1",
     "md5": "^2.3.0",
-    "ws": "8.12.1"
+    "ws": "8.12.1",
+    "moment": "2.29.4"
   },
   "nyc": {
     "check-coverage": true,
