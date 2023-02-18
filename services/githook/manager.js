@@ -265,7 +265,7 @@ class Manager {
 
             })
         })        
-        console.log(result);
+        console.log(JSON.stringify(result));
         return result;
 
         // daily structure
