@@ -127,7 +127,7 @@ class Manager {
         const decoded = this._paseGitLog(message);
         result.decoded = decoded;
         
-        result.ct = moment.valueOf();
+        result.ct = moment().valueOf();
         result.s = this._score(result);
         return result;        
     }
