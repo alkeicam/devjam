@@ -157,9 +157,10 @@ class Manager {
     async _updateDayStats(){
         const startOfToday = moment().startOf("day").valueOf();
         
-
+        const allEvents = persistentStore.events();
+        console.log(allEvents);
         // get all events from today
-        const todayEvents = persistentStore.events().filter((item)=>{return item.ct>=startOfToday});
+        const todayEvents = allEvents.filter((item)=>{return item.ct>=startOfToday});
         console.log(todayEvents);
         const events = todayEvents.map((item)=>{
             return  {
