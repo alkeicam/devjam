@@ -151,7 +151,7 @@ class Manager {
     async _userStartOfWork(email){
         // default start at 8 AM
         const startOfWork = moment().startOf("day").add(8,"hours");
-        return startOfWork;
+        return startOfWork.valueOf();
     }
 
     async _updateDayStats(){
