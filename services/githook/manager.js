@@ -97,7 +97,7 @@ class Manager {
      * @returns {number} calculated score
      */
     _score(item){
-        const score = 0; // initialize score
+        let score = 0; // initialize score
 
         // you get 100 points for each push
         if(item.oper == "push"){
