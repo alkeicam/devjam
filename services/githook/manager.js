@@ -177,7 +177,7 @@ class Manager {
         console.log(events);
         // sort by date asc
         events.sort((a, b)=>{
-            return b.ct-a.ct;
+            return b.time-a.time;
         })
 
         console.log(events);
