@@ -228,7 +228,7 @@ class Manager {
                 userTask.files += item.stats.files;
                 userTask.score += item.score;
                 userTask.pace = 1/(userTask.duration/1000/60/60);
-                userTask.paceScore = score/(userTask.duration/1000/60/60);
+                userTask.paceScore = userTask.score/(userTask.duration/1000/60/60);
 
                 userProject.duration += duration;
                 userProject.inserts += item.stats.inserts;
@@ -236,7 +236,7 @@ class Manager {
                 userProject.files += item.stats.files;
                 userProject.score += item.score;
                 userProject.pace = 1/(userTask.duration/1000/60/60);
-                userProject.paceScore = score/(userTask.duration/1000/60/60);
+                userProject.paceScore = userProject.score/(userTask.duration/1000/60/60);
 
                 userData.duration += duration;
                 userData.inserts += item.stats.inserts;
@@ -244,7 +244,7 @@ class Manager {
                 userData.files += item.stats.files;
                 userData.score += item.score;
                 userData.pace = 1/(userData.duration/1000/60/60);
-                userData.paceScore = score/(userData.duration/1000/60/60);
+                userData.paceScore = userData.score/(userData.duration/1000/60/60);
 
             })
         })        
