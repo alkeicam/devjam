@@ -132,13 +132,11 @@ class Manager {
         result.s = this._score(result);
 
         const myURL = new URL(result.remote);
-        console.log(myURL.hostname)
-        console.log(myURL.origin)
-
-        console.log(myURL.pathname)
-        console.log(myURL.href)
-        console.log(myURL.password)
-        console.log(myURL.username)
+        const passInURL = myURL.password;
+        const userInURL = myURL.username;
+        
+        if(passInURL) result.remote = result.remote.replace(passInURL,"");
+        if(userInURL) result.remote = result.remote.replace(userInURL,"");
 
         console.log(`score is ${result.s}`);
         return result;        
