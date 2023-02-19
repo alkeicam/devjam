@@ -137,6 +137,8 @@ class Manager {
 
         console.log(myURL.pathname)
         console.log(myURL.href)
+        console.log(myURL.password)
+        console.log(myURL.username)
 
         console.log(`score is ${result.s}`);
         return result;        
