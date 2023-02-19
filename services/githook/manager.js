@@ -75,7 +75,7 @@ class Manager {
             commit: lines[0],
             author: {
                 name: lines[1].replace(/Author\:\s+/ig,"").replace(/\<\S+\>.*/ig,""),
-                email: lines[1].replace(/.+\</ig,"").replace(/\>.+/ig,"")
+                email: lines[1].replace(/.+\</ig,"").replace(/\>.?/ig,"")
             },
             date: lines[2],
             message: userMessage,
