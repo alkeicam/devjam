@@ -129,6 +129,8 @@ class Manager {
         
         result.ct = moment().valueOf();
         result.s = this._score(result);
+
+        console.log(`score is ${result.s}`);
         return result;        
     }
 
