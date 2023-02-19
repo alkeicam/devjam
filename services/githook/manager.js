@@ -102,7 +102,7 @@ class Manager {
         // you get 100 points for each push
         if(item.oper == "push"){
             score+=100
-            return;
+            return score;
         }
         
         // and point for each insertion, deletion
