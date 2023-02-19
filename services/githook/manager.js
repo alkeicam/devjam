@@ -134,6 +134,8 @@ class Manager {
         const myURL = new URL(result.remote);
         console.log(myURL.hostname)
         console.log(myURL.origin)
+
+        console.log(myURL.pathname)
         console.log(myURL.href)
 
         console.log(`score is ${result.s}`);
