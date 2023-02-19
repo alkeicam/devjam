@@ -174,13 +174,13 @@ class Manager {
             }            
         })
 
-        console.log(events);
+        // console.log(events);
         // sort by date asc
         events.sort((a, b)=>{
             return a.time-b.time;
         })
 
-        console.log(events);
+        // console.log(events);
         let users = [];
 
         events.forEach((item)=>{
@@ -197,8 +197,9 @@ class Manager {
             users: {}
         }
         
-        users.forEach(async (email)=>{            
-             let time = await this._userStartOfWork(email);
+        for(let i=0; i<users.length; i++){
+            const email = users[i];
+            let time = await this._userStartOfWork(email);
 
             events.filter((item)=>item.email == email).forEach((item)=>{
                 // console.log(`Processing ${JSON.stringify(item)} for user ${email}`);
@@ -266,7 +267,8 @@ class Manager {
                 userProject[item.task] = userTask;
 
             })
-        })        
+        }
+                                 
         console.log(JSON.stringify(result));
         return result;
 
