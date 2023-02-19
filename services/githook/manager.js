@@ -38,6 +38,47 @@
  * 
  */
 
+/**
+ * Persons daily effort/achievement
+ * @typedef {Object} DailyStatsProject
+ * @property {string} id - project id (remote url)
+ * @property {string} duration - daily work duration
+ * @property {string} inserts - inserts today
+ * @property {string} deletions - deletions today
+ * @property {string} files - files modified today
+ * @property {number} score - todays score
+ * @property {number} pace - tickets per hour
+ * @property {number} paceScore - score earned per hour
+ * @property {number} paceScore - score earned per hour
+ */
+
+/**
+ * Persons daily effort/achievement
+ * @typedef {Object} DailyStatsUser
+ * @property {string} id - user id (email)
+ * @property {string} duration - daily work duration
+ * @property {string} inserts - inserts today
+ * @property {string} deletions - deletions today
+ * @property {string} files - files modified today
+ * @property {number} score - todays score
+ * @property {number} pace - tickets per hour
+ * @property {number} paceScore - score earned per hour
+ * @property {DailyStatsProject} _project_ - projects that user was working on
+ */
+
+/**
+ * Persons daily effort/achievement
+ * @typedef {Object} DailyStatsUsers
+ * @property {DailyStatsUser} _useremail_ - dynamic property (user email)
+ */
+
+/**
+ * Daily effort/achievement
+ * @typedef {Object} DailyStats
+ * @property {number} day - day of stats (truncated to 12AM)
+ * @property {DailyStatsUsers[]} users - daily stats for users
+ */
+
 //TODO - remove
 const { BrowserWindow } = require('electron')
 const persistentStore = require("../../logic/store")
@@ -138,7 +179,7 @@ class Manager {
         if(passInURL) result.remote = result.remote.replace(passInURL,"");
         if(userInURL) result.remote = result.remote.replace(userInURL,"");
 
-        console.log(`score is ${result.s}`);
+        // console.log(`score is ${result.s}`);
         return result;        
     }
 
@@ -217,7 +258,7 @@ class Manager {
                 const duration = Math.max(item.time-time,0);
                 console.log(`Duration ${duration} from ${item.time} ${time} ${item.time-time}`);
                 time = item.time;            
-                const userData = result.users[item.email] || {
+                const userData = result.users.find((subitem)=>{return subitem.id == item.email}) || {
                     id: item.email,
                     duration: 0,
                     inserts: 0,
@@ -225,9 +266,10 @@ class Manager {
                     files: 0,
                     score: 0,
                     pace: 0,
-                    paceScore: 0
+                    paceScore: 0,
+                    projects: []
                 }
-                const userProject = userData[item.project] || {
+                const userProject = userData.projects.find((subitem)=>{return subitem.id == item.project}) || {
                     id: item.project,
                     duration: 0,
                     inserts: 0,
@@ -235,9 +277,10 @@ class Manager {
                     files: 0,
                     score: 0,
                     pace: 0,
-                    paceScore: 0
+                    paceScore: 0,
+                    tasks: []
                 }
-                const userTask = userProject[item.task] || {
+                const userTask = userProject.tasks.find((subitem)=>{return subitem.id == item.task}) || {
                     id: item.task,
                     duration: 0,
                     inserts: 0,
@@ -273,9 +316,15 @@ class Manager {
                 userData.paceScore = userData.score/(userData.duration/1000/60/60);
 
 
-                result.users[item.email] = userData;
-                userData[item.project] = userProject;
-                userProject[item.task] = userTask;
+                result.users = result.users.filter((subitem)=>{return subitem.id != userData.id})
+                result.users.push(userData);
+
+                // replace project
+                userData.projects = userData.projects.filter((subitem)=>{return subitem.id != userProject.id});
+                userData.projects.push(userProject);
+                // replace task
+                userProject.tasks = userProject.tasks.filter((subitem)=>{return subitem.id != userTask.id});
+                userProject.tasks.push(userTask);
 
             })
         }
