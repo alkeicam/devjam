@@ -252,7 +252,7 @@ class Manager {
                 userProject.files += item.stats.files;
                 userProject.score += item.score;
                 userProject.pace = 1/(userTask.duration/1000/60/60);
-                userProject.paceScore = userProject.score/(userTask.duration/1000/60/60);
+                userProject.paceScore = userProject.score/(userProject.duration/1000/60/60);
 
                 userData.duration += duration;
                 userData.inserts += item.stats.inserts;
