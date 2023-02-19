@@ -106,7 +106,13 @@ class AppDemo {
             console.log(`Got message`, message);  
 
             message.users.sort((a,b)=>{return a.score-b.score});
-            
+            message.users.forEach((user)=>{
+                user.projects.sort((a,b)=>{return a.score-b.score});
+                user.projects.forEach((project)=>{
+                    project.tasks.sort((a,b)=>{return a.score-b.score});
+                })
+            });
+
             const items = [];
             message.users.forEach((user)=>{                
                 items.push({
