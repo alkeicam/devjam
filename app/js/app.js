@@ -121,7 +121,7 @@ class AppDemo {
                 user.projects.forEach((project)=>{
                     items.push({
                         user: user.id,
-                        work: project.duration,
+                        work: moment.duration(project.duration).humanize(),
                         project: a._ellipsis(project.id),
                         task: "",
                         score: project.score,
@@ -132,7 +132,7 @@ class AppDemo {
                     project.tasks.forEach((task)=>{
                         items.push({
                             user: user.id,
-                            work: task.duration,
+                            work: moment.duration(task.duration).humanize(),
                             project: "",
                             task: task.id,
                             score: task.score,
