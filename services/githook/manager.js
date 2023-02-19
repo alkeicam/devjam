@@ -163,7 +163,7 @@ class Manager {
         // console.log(allEvents);
         // get all events from today
         const todayEvents = allEvents.filter((item)=>{return item.ct>=startOfToday});
-        console.log(todayEvents);
+        // console.log(todayEvents);
         const events = todayEvents.map((item)=>{
             return  {
                 project: item.remote,
