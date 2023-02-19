@@ -245,7 +245,7 @@ class Manager {
 
         const result = {
             day: startOfToday,            
-            users: {}
+            users: []
         }
         
         for(let i=0; i<users.length; i++){
