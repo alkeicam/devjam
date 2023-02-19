@@ -104,9 +104,10 @@ class AppDemo {
 
         electronAPI.listenerAPI.onCommitReceived(async (_event, message)=>{
             console.log(`Got message`, message);  
+
+            message.users.sort((a,b)=>{return a.score-b.score});
+            
             const items = [];
-
-
             message.users.forEach((user)=>{                
                 items.push({
                     user: user.id,
