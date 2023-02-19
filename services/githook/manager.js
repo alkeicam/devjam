@@ -262,6 +262,7 @@ class Manager {
                 userData.pace = 1/(userData.duration/1000/60/60);
                 userData.paceScore = userData.score/(userData.duration/1000/60/60);
 
+                
                 result.users[item.email] = userData;
                 userData[item.project] = userProject;
                 userProject[item.task] = userTask;
