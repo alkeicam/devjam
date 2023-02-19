@@ -43,6 +43,12 @@ class AppDemo {
           
     }
 
+    _ellipsis(text){
+        if(text.length<=40)
+            return text;
+        return text.substring(0,18)+"..."+text.substr(text.length-18, text.length)
+    }
+
     static async getInstance(emitter, mapCanvas){
         const a = new AppDemo(emitter, mapCanvas)
 
@@ -100,6 +106,7 @@ class AppDemo {
             console.log(`Got message`, message);  
             const items = [];
 
+
             message.users.forEach((user)=>{                
                 items.push({
                     user: user.id,
@@ -115,7 +122,7 @@ class AppDemo {
                     items.push({
                         user: user.id,
                         work: project.duration,
-                        project: project.id,
+                        project: a._ellipsis(project.id),
                         task: "",
                         score: project.score,
                         files: project.files,
