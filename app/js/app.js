@@ -103,66 +103,89 @@ class AppDemo {
         })
 
         electronAPI.listenerAPI.onCommitReceived(async (_event, message)=>{
-            console.log(`Got message`, message);  
-
-            message.users.sort((a,b)=>{return a.score-b.score});
-            message.users.forEach((user)=>{
-                user.projects.sort((a,b)=>{return a.score-b.score});
-                user.projects.forEach((project)=>{
-                    project.tasks.sort((a,b)=>{return a.score-b.score});
-                })
-            });
-
-            const items = [];
-            message.users.forEach((user)=>{                
-                items.push({
-                    user: user.id,
-                    work: moment.duration(user.duration).humanize(),
-                    project: "",
-                    task: "",
-                    score: user.score,
-                    files: user.files,
-                    inserts: user.inserts,
-                    deletions: user.deletions
-                })
-                user.projects.forEach((project)=>{
-                    items.push({
-                        user: user.id,
-                        work: moment.duration(project.duration).humanize(),
-                        project: a._ellipsis(project.id),
-                        task: "",
-                        score: project.score,
-                        files: project.files,
-                        inserts: project.inserts,
-                        deletions: project.deletions
-                    })
-                    project.tasks.forEach((task)=>{
-                        items.push({
-                            user: user.id,
-                            work: moment.duration(task.duration).humanize(),
-                            project: "",
-                            task: task.id,
-                            score: task.score,
-                            files: task.files,
-                            inserts: task.inserts,
-                            deletions: task.deletions
-                        })
-                    })
-                })                             
-            })
-            
-            // a.model.messages.push(message.decoded);
-            a.model.messages = items;
-            const effortData = await electronAPI.API.effort();
-            console.log(effortData);
-
-            
-
+            a.showData2(message);                        
         })
         //
-        
+        const effortData = await electronAPI.API.effort();
+        console.log(effortData);
+        a.showData2(effortData)
         // await a.newEditor();
         return a;
+    }
+
+    async showData(message){
+        console.log(`Got message`, message);  
+
+        message.users.sort((a,b)=>{return a.score-b.score});
+        message.users.forEach((user)=>{
+            user.projects.sort((a,b)=>{return a.score-b.score});
+            user.projects.forEach((project)=>{
+                project.tasks.sort((a,b)=>{return a.score-b.score});
+            })
+        });
+
+        const items = [];
+        
+        message.users.forEach((user)=>{                
+            items.push({
+                user: user.id,
+                work: moment.duration(user.duration).humanize(),
+                project: "",
+                task: "",
+                score: user.score,
+                files: user.files,
+                inserts: user.inserts,
+                deletions: user.deletions
+            })
+            
+            user.projects.forEach((project)=>{
+                items.push({
+                    user: user.id,
+                    work: moment.duration(project.duration).humanize(),
+                    project: this._ellipsis(project.id),
+                    task: "",
+                    score: project.score,
+                    files: project.files,
+                    inserts: project.inserts,
+                    deletions: project.deletions
+                })
+                project.tasks.forEach((task)=>{
+                    items.push({
+                        user: user.id,
+                        work: moment.duration(task.duration).humanize(),
+                        project: "",
+                        task: task.id,
+                        score: task.score,
+                        files: task.files,
+                        inserts: task.inserts,
+                        deletions: task.deletions
+                    })
+                })
+            })                             
+        })
+        
+        // a.model.messages.push(message.decoded);
+        this.model.messages = items;
+    }
+    async showData2(message){
+        console.log(`Got message`, message);  
+
+        message.users.sort((a,b)=>{return a.score-b.score});
+        message.users.forEach((user)=>{
+            user.projects.sort((a,b)=>{return a.score-b.score});
+            user.work = moment.duration(user.duration).humanize();
+            user.projects.forEach((project)=>{
+                project.tasks.sort((a,b)=>{return a.score-b.score});
+                project.work = moment.duration(project.duration).humanize()
+                project.tasks.forEach((task)=>{
+                    task.work = moment.duration(task.duration).humanize()
+                })
+            })
+        });   
+
+        
+        // a.model.messages.push(message.decoded);
+        this.model.messages = message;
     }
 
     async newEditor(fileMetadata){

@@ -3,8 +3,11 @@ const { ipcMain, Menu} = require('electron')
 
 const fileManager = FileManager.getInstance();
 const persistentStore = require("./store")
+const {Stats} = require("./stats");
 
 const AppMenu = require("./menu")
+
+const stats = new Stats();
 
 function handleUIEvent (eventName, data){
     
@@ -20,8 +23,8 @@ function handleUIEvent (eventName, data){
     }
 }
 
-function handleApiEffort(){
-    return persistentStore.events();
+async function handleApiEffort(){
+    return stats.today();
 }
 // 
 ipcMain.handle('seapi_saveFile', (electronEE, ...args)=>{return fileManager.saveFile(...args)});
