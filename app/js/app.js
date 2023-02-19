@@ -122,7 +122,7 @@ class AppDemo {
                         inserts: project.inserts,
                         deletions: project.deletions
                     })
-                    projects.tasks.forEach((task)=>{
+                    project.tasks.forEach((task)=>{
                         items.push({
                             user: user.id,
                             work: task.duration,
