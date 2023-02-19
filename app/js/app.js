@@ -110,7 +110,7 @@ class AppDemo {
             message.users.forEach((user)=>{                
                 items.push({
                     user: user.id,
-                    work: user.duration,
+                    work: moment.duration(user.duration).humanize(),
                     project: "",
                     task: "",
                     score: user.score,
