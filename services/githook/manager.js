@@ -272,12 +272,6 @@ class Manager {
         console.log(JSON.stringify(result));
         return result;
 
-        // daily structure
-        //  user
-        //      project
-        //          task
-        //              task stat#1
-        //              task 
 
         
 
