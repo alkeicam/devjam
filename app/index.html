@@ -66,28 +66,26 @@
       <table class="table is-striped is-hidden" rv-class-is-hidden="model.activeTab | ne 0">
         <thead>
           <tr>
-            <th>When</th>
+            <th>User</th>
+            <th>Work</th>
+            <th>Project</th>
             <th>Task</th>
-            <th>Comment</th>
-            <th>Score</th>
+            <th>Fiverr</th>
             <th>Files</th>
             <th>Inserts</th>
-            <th>Deletions</th>
-            <th>Details</th>   
-
+            <th>Deletions</th>            
           </tr>
         </thead>
         <tbody>
             <tr rv-each-message="model.messages">
-              <td>{message.ct}</td> 
-              <td>{message.ticket}</td>
-              <td>{message.message}</td>
-              <td>{message.s}</td>
-              <td>{message.changeSummary.files}</td>                  
-              <td>{message.changeSummary.inserts}</td>    
-              <td>{message.changeSummary.deletions}</td>                  
-              <td>{message.raw}</td>
-
+              <td>{message.user}</td> 
+              <td>{message.work}</td>
+              <td>{message.project}</td>
+              <td>{message.task}</td>
+              <td>{message.score}</td>                  
+              <td>{message.files}</td>                  
+              <td>{message.inserts}</td>    
+              <td>{message.deletions}</td>                                
             </tr>
         </tbody>
     </table>       

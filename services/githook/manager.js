@@ -186,9 +186,9 @@ class Manager {
     async change(auth, params, body){        
         const gitEvent = this._decode(body);        
         persistentStore.addEvent(gitEvent);
-        const dailyStats = await this._updateDayStats();
+        const dailyStats = await this._calculateDayStats();
         // console.log(dailyStats);
-        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', gitEvent);
+        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', dailyStats);
         // console.log(`Commit received`, body);
     }
 
@@ -205,7 +205,7 @@ class Manager {
         return startOfWork.valueOf();
     }
 
-    async _updateDayStats(){
+    async _calculateDayStats(){
         const startOfToday = moment().startOf("day").valueOf();
         
         const allEvents = persistentStore.events();

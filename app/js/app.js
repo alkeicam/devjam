@@ -97,9 +97,48 @@ class AppDemo {
         })
 
         electronAPI.listenerAPI.onCommitReceived(async (_event, message)=>{
-            console.log(`Got message`, message);            
-            a.model.messages.push(message.decoded);
+            console.log(`Got message`, message);  
+            const items = [];
 
+            message.users.forEach((user)=>{                
+                items.push({
+                    user: user.id,
+                    work: user.duration,
+                    project: "",
+                    task: "",
+                    score: user.score,
+                    files: user.files,
+                    inserts: user.inserts,
+                    deletions: user.deletions
+                })
+                user.projects.forEach((project)=>{
+                    items.push({
+                        user: user.id,
+                        work: project.duration,
+                        project: project.id,
+                        task: "",
+                        score: project.score,
+                        files: project.files,
+                        inserts: project.inserts,
+                        deletions: project.deletions
+                    })
+                    projects.tasks.forEach((task)=>{
+                        items.push({
+                            user: user.id,
+                            work: task.duration,
+                            project: "",
+                            task: task.id,
+                            score: task.score,
+                            files: task.files,
+                            inserts: task.inserts,
+                            deletions: task.deletions
+                        })
+                    })
+                })                             
+            })
+            
+            // a.model.messages.push(message.decoded);
+            a.model.messages = items;
             const effortData = await electronAPI.API.effort();
             console.log(effortData);
 
