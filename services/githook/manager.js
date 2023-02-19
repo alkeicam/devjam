@@ -43,6 +43,7 @@ const { BrowserWindow } = require('electron')
 const persistentStore = require("../../logic/store")
 var moment = require('moment');
 
+
 class Manager {
     constructor(api){
         this.api = api;        
@@ -129,6 +130,11 @@ class Manager {
         
         result.ct = moment().valueOf();
         result.s = this._score(result);
+
+        const myURL = new URL(result.remote);
+        console.log(myURL.hostname)
+        console.log(myURL.origin)
+        console.log(myURL.href)
 
         console.log(`score is ${result.s}`);
         return result;        
