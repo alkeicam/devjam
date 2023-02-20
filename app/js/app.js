@@ -30,7 +30,7 @@ class AppDemo {
             tabs:[{
                 id: 0,
                 active: true,
-                label: "today",
+                label: "Today",
                 that: this
             }],
             activeTab: 0
@@ -170,15 +170,17 @@ class AppDemo {
     async showData2(message){
         console.log(`Got message`, message);  
 
-        message.users.sort((a,b)=>{return a.score-b.score});
+        message.users.sort((a,b)=>{return b.score-a.score});
         message.users.forEach((user)=>{
-            user.projects.sort((a,b)=>{return a.score-b.score});
+            user.projects.sort((a,b)=>{return b.score-a.score});
             user.work = moment.duration(user.duration).humanize();
             user.projects.forEach((project)=>{
-                project.tasks.sort((a,b)=>{return a.score-b.score});
+                project.tasks.sort((a,b)=>{return b.score-a.score});
                 project.work = moment.duration(project.duration).humanize()
+                project.id = this._ellipsis(project.id)
                 project.tasks.forEach((task)=>{
                     task.work = moment.duration(task.duration).humanize()
+                    // task.id = task.id?task.id:"Unnamed Task"
                 })
             })
         });   
