@@ -94,7 +94,7 @@
           Good Day, your daily dev effort and calories list is empty. Let's make some <strong>commits!</strong> to start today's work.
         </div>
     </article>
-    <article>
+    <article class="is-hidden" rv-class-is-hidden="model.messages.users | sizeGte 1">
         <p>Starting with a new project? <a rv-on-click="handleOnboarding">Configure your project git</a></p>
     </article>
     <article class="is-hidden" rv-class-is-hidden="model.onboarding.hide">
