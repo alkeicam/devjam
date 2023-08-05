@@ -33,7 +33,10 @@ class AppDemo {
                 label: "Today",
                 that: this
             }],
-            activeTab: 0
+            activeTab: 0,
+            onboarding: {
+                hide: true
+            }
         }
 
 
@@ -47,6 +50,14 @@ class AppDemo {
         if(text.length<=40)
             return text;
         return text.substring(0,18)+"..."+text.substr(text.length-18, text.length)
+    }
+
+    async handleOnboarding(e, that){
+        let hide = e.target.dataset.hide || "false";
+        if(hide.toLowerCase() === "true")
+            that.model.onboarding.hide = true;
+        else
+            that.model.onboarding.hide = false;
     }
 
     static async getInstance(emitter, mapCanvas){

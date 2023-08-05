@@ -302,4 +302,15 @@
         console.log(value);        
     }
 
+    rivets.formatters.isMac = function (){
+        isMac = navigator.platform.indexOf("Mac") === 0;
+
+        return isMac
+    }
+    rivets.formatters.isWin = function (){
+        isMac = navigator.platform.indexOf("Mac") === 0;
+
+        return !isMac
+    }
+
 // };

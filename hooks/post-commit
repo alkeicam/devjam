@@ -4,6 +4,7 @@
 GIT_LOG=`git log --stat -1 HEAD | base64`
 REMOTE=`git config --get remote.origin.url`
 # echo $GIT_LOG
+#10024
 
 POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"commit\",\"remote\":\"$REMOTE\"}"
 

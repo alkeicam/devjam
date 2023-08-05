@@ -89,11 +89,81 @@
             </tr>
         </tbody>
     </table>   -->
-    <article class="message is-info is-hidden" style="margin-bottom: 50%" rv-class-is-hidden="model.messages.users | sizeGte 1">
+    <article class="message is-info is-hidden" rv-class-is-hidden="model.messages.users | sizeGte 1">
         <div class="message-body">
           Good Day, your daily dev effort and calories list is empty. Let's make some <strong>commits!</strong> to start today's work.
         </div>
-      </article>
+    </article>
+    <article>
+        <p>Starting with a new project? <a rv-on-click="handleOnboarding">Configure your project git</a></p>
+    </article>
+    <article class="is-hidden" rv-class-is-hidden="model.onboarding.hide">
+        <div class="content mt-6  is-hidden" rv-class-is-hidden="model | isMac">
+            <!-- Win Onboarding-->
+            Windows Onboarding
+        </div>
+        <div class="content mt-6 is-hidden" rv-class-is-hidden="model | isWin">
+            <!-- Mac Onboarding-->
+            <h1>Mac Onboarding  <a class="is-size-7" rv-on-click="handleOnboarding" data-hide="true">Hide</a></h1>
+            <p>For each new project that you work on initial git configuration onboarding is necessary. Please follow the procedure described below
+                to correctly configure your project's git working environment.
+            </p>
+            <h2>Step 1.</h2>
+            <p>Make sure you are in your project root git directory:</p>
+            <pre class="mx-6">
+ls -ltrah .git/hooks/                
+            </pre>
+            <pre class="mx-6">
+-rwxr-xr-x   1 grulka  staff   896B Feb  6 22:59 commit-msg.sample
+-rwxr-xr-x   1 grulka  staff   4.8K Feb  6 22:59 pre-rebase.sample
+-rwxr-xr-x   1 grulka  staff   1.6K Feb  6 22:59 pre-commit.sample
+-rwxr-xr-x   1 grulka  staff   478B Feb  6 22:59 applypatch-msg.sample
+-rwxr-xr-x   1 grulka  staff   4.5K Feb  6 22:59 fsmonitor-watchman.sample
+-rwxr-xr-x   1 grulka  staff   544B Feb  6 22:59 pre-receive.sample
+-rwxr-xr-x   1 grulka  staff   1.5K Feb  6 22:59 prepare-commit-msg.sample
+-rwxr-xr-x   1 grulka  staff   189B Feb  6 22:59 post-update.sample
+-rwxr-xr-x   1 grulka  staff   416B Feb  6 22:59 pre-merge-commit.sample
+-rwxr-xr-x   1 grulka  staff   424B Feb  6 22:59 pre-applypatch.sample
+-rwxr-xr-x   1 grulka  staff   1.3K Feb  6 22:59 pre-push.sample
+-rwxr-xr-x   1 grulka  staff   3.6K Feb  6 22:59 update.sample
+-rwxr-xr-x   1 grulka  staff   2.7K Feb  6 22:59 push-to-checkout.sample
+-rwxr-xr-x   1 grulka  staff   228B Feb 12 16:22 commit-msg
+            </pre>
+            <h2>Step 2.</h2>
+            <p>Create post-commit file :</p>
+            <pre class="mx-6">
+touch .git/hooks/post-commit
+            </pre>
+            <p>And paste into it following script :</p>
+            <pre class="mx-6">
+#!/bin/sh
+
+GIT_LOG=`git log --stat -1 HEAD | base64`
+REMOTE=`git config --get remote.origin.url`
+POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"commit\",\"remote\":\"$REMOTE\"}"
+curl -S -s -H "Content-Type: application/json" -d "$POST_BODY" http://localhost:5001/v1/hooks/commit
+exit 0
+            </pre>
+            <h3>Step 3.</h3>
+            <p>Create pre-push file :</p>
+            <pre class="mx-6">
+touch .git/hooks/pre-push
+            </pre>
+            <p>And paste into it following script :</p>
+            <pre class="mx-6">
+#!/bin/sh
+
+GIT_LOG=`git log --stat -1 HEAD | base64`
+REMOTE=`git config --get remote.origin.url`
+POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"push\",\"remote\":\"$REMOTE\"}"
+curl -S -s -H "Content-Type: application/json" -d "$POST_BODY" http://localhost:5001/v1/hooks/push
+
+exit 0
+            </pre>   
+            <p><a class="is-size-6" rv-on-click="handleOnboarding" data-hide="true">Hide onboarding</a></p>         
+        </div>
+    </article>
+    
     <div class="box" rv-each-user="model.messages.users">
         <h1 class="title">{user.id}</h1>
         <nav class="level is-mobile ">
@@ -284,7 +354,24 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
+
+
 
     </div>
         
