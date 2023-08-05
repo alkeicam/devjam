@@ -185,13 +185,20 @@ class Manager {
         return result;        
     }
 
+    /**
+     * Git commit hook calls this method via REST JSON call
+     * @param {*} auth 
+     * @param {*} params 
+     * @param {*} body 
+     */
     async change(auth, params, body){        
         const gitEvent = this._decode(body);        
         persistentStore.addEvent(gitEvent);
         const dailyStats = await this.stats.today();
-        // console.log(dailyStats);
-        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', dailyStats);
-        // console.log(`Commit received`, body);
+        
+        // here we notify the interface, that new change has arrived and
+        // it needs to update the stats
+        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', dailyStats);        
     }
 
     // async push(auth, params, body){
