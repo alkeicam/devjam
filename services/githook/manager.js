@@ -201,14 +201,7 @@ class Manager {
         BrowserWindow.fromId(1).webContents.send('listener_commitReceived', dailyStats);        
     }
 
-    // async push(auth, params, body){
-    //     const gitEvent = this._decode(body);        
-    //     persistentStore.addEvent(gitEvent);
-    //     BrowserWindow.fromId(1).webContents.send('listener_commitReceived', gitEvent);
-    //     // console.log(`Commit received`, body);
-    // }
 
-    
 
 
 
