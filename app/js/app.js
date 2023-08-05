@@ -36,6 +36,10 @@ class AppDemo {
             activeTab: 0,
             onboarding: {
                 hide: true
+            },
+            handlers: {
+                handleHide: this.handleHide.bind(this),
+                handleUnhide: this.handleUnhide.bind(this)
             }
         }
 
@@ -189,6 +193,7 @@ class AppDemo {
                 project.tasks.sort((a,b)=>{return b.score-a.score});
                 project.work = moment.duration(project.duration).humanize()
                 project.id = this._ellipsis(project.id)
+                project.hide = false
                 project.tasks.forEach((task)=>{
                     task.work = moment.duration(task.duration).humanize()
                     // task.id = task.id?task.id:"Unnamed Task"
@@ -199,6 +204,16 @@ class AppDemo {
         
         // a.model.messages.push(message.decoded);
         this.model.messages = message;
+    }
+
+    async handleHide(e, that){
+        that.project.hide = true;
+        // console.log(that);
+    }
+
+    async handleUnhide(e, that){
+        that.project.hide = false;
+        // console.log(that);
     }
 
     async newEditor(fileMetadata){
