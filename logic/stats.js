@@ -102,9 +102,9 @@ class Stats {
                 }
 
                 userTask.duration += duration;
-                userTask.inserts += item.stats.inserts;
-                userTask.deletions += item.stats.deletions;
-                userTask.files += item.stats.files;
+                userTask.inserts += item.type.toLowerCase()=="commit"?item.stats.inserts:0;
+                userTask.deletions += item.type.toLowerCase()=="commit"?item.stats.deletions:0;
+                userTask.files += item.type.toLowerCase()=="commit"?item.stats.files:0;
                 userTask.score += item.score;
                 userTask.pace = 1/(userTask.duration/1000/60/60);
                 userTask.paceScore = userTask.score/(userTask.duration/1000/60/60);
@@ -112,9 +112,9 @@ class Stats {
                 userTask.commitCnt += item.type == "commit"?1:0;
 
                 userProject.duration += duration;
-                userProject.inserts += item.stats.inserts;
-                userProject.deletions += item.stats.deletions;
-                userProject.files += item.stats.files;
+                userProject.inserts += item.type.toLowerCase()=="commit"?item.stats.inserts:0;
+                userProject.deletions += item.type.toLowerCase()=="commit"?item.stats.deletions:0;
+                userProject.files += item.type.toLowerCase()=="commit"?item.stats.files:0;
                 userProject.score += item.score;
                 userProject.pace = 1/(userTask.duration/1000/60/60);
                 userProject.paceScore = userProject.score/(userProject.duration/1000/60/60);
@@ -122,9 +122,9 @@ class Stats {
                 userProject.commitCnt += item.type == "commit"?1:0;
 
                 userData.duration += duration;
-                userData.inserts += item.stats.inserts;
-                userData.deletions += item.stats.deletions;
-                userData.files += item.stats.files;
+                userData.inserts += item.type.toLowerCase()=="commit"?item.stats.inserts:0;
+                userData.deletions += item.type.toLowerCase()=="commit"?item.stats.deletions:0;
+                userData.files += item.type.toLowerCase()=="commit"?item.stats.files:0;
                 userData.score += item.score;
                 userData.pace = 1/(userData.duration/1000/60/60);
                 userData.paceScore = userData.score/(userData.duration/1000/60/60);
