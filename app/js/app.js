@@ -193,7 +193,7 @@ class AppDemo {
             user.projects.forEach((project)=>{
                 project.tasks.sort((a,b)=>{return b.score-a.score});
                 project.work = moment.duration(project.duration).humanize()
-                project.id = this._ellipsis(project.id)
+                project.id = this._ellipsis(project.id)                
                 project.hide = that.model.messages.length>0?that.model.messages.users.find((item)=>{return item.id == user.id}).projects.find((item)=>{return item.id == project.id}).hide:false
                 project.tasks.forEach((task)=>{
                     task.work = moment.duration(task.duration).humanize()
