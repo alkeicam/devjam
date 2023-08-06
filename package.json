@@ -5,6 +5,7 @@
   "main": "main.js",
   "productName": "ExeDevDay",
   "scripts": {
+    
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
     "pack": "build --dir",
