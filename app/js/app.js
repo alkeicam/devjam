@@ -122,9 +122,9 @@ class AppDemo {
         })
         //
         const effortData = await electronAPI.API.effort();
-        console.log(effortData);
+        
         a.showData2(effortData)
-        // await a.newEditor();
+        
         return a;
     }
 
