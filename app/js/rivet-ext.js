@@ -313,4 +313,13 @@
         return !isMac
     }
 
+    rivets.formatters.whenEmpty = function (value, arg) {
+        console.log(value)
+        console.log(arg)
+        if(!value) 
+            return arg
+        return value;
+    }
+
+
 // };

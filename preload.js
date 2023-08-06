@@ -38,7 +38,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     onSaveFileSuccess: (callback) => ipcRenderer.on('listener_saveFile_success', callback),
     onOpenFile: (callback) => ipcRenderer.on('listener_openFile', callback),
 
-    onCommitReceived: (callback) => ipcRenderer.on('listener_commitReceived', callback)
+    onCommitReceived: (callback) => ipcRenderer.on('listener_commitReceived', callback),
+    onAppShowed: (callback) => ipcRenderer.on('listener_appShowed', callback)
     
   }
 })

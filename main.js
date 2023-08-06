@@ -27,6 +27,12 @@ const createWindow = () => {
 
   const appMenu = new AppMenu(mainWindow);
   appMenu.updateMenu();
+  mainWindow.on("show",()=>{
+    mainWindow.webContents.send("listener_appShowed",{});
+  })
+  
+  // make sure that we recheck recent stats when windows is showed
+
   
 //   Menu.setApplicationMenu(Menu.buildFromTemplate([
 //     {

@@ -213,7 +213,7 @@ exit 0
         <div class="card" style="margin-bottom: 1em;" rv-each-project="user.projects">
             <header class="card-header">
               <p class="card-header-title">
-                {project.id}
+                {project.id}<span class="mx-6">{project.score} cal, {project.pushCnt} pushes, {project.commitCnt} commits</span>
               </p>
               <button class="card-header-icon is-hidden" aria-label="more options" rv-class-is-hidden="project.hide" rv-on-click="model.handlers.handleHide">
                 <span class="icon " >
@@ -228,72 +228,14 @@ exit 0
             </header>
             <div class="card-content is-hidden" rv-class-is-hidden="project.hide">
                 <div class="content " >
-                    <nav class="level">
-
-                        <!-- Left side -->
-                        <div class="level-left">
-                          <div class="level-item">
-                            <p class="subtitle is-5">
-                              &nbsp;
-                            </p>
-                            
-                          </div>                          
-                        </div>
-                      
-                        <!-- Right side -->
-                        <div class="level-right">
-                            <div class="level-item has-text-centered">
-                                <div>
-                                <p class="heading">Time Spent</p>
-                                <p class="title">{project.work}</p>
-                                </div>
-                            </div>
-                            <div class="level-item has-text-centered">
-                                <div>
-                                <p class="heading">Effort</p>
-                                <p class="title">{project.score} cal</p>
-                                </div>
-                            </div>
-                            <div class="level-item has-text-centered">
-                                <div>
-                                <p class="heading">Pushes</p>
-                                <p class="title">{project.pushCnt}</p>
-                                </div>
-                            </div>
-                            <div class="level-item has-text-centered">
-                                <div>
-                                <p class="heading">Commits</p>
-                                <p class="title">{project.commitCnt}</p>
-                                </div>
-                            </div>
-                            <div class="level-item has-text-centered">
-                                <div>
-                                <p class="heading">Files</p>
-                                <p class="title">{project.files}</p>
-                                </div>
-                            </div>
-                            <div class="level-item has-text-centered">
-                                <div>
-                                <p class="heading">Inserts</p>
-                                <p class="title">{project.inserts}</p>
-                                </div>
-                            </div>
-                            <div class="level-item has-text-centered">
-                                <div>
-                                <p class="heading">Deletions</p>
-                                <p class="title">{project.deletions}</p>
-                                </div>
-                            </div>
-                          <!-- <p class="level-item"><a class="button is-success">New</a></p> -->
-                        </div>
-                    </nav>
+                    
                     <p class="title is-6">Project Tasks:</p>
                     <nav class="level" rv-each-task="project.tasks">
                         <!-- Left side -->
                         <div class="level-left">
                           <div class="level-item">
                             <p class="subtitle is-6">
-                              {task.id}
+                              {task.id | whenEmpty 'General, use [TASK_ID] in commit message'}
                               <!-- <progress class="progress is-primary" value="15" max="100">15%</progress> -->
                             </p>
                             
@@ -302,12 +244,12 @@ exit 0
                       
                         <!-- Right side -->
                         <div class="level-right">
-                            <div class="level-item has-text-centered">
+                            <!-- <div class="level-item has-text-centered">
                                 <div>
                                 <p class="heading is-6">Time Spent</p>
                                 <p class="title is-6">{task.work}</p>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="level-item has-text-centered">
                                 <div>
                                 <p class="heading is-6">Effort</p>
@@ -344,7 +286,7 @@ exit 0
                                 <p class="title is-6">{task.deletions}</p>
                                 </div>
                             </div>
-                          <p class="level-item" ><a class="button is-success is-static" rv-class-is-static="task.id | empty">Log Work</a></p>
+                          <!-- <p class="level-item" ><a class="button is-success is-static" rv-class-is-static="task.id | empty">Log Work</a></p> -->
                         </div>
                     </nav>
                       
