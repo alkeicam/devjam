@@ -13,7 +13,7 @@
     "app:dir": "electron-builder --dir",
     "app:dist": "electron-builder",
     "release": "electron-builder",
-    "rc": "npm version patch && git push origin --tags"
+    "rc": "npm version patch && git push origin && git push origin --tags"
   },
   "author": "",
   "license": "ISC",
