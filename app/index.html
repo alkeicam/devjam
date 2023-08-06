@@ -167,31 +167,31 @@ exit 0
     <div class="box" rv-each-user="model.messages.users">
         <!-- <h1 class="title">{user.id}</h1> -->
         <nav class="level is-mobile ">
-            <div class="level-item has-text-centered">
+            <!-- <div class="level-item has-text-centered">
                 <div>
                 <p class="heading">Work Time</p>
                 <p class="title">{user.work}</p>
                 </div>
-            </div>
+            </div> -->
             <div class="level-item has-text-centered">
-                <div>
+                <div class="box">
                 <p class="heading">Effort</p>
                 <p class="title">{user.score} cal</p>
                 </div>
             </div>
             <div class="level-item has-text-centered">
-                <div>
+                <div class="box">
                 <p class="heading">Pushes</p>
                 <p class="title">{user.pushCnt}</p>
                 </div>
             </div>
             <div class="level-item has-text-centered">
-                <div>
+                <div class="box">
                 <p class="heading">Commits</p>
                 <p class="title">{user.commitCnt}</p>
                 </div>
             </div>
-            <div class="level-item has-text-centered">
+            <!-- <div class="level-item has-text-centered">
                 <div>
                 <p class="heading">Files</p>
                 <p class="title">{user.files}</p>
@@ -208,7 +208,7 @@ exit 0
                 <p class="heading">Deletions</p>
                 <p class="title">{user.deletions}</p>
                 </div>
-            </div>
+            </div> -->
         </nav> 
         <div class="card" style="margin-bottom: 1em;" rv-each-project="user.projects">
             <header class="card-header">
@@ -229,7 +229,7 @@ exit 0
             <div class="card-content is-hidden" rv-class-is-hidden="project.hide">
                 <div class="content " >
                     <nav class="level">
-                        
+
                         <!-- Left side -->
                         <div class="level-left">
                           <div class="level-item">
