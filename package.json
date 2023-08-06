@@ -12,7 +12,7 @@
     "dist:minor": "npm version minor && build",
     "app:dir": "electron-builder --dir",
     "app:dist": "electron-builder",
-    "release": "electron-builder"
+    "release": "npm version patch && electron-builder"
   },
   "author": "",
   "license": "ISC",
