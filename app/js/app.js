@@ -41,6 +41,13 @@ class AppDemo {
             handlers: {
                 handleHide: this.handleHide.bind(this),
                 handleUnhide: this.handleUnhide.bind(this)
+            },
+            process:{
+                step: "ONBOARDING" // PREPARE // WORKOUT                
+            },
+            sync:{
+                code: 2,
+                message: ""
             }
         }
 
@@ -292,6 +299,12 @@ class AppDemo {
         this.model.messages = todayMessage;
         this.model.last9DaysMessages = message;
         this.drawPlot();
+
+        if(this.model.messages.users.length >= 1){
+            this.model.process.step = "WORKOUT"
+        }
+
+        this.model.process.step = "WORKOUT"
     }
 
     async handleHide(e, that){

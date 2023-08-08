@@ -8,11 +8,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Dev Calories</title>
-    <meta name="description" content="AES Encrypted Text Editor">
+    <title>Dev Workout</title>
+    <meta name="description" content="Dev Workout">
     <meta name="author" content="grulka">
 
-    <meta property="og:title" content="AES Encrypted Text Editor">
+    <meta property="og:title" content="Dev Workout">
     <meta property="og:type" content="website">
     <meta property="og:url"
         content="https://spectator-40e33.web.app/?g=xAz4g5">
@@ -62,47 +62,61 @@
             </a>
           </li>
         </ul>
-      </div>    
-      <!-- <table class="table is-striped is-hidden" rv-class-is-hidden="model.activeTab | ne 0">
-        <thead>
-          <tr>
-            <th>User</th>
-            
-            <th>Project</th>
-            <th>Task</th>
-            <th>Effort</th>
-            <th>Fiverr</th>
-            <th>Files</th>
-            <th>Inserts</th>
-            <th>Deletions</th>            
-          </tr>
-        </thead>
-        <tbody>
-            <tr rv-each-message="model.messages">
-              <td>{message.user}</td> 
-              
-              <td>{message.project}</td>
-              <td>{message.task}</td>
-              <td>{message.work}</td>
-              <td>{message.score}</td>                  
-              <td>{message.files}</td>                  
-              <td>{message.inserts}</td>    
-              <td>{message.deletions}</td>                                
-            </tr>
-        </tbody>
-    </table>   -->
-    <div class="box is-hidden" rv-class-is-hidden="model.last9DaysMessages | sizeLt 1">
-        <h3 class="title is-3">Last 9 days</h3>
-        <div id="userGraph" class="content"></div>
-    </div>
-    <article class="message is-info is-hidden" rv-class-is-hidden="model.messages.users | sizeGte 1">
-        <div class="message-body">
-          Good Day, your daily dev effort and calories list is empty. Let's make some <strong>commits!</strong> to start today's work.
+      </div>          
+    <div class="is-hidden" rv-class-is-hidden="model.process.step | neq 'WORKOUT'">
+        <div class="box is-hidden" rv-class-is-hidden="model.last9DaysMessages | sizeLt 1">
+            <h3 class="title is-3">Last 9 days</h3>
+            <div id="userGraph" class="content"></div>
+        </div>
+    </div>   
+    
+    <article class="message is-hidden" rv-class-is-hidden="model.process.step | neq 'ONBOARDING'">
+        <div class="box">
+            <p class="heading">Hello</p>
+            <p class="title">Welcome to Dev Workout</p>
+            <article class="message is-info">
+                <div class="message-header">
+                  <p>Initial configuration</p>                  
+                </div>
+                <div class="message-body">
+                  Please provide your name.
+                </div>
+            </article>
+            <div class="columns">
+                <div class="column is-offset-4 is-one-third">
+                    <div class="field">
+                        <label class="label">Name</label>
+                        <div class="control has-icons-left has-icons-right">
+                            <input class="input is-danger" type="email" placeholder="Email input" value="hello@">
+                            <span class="icon is-small is-left">
+                            <i class="fas fa-envelope"></i>
+                            </span>
+                            <span class="icon is-small is-right">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            </span>
+                        </div>
+                        <p class="help is-danger">This email is invalid</p>
+                    </div>
+                    <div class="field is-grouped">
+                        <div class="control">
+                          <button class="button is-link">Submit</button>
+                        </div>
+                        <div class="control">
+                          <button class="button is-link is-light">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>                          
         </div>
     </article>
-    <article class="is-hidden" rv-class-is-hidden="model.messages.users | sizeGte 1">
-        <p>Starting with a new project? <a rv-on-click="handleOnboarding">Configure your project git</a></p>
-    </article>
+    
+    <article class="message is-info is-hidden" rv-class-is-hidden="model.process.step | neq 'PREPARE'">
+        <div class="message-body">
+          Good Day, your daily dev effort and calories list is empty. Let's make some <strong>commits!</strong> to start today's work.
+          <p class="my-4">Starting with a new project? <a rv-on-click="handleOnboarding">Configure your project git</a></p>
+        </div>
+    </article>    
     <article class="is-hidden" rv-class-is-hidden="model.onboarding.hide">
         <div class="content mt-6  is-hidden" rv-class-is-hidden="model | isMac">
             <!-- Win Onboarding-->
@@ -169,168 +183,170 @@ exit 0
             <p><a class="is-size-6" rv-on-click="handleOnboarding" data-hide="true">Hide onboarding</a></p>         
         </div>
     </article>
+    <div class="is-hidden" rv-class-is-hidden="model.process.step | neq 'WORKOUT'">
+        <div class="box" rv-each-user="model.messages.users">
+            <!-- <h3 class="title is-3">Last 9 days</h3>
+            <div id="userGraph" class="content"></div> -->
+            <h3 class="title is-3">Today</h3>
+            <!-- <h1 class="title">{user.id}</h1> -->
+            <nav class="level is-mobile ">
+                <!-- <div class="level-item has-text-centered">
+                    <div>
+                    <p class="heading">Work Time</p>
+                    <p class="title">{user.work}</p>
+                    </div>
+                </div> -->
+                <div class="level-item has-text-centered">
+                    <div class="box">
+                    <p class="heading">Effort</p>
+                    <p class="title">{user.score} cal</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div class="box">
+                    <p class="heading">Pushes</p>
+                    <p class="title">{user.pushCnt}</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div class="box">
+                    <p class="heading">Commits</p>
+                    <p class="title">{user.commitCnt}</p>
+                    </div>
+                </div>
+                <!-- <div class="level-item has-text-centered">
+                    <div>
+                    <p class="heading">Files</p>
+                    <p class="title">{user.files}</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                    <p class="heading">Inserts</p>
+                    <p class="title">{user.inserts}</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                    <p class="heading">Deletions</p>
+                    <p class="title">{user.deletions}</p>
+                    </div>
+                </div> -->
+            </nav> 
+            <div class="card" style="margin-bottom: 1em;" rv-each-project="user.projects">
+                <header class="card-header">
+                  <p class="card-header-title">
+                    {project.id}<span class="mx-6">{project.score} cal, {project.pushCnt} pushes, {project.commitCnt} commits</span>
+                  </p>
+                  <button class="card-header-icon is-hidden" aria-label="more options" rv-class-is-hidden="project.hide" rv-on-click="model.handlers.handleHide">
+                    <span class="icon " >
+                      <i class="fas fa-angle-up" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                  <button class="card-header-icon is-hidden" aria-label="more options" rv-class-is-hidden="project.hide | neq true" rv-on-click="model.handlers.handleUnhide">
+                    <span class="icon " >
+                      <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </header>
+                <div class="card-content is-hidden" rv-class-is-hidden="project.hide">                
+                    <div class="content " >
+                        
+                        <p class="title is-6">Project Tasks:</p>
+                        <nav class="level" rv-each-task="project.tasks">
+                            <!-- Left side -->
+                            <div class="level-left">
+                              <div class="level-item">
+                                <p class="subtitle is-6">
+                                  {task.id | whenEmpty 'General, use [TASK_ID] in commit message'}
+                                  <!-- <progress class="progress is-primary" value="15" max="100">15%</progress> -->
+                                </p>
+                                
+                              </div>                          
+                            </div>
+                          
+                            <!-- Right side -->
+                            <div class="level-right">
+                                <!-- <div class="level-item has-text-centered">
+                                    <div>
+                                    <p class="heading is-6">Time Spent</p>
+                                    <p class="title is-6">{task.work}</p>
+                                    </div>
+                                </div> -->
+                                <div class="level-item has-text-centered">
+                                    <div>
+                                    <p class="heading is-6">Effort</p>
+                                    <p class="title is-6">{task.score} cal</p>
+                                    </div>
+                                </div>
+                                <div class="level-item has-text-centered">
+                                    <div>
+                                    <p class="heading is-6">Pushes</p>
+                                    <p class="title is-6">{task.pushCnt}</p>
+                                    </div>
+                                </div>
+                                <div class="level-item has-text-centered">
+                                    <div>
+                                    <p class="heading is-6">Commits</p>
+                                    <p class="title is-6">{task.commitCnt}</p>
+                                    </div>
+                                </div>
+                                <div class="level-item has-text-centered">
+                                    <div>
+                                    <p class="heading is-6">Files</p>
+                                    <p class="title is-6">{task.files}</p>
+                                    </div>
+                                </div>
+                                <div class="level-item has-text-centered">
+                                    <div>
+                                    <p class="heading is-6">Inserts</p>
+                                    <p class="title is-6">{task.inserts}</p>
+                                    </div>
+                                </div>
+                                <div class="level-item has-text-centered">
+                                    <div>
+                                    <p class="heading is-6">Deletions</p>
+                                    <p class="title is-6">{task.deletions}</p>
+                                    </div>
+                                </div>
+                              <!-- <p class="level-item" ><a class="button is-success is-static" rv-class-is-static="task.id | empty">Log Work</a></p> -->
+                            </div>
+                        </nav>
+                          
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <!-- <a href="#" class="card-footer-item">Save</a>
+                    <a href="#" class="card-footer-item">Edit</a> -->
+                    <!-- <a href="#" class="card-footer-item">Delete</a> -->
+                </footer>
+            </div>
+              
     
-    <div class="box" rv-each-user="model.messages.users">
-        <!-- <h3 class="title is-3">Last 9 days</h3>
-        <div id="userGraph" class="content"></div> -->
-        <h3 class="title is-3">Today</h3>
-        <!-- <h1 class="title">{user.id}</h1> -->
-        <nav class="level is-mobile ">
-            <!-- <div class="level-item has-text-centered">
-                <div>
-                <p class="heading">Work Time</p>
-                <p class="title">{user.work}</p>
-                </div>
-            </div> -->
-            <div class="level-item has-text-centered">
-                <div class="box">
-                <p class="heading">Effort</p>
-                <p class="title">{user.score} cal</p>
-                </div>
-            </div>
-            <div class="level-item has-text-centered">
-                <div class="box">
-                <p class="heading">Pushes</p>
-                <p class="title">{user.pushCnt}</p>
-                </div>
-            </div>
-            <div class="level-item has-text-centered">
-                <div class="box">
-                <p class="heading">Commits</p>
-                <p class="title">{user.commitCnt}</p>
-                </div>
-            </div>
-            <!-- <div class="level-item has-text-centered">
-                <div>
-                <p class="heading">Files</p>
-                <p class="title">{user.files}</p>
-                </div>
-            </div>
-            <div class="level-item has-text-centered">
-                <div>
-                <p class="heading">Inserts</p>
-                <p class="title">{user.inserts}</p>
-                </div>
-            </div>
-            <div class="level-item has-text-centered">
-                <div>
-                <p class="heading">Deletions</p>
-                <p class="title">{user.deletions}</p>
-                </div>
-            </div> -->
-        </nav> 
-        <div class="card" style="margin-bottom: 1em;" rv-each-project="user.projects">
-            <header class="card-header">
-              <p class="card-header-title">
-                {project.id}<span class="mx-6">{project.score} cal, {project.pushCnt} pushes, {project.commitCnt} commits</span>
-              </p>
-              <button class="card-header-icon is-hidden" aria-label="more options" rv-class-is-hidden="project.hide" rv-on-click="model.handlers.handleHide">
-                <span class="icon " >
-                  <i class="fas fa-angle-up" aria-hidden="true"></i>
-                </span>
-              </button>
-              <button class="card-header-icon is-hidden" aria-label="more options" rv-class-is-hidden="project.hide | neq true" rv-on-click="model.handlers.handleUnhide">
-                <span class="icon " >
-                  <i class="fas fa-angle-down" aria-hidden="true"></i>
-                </span>
-              </button>
-            </header>
-            <div class="card-content is-hidden" rv-class-is-hidden="project.hide">                
-                <div class="content " >
-                    
-                    <p class="title is-6">Project Tasks:</p>
-                    <nav class="level" rv-each-task="project.tasks">
-                        <!-- Left side -->
-                        <div class="level-left">
-                          <div class="level-item">
-                            <p class="subtitle is-6">
-                              {task.id | whenEmpty 'General, use [TASK_ID] in commit message'}
-                              <!-- <progress class="progress is-primary" value="15" max="100">15%</progress> -->
-                            </p>
-                            
-                          </div>                          
-                        </div>
-                      
-                        <!-- Right side -->
-                        <div class="level-right">
-                            <!-- <div class="level-item has-text-centered">
-                                <div>
-                                <p class="heading is-6">Time Spent</p>
-                                <p class="title is-6">{task.work}</p>
-                                </div>
-                            </div> -->
-                            <div class="level-item has-text-centered">
-                                <div>
-                                <p class="heading is-6">Effort</p>
-                                <p class="title is-6">{task.score} cal</p>
-                                </div>
-                            </div>
-                            <div class="level-item has-text-centered">
-                                <div>
-                                <p class="heading is-6">Pushes</p>
-                                <p class="title is-6">{task.pushCnt}</p>
-                                </div>
-                            </div>
-                            <div class="level-item has-text-centered">
-                                <div>
-                                <p class="heading is-6">Commits</p>
-                                <p class="title is-6">{task.commitCnt}</p>
-                                </div>
-                            </div>
-                            <div class="level-item has-text-centered">
-                                <div>
-                                <p class="heading is-6">Files</p>
-                                <p class="title is-6">{task.files}</p>
-                                </div>
-                            </div>
-                            <div class="level-item has-text-centered">
-                                <div>
-                                <p class="heading is-6">Inserts</p>
-                                <p class="title is-6">{task.inserts}</p>
-                                </div>
-                            </div>
-                            <div class="level-item has-text-centered">
-                                <div>
-                                <p class="heading is-6">Deletions</p>
-                                <p class="title is-6">{task.deletions}</p>
-                                </div>
-                            </div>
-                          <!-- <p class="level-item" ><a class="button is-success is-static" rv-class-is-static="task.id | empty">Log Work</a></p> -->
-                        </div>
-                    </nav>
-                      
-                </div>
-            </div>
-            <footer class="card-footer">
-                <!-- <a href="#" class="card-footer-item">Save</a>
-                <a href="#" class="card-footer-item">Edit</a> -->
-                <!-- <a href="#" class="card-footer-item">Delete</a> -->
-            </footer>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+            
+    
+    
+    
         </div>
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
     </div>
+
         
     </section>
         
