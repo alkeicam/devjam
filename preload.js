@@ -29,7 +29,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
 
   API: {
-    effort: () => ipcRenderer.invoke('api_effort')
+    effort: () => ipcRenderer.invoke('api_effort'),
+    setup: (preferences) => ipcRenderer.invoke('api_setup'),
   },
   // here we send data to callback functions in renderer/view js 
   listenerAPI: {

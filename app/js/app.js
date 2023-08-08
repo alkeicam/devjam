@@ -48,6 +48,17 @@ class AppDemo {
             sync:{
                 code: 2,
                 message: ""
+            },
+            forms:{
+                f1: {
+                    f1: {
+                        v: "",
+                        e: {
+                            code: 0,
+                            message: "OK"
+                        }
+                    }
+                }                
             }
         }
 
@@ -62,6 +73,14 @@ class AppDemo {
         if(text.length<=40)
             return text;
         return text.substring(0,18)+"..."+text.substr(text.length-18, text.length)
+    }
+
+    async handleSetup(e, that){
+        await electronAPI.API.setup({
+            name: that.model.forms.f1.f1.v,
+            status: "OK"
+        })
+        that.model.process.step = "PREPARE"
     }
 
     async handleOnboarding(e, that){
@@ -274,6 +293,8 @@ class AppDemo {
         let that = this;
         console.log(`Got message`, message);  
 
+        if(!message) return;
+
         let todayMessage = message.find((item)=>{return item.day.today == true});
         console.log(`todayMessage`, todayMessage); 
 
@@ -302,9 +323,7 @@ class AppDemo {
 
         if(this.model.messages.users.length >= 1){
             this.model.process.step = "WORKOUT"
-        }
-
-        this.model.process.step = "WORKOUT"
+        }        
     }
 
     async handleHide(e, that){

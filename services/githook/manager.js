@@ -27,14 +27,28 @@
  */
 
 /**
+ * Entropy of the git event
+ * @typedef {Object} GitEventEntropyScore
+ * @property {number} ec - commit line entropy
+ * @property {number} em - commit message entropy
+ * @property {number} et - ticket entropy
+ * @property {number} er - raw message entropy
+ * @property {number} ed - diff entropy
+ * @property {number} e - final entropy
+ */
+
+/**
  * Person code action event
  * @typedef {Object} GitEvent
  * @property {number} ct - creation timestamp
  * @property {number} s - score
- * @property {string} gitlog - result of git log --stat -1 HEAD.
+ * @property {string} gitlog - result of git log --stat -1 HEAD in base64.
+ * @property {string} diff - result of git show.
  * @property {string} oper - one of "commit" and "push"
  * @property {string} remote - result of git config --get remote.origin.url (may be empty when only local repo)
  * @property {GitLogDecoded} decoded - decoded git log data
+ * @property {GitEventEntropyScore} entropy - git event entropy
+ * @property {number} e 
  * 
  */
 
@@ -157,22 +171,78 @@ class Manager {
     }
 
     /**
+     * Updates gitevent with entropy score
+     * @param {GitEvent} gitEvent 
+     * 
+     */
+    _calculateEntropyScope(gitEvent){
+        /*
+        * @typedef {Object} GitEventEntropyScore
+        * @property {number} ec - commit line entropy
+        * @property {number} em - commit message entropy
+        * @property {number} et - ticket entropy
+        * @property {number} er - raw message entropy
+        * @property {number} ed - diff entropy
+        * @property {number} e - final entropy
+        */
+
+        const entropy = {
+            ec: this._entropy(gitEvent.decoded.commit||""),
+            em: this._entropy(gitEvent.decoded.message||""),
+            et: this._entropy(gitEvent.decoded.ticket||""),
+            er: this._entropy(gitEvent.gitlog||""),
+            ed: this._entropy(gitEvent.diff||"")            
+        }
+
+        entropy.e = entropy.ec+entropy.em+entropy.et+entropy.er+entropy.ed;
+
+        gitEvent.e = entropy;
+
+    }
+
+    _entropy(str){
+        const len = str.length
+ 
+        // Build a frequency map from the string.
+        const frequencies = Array.from(str)
+          .reduce((freq, c) => (freq[c] = (freq[c] || 0) + 1) && freq, {})
+       
+        // Sum the frequency of each character.
+        const sum = Object.values(frequencies)
+          .reduce((sum, f) => sum - f/len * Math.log2(f/len), 0)        
+        
+
+
+        return parseFloat(sum.toFixed(3));
+    }
+
+    /**
      * Parses and decodes raw commit message from client endpoint
      * @param {*} body - request body with json from client endpoint
      * @returns {GitEvent} git event data
      */
     _decode(body){
         let buff = Buffer.from(body.gitlog, 'base64');  
-        let message = buff.toString('utf-8');        
+        let message = buff.toString('utf-8');
+        
+        
+        
 
         const result = JSON.parse(JSON.stringify(body));
         result.gitlog = message;
+
+        if(body.diff){
+            let diffBuff = Buffer.from(body.diff, 'base64');  
+            let diff = diffBuff.toString('utf-8');
+            result.diff = diff;
+        }
 
         const decoded = this._paseGitLog(message);
         result.decoded = decoded;
         
         result.ct = moment().valueOf();
         result.s = this._score(result);
+        this._calculateEntropyScope(result);
 
         const myURL = new URL(result.remote);
         const passInURL = myURL.password;

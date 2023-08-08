@@ -23,15 +23,22 @@ function handleUIEvent (eventName, data){
     }
 }
 
-async function handleApiEffort(){
-    return stats.today();
-}
+
 // 
 ipcMain.handle('seapi_saveFile', (electronEE, ...args)=>{return fileManager.saveFile(...args)});
 ipcMain.handle('seapi_loadFile', (electronEE, ...args)=>{return fileManager.loadFile(...args)});
 ipcMain.handle('seapi_editorUIEvent', (electronEE, ...args)=>{return handleUIEvent(...args)});
 
+async function handleApiEffort(){
+    return stats.today();
+}
 ipcMain.handle('api_effort', (electronEE, ...args)=>{return handleApiEffort(...args)});
+
+async function handleApiSetup(preferences){
+    persistentStore.addPreferences(preferences)    
+}
+ipcMain.handle('api_setup', (electronEE, ...args)=>{return handleApiSetup(...args)});
+
 
 
 

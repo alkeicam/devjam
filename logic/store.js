@@ -51,6 +51,13 @@ class PersistentStore{
         this.store.set("last31", news);
     }
 
+    addPreferences(preferenceItem){
+        this.store.set("preferences",preferenceItem);
+    }
+    preferences(){
+        return this.store.get("preferences");
+    }
+
     // /**
     //  * 
     //  * @param {RecentItem} recent 
