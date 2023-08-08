@@ -30,6 +30,8 @@
     
     <script src="js/tinymce/tinymce.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="js/plotly-2.24.1.min.js" charset="utf-8"></script>
     
 </head>
 
@@ -165,6 +167,7 @@ exit 0
     </article>
     
     <div class="box" rv-each-user="model.messages.users">
+        <div id="userGraph" class="content"></div>
         <!-- <h1 class="title">{user.id}</h1> -->
         <nav class="level is-mobile ">
             <!-- <div class="level-item has-text-centered">
@@ -226,7 +229,7 @@ exit 0
                 </span>
               </button>
             </header>
-            <div class="card-content is-hidden" rv-class-is-hidden="project.hide">
+            <div class="card-content is-hidden" rv-class-is-hidden="project.hide">                
                 <div class="content " >
                     
                     <p class="title is-6">Project Tasks:</p>
@@ -383,7 +386,7 @@ exit 0
         const emitter2 = EventEmitter.getInstance();
         const mapCanvas2 = document.getElementById("map2");
 
-        AppDemo.getInstance(emitter, mapCanvas).then((app)=>{
+        AppDemo.getInstance(emitter, "userGraph").then((app)=>{
             
             rivets.bind(document.getElementById('app'), app);            
         })

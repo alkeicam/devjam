@@ -1,10 +1,10 @@
 class AppDemo {
     
-    constructor(emitter, mapCanvas) {
+    constructor(emitter, container) {
         this.CONST = {
         }
         this.emitter = emitter
-
+        this.container = container;
         
         
         
@@ -64,8 +64,8 @@ class AppDemo {
             that.model.onboarding.hide = false;
     }
 
-    static async getInstance(emitter, mapCanvas){
-        const a = new AppDemo(emitter, mapCanvas)
+    static async getInstance(emitter, container){
+        const a = new AppDemo(emitter, container)
 
         // listeners from core app
         electronAPI.listenerAPI.onOpenFile((_event, fileHolder)=>{
@@ -130,6 +130,30 @@ class AppDemo {
         a.showData2(effortData)                   
                 
         return a;
+    }
+
+    async drawPlot(){
+        if(this.container){
+            var trace1 = {
+                x: ['giraffes', 'orangutans', 'monkeys'],
+                y: [20, 14, 23],
+                name: 'SF Zoo',
+                type: 'bar'
+              };
+              
+              var trace2 = {
+                x: ['giraffes', 'orangutans', 'monkeys'],
+                y: [12, 18, 29],
+                name: 'LA Zoo',
+                type: 'bar'
+              };
+              
+              var data = [trace1, trace2];
+              
+              var layout = {barmode: 'stack'};
+              
+              Plotly.newPlot(this.container, data, layout);
+        }                  
     }
 
     async showData(message){
@@ -210,6 +234,7 @@ class AppDemo {
         
         // a.model.messages.push(message.decoded);
         this.model.messages = message;
+        this.drawPlot();
     }
 
     async handleHide(e, that){
