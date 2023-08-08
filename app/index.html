@@ -91,6 +91,10 @@
             </tr>
         </tbody>
     </table>   -->
+    <div class="box is-hidden" rv-class-is-hidden="model.last9DaysMessages | sizeLt 1">
+        <h3 class="title is-3">Last 9 days</h3>
+        <div id="userGraph" class="content"></div>
+    </div>
     <article class="message is-info is-hidden" rv-class-is-hidden="model.messages.users | sizeGte 1">
         <div class="message-body">
           Good Day, your daily dev effort and calories list is empty. Let's make some <strong>commits!</strong> to start today's work.
@@ -167,7 +171,9 @@ exit 0
     </article>
     
     <div class="box" rv-each-user="model.messages.users">
-        <div id="userGraph" class="content"></div>
+        <!-- <h3 class="title is-3">Last 9 days</h3>
+        <div id="userGraph" class="content"></div> -->
+        <h3 class="title is-3">Today</h3>
         <!-- <h1 class="title">{user.id}</h1> -->
         <nav class="level is-mobile ">
             <!-- <div class="level-item has-text-centered">

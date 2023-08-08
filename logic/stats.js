@@ -2,21 +2,35 @@ var moment = require('moment');
 const persistentStore = require("./store")
 
 class Stats {
+    constructor(){
+        this.last9DaysMs = 1000*60*60*24*9
+    }
     
     async _userStartOfWork(email){
         // default start at 8 AM
         const startOfWork = moment().startOf("day").add(8,"hours");
         return startOfWork.valueOf();
     }
-    async today(){
-        const startOfToday = moment().startOf("day").valueOf();
-        
-        const allEvents = persistentStore.events();
-        // console.log(allEvents);
-        // get all events from today
-        const todayEvents = allEvents.filter((item)=>{return item.ct>=startOfToday});
-        // console.log(todayEvents);
-        const events = todayEvents.map((item)=>{
+
+    async processSingleDayEvents(day, rawEvents){
+        const result = {
+            day: {
+                ts: day,
+                today: moment().valueOf()-day<1000*60*60*12?true:false,
+                daysAgo: moment(day).fromNow(),
+                dayName: moment(day).format("dddd"),
+                dayName: moment(day).format("YYYY-MM-DD"),
+            },            
+            users: []
+        }
+
+        if(!rawEvents)
+            return result;
+
+        if(rawEvents.length==0)
+            return result;
+
+        const events = rawEvents.map((item)=>{
             return  {
                 project: item.remote,
                 task: item.decoded.ticket,
@@ -47,10 +61,7 @@ class Stats {
         users = [...new Set(users)];
         console.log(users);
 
-        const result = {
-            day: startOfToday,            
-            users: []
-        }
+        
         
         for(let i=0; i<users.length; i++){
             const email = users[i];
@@ -144,8 +155,42 @@ class Stats {
 
             })
         }
-                                 
-        console.log(JSON.stringify(result));
+        return result;
+    }
+    async today(){
+        const allEvents = persistentStore.events();
+
+        const startOfToday = moment().startOf("day").valueOf();
+
+        const start = startOfToday - this.last9DaysMs;
+
+        // 1000*60*60*24*9
+
+        const result = [];
+
+        for(let i=0; i<9; i++){
+            const dayStart = startOfToday-1000*60*60*24*i
+            const dayEnd = Math.min(startOfToday-1000*60*60*24*i+1000*60*60*24, moment().valueOf());
+
+            
+            let sot = moment(startOfToday).format("YYYY-MM-DD HH:mm")
+            let s = moment(dayStart).format("YYYY-MM-DD HH:mm")
+            let e = moment(dayEnd).format("YYYY-MM-DD HH:mm")
+
+            // from newest to oldest
+            const dayEvents = allEvents.filter((item)=>{return item.ct>=dayStart && item.ct<dayEnd});
+            const dayResult = await this.processSingleDayEvents(dayEnd, dayEvents)  
+            result.push(dayResult);
+        }
+        
+        
+        // // console.log(allEvents);
+        // // get all events from today
+        // const last9DaysEvents = allEvents.filter((item)=>{return item.ct>=start});
+        // // console.log(todayEvents);
+        
+        // const result = await this.processSingleDayEvents(last9DaysEvents)                                 
+        // // console.log(JSON.stringify(result));
         return result;
     }
 }

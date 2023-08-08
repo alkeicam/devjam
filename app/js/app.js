@@ -24,13 +24,14 @@ class AppDemo {
             // last error message
             errorMessage: undefined,
             messages: [],
+            last9DaysMessages: [],
             // id
             // active
             // label
             tabs:[{
                 id: 0,
                 active: true,
-                label: "Today",
+                label: "Effort Dashboard",
                 that: this
             }],
             activeTab: 0,
@@ -134,25 +135,77 @@ class AppDemo {
 
     async drawPlot(){
         if(this.container){
-            var trace1 = {
-                x: ['giraffes', 'orangutans', 'monkeys'],
-                y: [20, 14, 23],
-                name: 'SF Zoo',
+            if(!this.model.last9DaysMessages)
+                return;
+
+            if(this.model.last9DaysMessages.length == 0)
+                return;
+            
+                this.model.last9DaysMessages
+            var commits = {
+                x: this.model.last9DaysMessages.map((item)=>{return item.day.daysAgo}).reverse(),
+                y: this.model.last9DaysMessages.map((item)=>{
+                    if(!item.users[0])
+                        return 0;
+                    return item.users[0].commitCnt
+                }).reverse(),
+                name: 'Commits',
                 type: 'bar'
-              };
-              
-              var trace2 = {
-                x: ['giraffes', 'orangutans', 'monkeys'],
-                y: [12, 18, 29],
-                name: 'LA Zoo',
+            }   
+            var pushes = {
+                x: this.model.last9DaysMessages.map((item)=>{return item.day.daysAgo}).reverse(),
+                y: this.model.last9DaysMessages.map((item)=>{
+                    if(!item.users[0])
+                        return 0;
+                    return item.users[0].pushCnt
+                }).reverse(),
+                name: 'Pushes',
                 type: 'bar'
-              };
+            }   
+            var calories = {
+                x: this.model.last9DaysMessages.map((item)=>{return item.day.daysAgo}).reverse(),
+                y: this.model.last9DaysMessages.map((item)=>{
+                    if(!item.users[0])
+                        return 0;
+                    return item.users[0].score
+                }).reverse(),
+                name: 'Effort',
+                type: 'bar'
+            }             
+
+            var pace = {
+                x: this.model.last9DaysMessages.map((item)=>{return item.day.daysAgo}).reverse(),
+                y: this.model.last9DaysMessages.map((item)=>{
+                    if(!item.users[0])
+                        return 0;
+                    return item.users[0].paceScore
+                }).reverse(),
+                name: 'Pace',
+                type: 'bar'
+            }        
+
+            
+                
+            // var trace1 = {
+            //     x: ['giraffes', 'orangutans', 'monkeys'],
+            //     y: [20, 14, 23],
+            //     name: 'SF Zoo',
+            //     type: 'bar'
+            //   };
               
-              var data = [trace1, trace2];
+            //   var trace2 = {
+            //     x: ['giraffes', 'orangutans', 'monkeys'],
+            //     y: [12, 18, 29],
+            //     name: 'LA Zoo',
+            //     type: 'bar'
+            //   };
+              
+            //   var data = [calories, pushes, commits];
+              var data = [pushes, commits];
               
               var layout = {barmode: 'stack'};
               
-              Plotly.newPlot(this.container, data, layout);
+              Plotly.newPlot(this.container, data, layout, {displayModeBar: false});
         }                  
     }
 
@@ -214,8 +267,11 @@ class AppDemo {
         let that = this;
         console.log(`Got message`, message);  
 
-        message.users.sort((a,b)=>{return b.score-a.score});
-        message.users.forEach((user)=>{
+        let todayMessage = message.find((item)=>{return item.day.today == true});
+        console.log(`todayMessage`, todayMessage); 
+
+        todayMessage.users.sort((a,b)=>{return b.score-a.score});
+        todayMessage.users.forEach((user)=>{
             user.projects.sort((a,b)=>{return b.score-a.score});
             user.work = moment.duration(user.duration).humanize();
             user.projects.forEach((project)=>{
@@ -233,7 +289,8 @@ class AppDemo {
         
         
         // a.model.messages.push(message.decoded);
-        this.model.messages = message;
+        this.model.messages = todayMessage;
+        this.model.last9DaysMessages = message;
         this.drawPlot();
     }
 
