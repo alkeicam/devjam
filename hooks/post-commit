@@ -1,6 +1,5 @@
 #!/bin/sh
 GIT_LOG=`git log --stat -1 HEAD | base64`
-git show
 GIT_DIFF=`git show | base64`
 REMOTE=`git config --get remote.origin.url`
 POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"commit\",\"remote\":\"$REMOTE\",\"diff\":\"$GIT_DIFF\"}"
