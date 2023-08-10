@@ -43,7 +43,7 @@ class AppDemo {
                 handleUnhide: this.handleUnhide.bind(this)
             },
             process:{
-                step: "ONBOARDING" // PREPARE // WORKOUT                
+                step: "PREPARE" // PREPARE // WORKOUT                
             },
             sync:{
                 code: 2,
