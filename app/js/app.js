@@ -323,7 +323,7 @@ class AppDemo {
 
         if(this.model.messages.users.length >= 1){
             this.model.process.step = "WORKOUT"
-        }        
+        }                
     }
 
     async handleHide(e, that){
