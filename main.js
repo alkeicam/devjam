@@ -29,7 +29,12 @@ const createWindow = () => {
   appMenu.updateMenu();
   mainWindow.on("show",()=>{
     mainWindow.webContents.send("listener_appShowed",{});
+    setTimeout(() => {
+      mainWindow.focus();
+    }, 200);
   })
+
+
   
   // make sure that we recheck recent stats when windows is showed
 
