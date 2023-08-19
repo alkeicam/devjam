@@ -109,12 +109,12 @@
         <section class="section" style="padding: 0.5rem 0.5rem;">
         <div class="notification is-danger is-hidden" rv-class-is-hidden="model.errorMessage | empty">
             <button class="delete" rv-on-click="handleCloseErrorMessage"></button>
-            {model.errorMessage}
+            {{model.errorMessage}}
         </div>
         <div class="tabs is-left is-hidden" rv-class-is-hidden="model.tabs | sizeLt 1">
             <ul>
             <li rv-on-click="item.that.handleSwitchEditor" rv-each-item="model.tabs" rv-class-is-active="item.active" >
-                <a>{item.label}
+                <a>{{item.label}}
                 <!-- <span style="margin-left: 0.25em;font-size: xx-small;" rv-class-is-hidden="editor.dirty"><i  class="fa fa-lock" aria-hidden="true"></i></span> -->
                 <!-- <span style="margin-left: 0.25em;font-size: xx-small;" rv-class-is-hidden="editor.dirty | eq false"><i class="fas fa-lock-open" aria-hidden="true"></i></span> -->
                 <!-- <span rv-class-is-hidden="editor.dirty | eq false">*</span> -->
@@ -195,19 +195,19 @@
                     <div class="level-item has-text-centered">
                         <div class="box">
                         <p class="heading">Effort</p>
-                        <p class="title">{user.score} cal</p>
+                        <p class="title">{{user.score}} cal</p>
                         </div>
                     </div>
                     <div class="level-item has-text-centered">
                         <div class="box">
                         <p class="heading">Pushes</p>
-                        <p class="title">{user.pushCnt}</p>
+                        <p class="title">{{user.pushCnt}}</p>
                         </div>
                     </div>
                     <div class="level-item has-text-centered">
                         <div class="box">
                         <p class="heading">Commits</p>
-                        <p class="title">{user.commitCnt}</p>
+                        <p class="title">{{user.commitCnt}}</p>
                         </div>
                     </div>
                     <!-- <div class="level-item has-text-centered">
@@ -232,7 +232,7 @@
                 <div class="card" style="margin-bottom: 1em;" rv-each-project="user.projects">
                     <header class="card-header">
                     <p class="card-header-title">
-                        {project.id}<span class="mx-6">{project.score} cal, {project.pushCnt} pushes, {project.commitCnt} commits</span>
+                        {{project.id}}<span class="mx-6">{{project.score}} cal, {{project.pushCnt}} pushes, {{project.commitCnt}} commits</span>
                     </p>
                     <button class="card-header-icon is-hidden" aria-label="more options" rv-class-is-hidden="project.hide" rv-on-click="model.handlers.handleHide">
                         <span class="icon " >
@@ -254,7 +254,7 @@
                                 <div class="level-left">
                                 <div class="level-item">
                                     <p class="subtitle is-6">
-                                    {task.id | whenEmpty 'General, use [TASK_ID] in commit message'}
+                                    {{task.id | whenEmpty 'General, use [TASK_ID] in commit message'}}
                                     <!-- <progress class="progress is-primary" value="15" max="100">15%</progress> -->
                                     </p>
                                     
@@ -272,37 +272,37 @@
                                     <div class="level-item has-text-centered">
                                         <div>
                                         <p class="heading is-6">Effort</p>
-                                        <p class="title is-6">{task.score} cal</p>
+                                        <p class="title is-6">{{task.score}} cal</p>
                                         </div>
                                     </div>
                                     <div class="level-item has-text-centered">
                                         <div>
                                         <p class="heading is-6">Pushes</p>
-                                        <p class="title is-6">{task.pushCnt}</p>
+                                        <p class="title is-6">{{task.pushCnt}}</p>
                                         </div>
                                     </div>
                                     <div class="level-item has-text-centered">
                                         <div>
                                         <p class="heading is-6">Commits</p>
-                                        <p class="title is-6">{task.commitCnt}</p>
+                                        <p class="title is-6">{{task.commitCnt}}</p>
                                         </div>
                                     </div>
                                     <div class="level-item has-text-centered">
                                         <div>
                                         <p class="heading is-6">Files</p>
-                                        <p class="title is-6">{task.files}</p>
+                                        <p class="title is-6">{{task.files}}</p>
                                         </div>
                                     </div>
                                     <div class="level-item has-text-centered">
                                         <div>
                                         <p class="heading is-6">Inserts</p>
-                                        <p class="title is-6">{task.inserts}</p>
+                                        <p class="title is-6">{{task.inserts}}</p>
                                         </div>
                                     </div>
                                     <div class="level-item has-text-centered">
                                         <div>
                                         <p class="heading is-6">Deletions</p>
-                                        <p class="title is-6">{task.deletions}</p>
+                                        <p class="title is-6">{{task.deletions}}</p>
                                         </div>
                                     </div>
                                 <!-- <p class="level-item" ><a class="button is-success is-static" rv-class-is-static="task.id | empty">Log Work</a></p> -->
@@ -370,54 +370,54 @@
                                 <h2>Step 1.</h2>
                                 <p>Make sure you are in your project root git directory:</p>
                                 <pre class="mx-6">
-                    ls -ltrah .git/hooks/                
+ls -ltrah .git/hooks/                
                                 </pre>
                                 <pre class="mx-6">
-                    -rwxr-xr-x   1 grulka  staff   896B Feb  6 22:59 commit-msg.sample
-                    -rwxr-xr-x   1 grulka  staff   4.8K Feb  6 22:59 pre-rebase.sample
-                    -rwxr-xr-x   1 grulka  staff   1.6K Feb  6 22:59 pre-commit.sample
-                    -rwxr-xr-x   1 grulka  staff   478B Feb  6 22:59 applypatch-msg.sample
-                    -rwxr-xr-x   1 grulka  staff   4.5K Feb  6 22:59 fsmonitor-watchman.sample
-                    -rwxr-xr-x   1 grulka  staff   544B Feb  6 22:59 pre-receive.sample
-                    -rwxr-xr-x   1 grulka  staff   1.5K Feb  6 22:59 prepare-commit-msg.sample
-                    -rwxr-xr-x   1 grulka  staff   189B Feb  6 22:59 post-update.sample
-                    -rwxr-xr-x   1 grulka  staff   416B Feb  6 22:59 pre-merge-commit.sample
-                    -rwxr-xr-x   1 grulka  staff   424B Feb  6 22:59 pre-applypatch.sample
-                    -rwxr-xr-x   1 grulka  staff   1.3K Feb  6 22:59 pre-push.sample
-                    -rwxr-xr-x   1 grulka  staff   3.6K Feb  6 22:59 update.sample
-                    -rwxr-xr-x   1 grulka  staff   2.7K Feb  6 22:59 push-to-checkout.sample
-                    -rwxr-xr-x   1 grulka  staff   228B Feb 12 16:22 commit-msg
+-rwxr-xr-x   1 grulka  staff   896B Feb  6 22:59 commit-msg.sample
+-rwxr-xr-x   1 grulka  staff   4.8K Feb  6 22:59 pre-rebase.sample
+-rwxr-xr-x   1 grulka  staff   1.6K Feb  6 22:59 pre-commit.sample
+-rwxr-xr-x   1 grulka  staff   478B Feb  6 22:59 applypatch-msg.sample
+-rwxr-xr-x   1 grulka  staff   4.5K Feb  6 22:59 fsmonitor-watchman.sample
+-rwxr-xr-x   1 grulka  staff   544B Feb  6 22:59 pre-receive.sample
+-rwxr-xr-x   1 grulka  staff   1.5K Feb  6 22:59 prepare-commit-msg.sample
+-rwxr-xr-x   1 grulka  staff   189B Feb  6 22:59 post-update.sample
+-rwxr-xr-x   1 grulka  staff   416B Feb  6 22:59 pre-merge-commit.sample
+-rwxr-xr-x   1 grulka  staff   424B Feb  6 22:59 pre-applypatch.sample
+-rwxr-xr-x   1 grulka  staff   1.3K Feb  6 22:59 pre-push.sample
+-rwxr-xr-x   1 grulka  staff   3.6K Feb  6 22:59 update.sample
+-rwxr-xr-x   1 grulka  staff   2.7K Feb  6 22:59 push-to-checkout.sample
+-rwxr-xr-x   1 grulka  staff   228B Feb 12 16:22 commit-msg
                                 </pre>
                                 <h2>Step 2.</h2>
                                 <p>Create post-commit file :</p>
                                 <pre class="mx-6">
-                    touch .git/hooks/post-commit
+touch .git/hooks/post-commit
                                 </pre>
                                 <p>And paste into it following script :</p>
                                 <pre class="mx-6">
-                #!/bin/sh
-                GIT_LOG=`git log --stat -1 HEAD | base64`
-                GIT_DIFF=`git show --unified | base64`
-                REMOTE=`git config --get remote.origin.url`
-                POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"commit\",\"remote\":\"$REMOTE\",\"diff\":\"$GIT_DIFF\"}"
-                curl -S -s -H "Content-Type: application/json" -d "$POST_BODY" http://localhost:5001/v1/hooks/commit
-                exit 0
+#!/bin/sh
+GIT_LOG=`git log --stat -1 HEAD | base64`
+GIT_DIFF=`git show --unified | base64`
+REMOTE=`git config --get remote.origin.url`
+POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"commit\",\"remote\":\"$REMOTE\",\"diff\":\"$GIT_DIFF\"}"
+curl -S -s -H "Content-Type: application/json" -d "$POST_BODY" http://localhost:5001/v1/hooks/commit
+exit 0
                                 </pre>
                                 <h3>Step 3.</h3>
                                 <p>Create pre-push file :</p>
                                 <pre class="mx-6">
-                    touch .git/hooks/pre-push
+touch .git/hooks/pre-push
                                 </pre>
                                 <p>And paste into it following script :</p>
                                 <pre class="mx-6">
-                #!/bin/sh
-                
-                GIT_LOG=`git log --stat -1 HEAD | base64`
-                REMOTE=`git config --get remote.origin.url`
-                POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"push\",\"remote\":\"$REMOTE\"}"
-                curl -S -s -H "Content-Type: application/json" -d "$POST_BODY" http://localhost:5001/v1/hooks/push
-                
-                exit 0
+#!/bin/sh
+
+GIT_LOG=`git log --stat -1 HEAD | base64`
+REMOTE=`git config --get remote.origin.url`
+POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"push\",\"remote\":\"$REMOTE\"}"
+curl -S -s -H "Content-Type: application/json" -d "$POST_BODY" http://localhost:5001/v1/hooks/push
+
+exit 0
                                 </pre>                   
                                 <h3>Step 4.</h3>
                                 <p>Make hooks executable :</p>
@@ -494,6 +494,8 @@ chmod +x .git/hooks/post-commit && chmod +x .git/hooks/pre-push
 
         const emitter2 = EventEmitter.getInstance();
         const mapCanvas2 = document.getElementById("map2");
+
+        rivets.templateDelimiters = ["{{", "}}"]
 
         AppDemo.getInstance(emitter, "userGraph").then((app)=>{
             
