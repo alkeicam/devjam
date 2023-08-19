@@ -262,7 +262,8 @@ class Manager {
      * @param {*} body 
      */
     async change(auth, params, body){        
-        const gitEvent = this._decode(body);        
+        const gitEvent = this._decode(body);  
+        console.log(gitEvent);      
         persistentStore.addEvent(gitEvent);
         const dailyStats = await this.stats.today();
         
