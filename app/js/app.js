@@ -84,11 +84,12 @@ class AppDemo {
     }
 
     async handleOnboarding(e, that){
-        let hide = e.target.dataset.hide || "false";
-        if(hide.toLowerCase() === "true")
-            that.model.onboarding.hide = true;
-        else
-            that.model.onboarding.hide = false;
+        // let hide = e.target.dataset.hide || "false";
+        // if(hide.toLowerCase() === "true")
+        //     that.model.onboarding.hide = true;
+        // else
+        //     that.model.onboarding.hide = false;
+        that.emitter.emit("showModal:onboarding",{})
     }
 
     static async getInstance(emitter, container){
