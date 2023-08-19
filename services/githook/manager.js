@@ -263,7 +263,7 @@ class Manager {
      */
     async change(auth, params, body){        
         const gitEvent = this._decode(body);  
-        console.log(gitEvent);      
+        console.log(JSON.stringify(gitEvent));      
         persistentStore.addEvent(gitEvent);
         const dailyStats = await this.stats.today();
         
