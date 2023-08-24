@@ -245,12 +245,16 @@ class Manager {
         result.s = this._score(result);
         this._calculateEntropyScope(result);
 
-        const myURL = new URL(result.remote);
-        const passInURL = myURL.password;
-        const userInURL = myURL.username;
+        if(result.remote){
+            // when there is no remote configured for repository remote is empty
+            const myURL = new URL(result.remote);
+            const passInURL = myURL.password;
+            const userInURL = myURL.username;
+            
+            if(passInURL) result.remote = result.remote.replace(passInURL,"");
+            if(userInURL) result.remote = result.remote.replace(userInURL,"");
+        }
         
-        if(passInURL) result.remote = result.remote.replace(passInURL,"");
-        if(userInURL) result.remote = result.remote.replace(userInURL,"");
 
         // console.log(`score is ${result.s}`);
         return result;        
