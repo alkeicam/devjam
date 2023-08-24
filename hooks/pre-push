@@ -1,5 +1,4 @@
 #!/bin/sh
-# echo "PRE-PUSH LOG"
 
 GIT_LOG=`git log --stat -1 HEAD | base64`
 REMOTE=`git config --get remote.origin.url`
