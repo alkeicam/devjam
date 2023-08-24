@@ -48,7 +48,7 @@
  * @property {string} remote - result of git config --get remote.origin.url (may be empty when only local repo)
  * @property {GitLogDecoded} decoded - decoded git log data
  * @property {GitEventEntropyScore} entropy - git event entropy
- * @property {number} e 
+ 
  * 
  */
 
@@ -229,6 +229,7 @@ class Manager {
         
 
         const result = JSON.parse(JSON.stringify(body));
+        result.id = `${Math.random().toString(36).substring(2, 8)}`;
         result.gitlog = message;
 
         if(body.diff){
