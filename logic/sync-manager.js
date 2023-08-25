@@ -53,18 +53,18 @@ class SyncManager {
                 if (error.response) {
                     // The request was made and the server responded with a status code
                     // that falls out of the range of 2xx
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
+                    // console.log(error.response.data);
+                    // console.log(error.response.status);
+                    // console.log(error.response.headers);
                     this.lastFailedUrl = urlCandidate;
-                    throw new Error(`Failed to sync due to http status ${error.response.status}`)
+                    throw new Error(`Failed to sync ${urlCandidate} due to http status ${error.response.status}`)
                   } else if (error.request) {
                     // The request was made but no response was received
                     // `error.request` is an instance of XMLHttpRequest in the browser 
                     // and an instance of http.ClientRequest in node.js
-                    console.log(error.request);
+                    // console.log(error.request);
                     this.lastFailedUrl = urlCandidate;
-                    throw new Error(`Failed to sync due to connection ${error.request}`)                
+                    throw new Error(`Failed to sync ${urlCandidate} - unable to connect`)                
                   } else {
                     // Something happened in setting up the request that triggered an Error
                     this.lastFailedUrl = urlCandidate;
@@ -78,7 +78,7 @@ class SyncManager {
         }
         catch(e){
             setTimeout(that._sync.bind(that),that.intervalMs);
-            throw e;
+            console.error(e);
         }
         
         setTimeout(this._sync.bind(this),this.intervalMs);
