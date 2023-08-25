@@ -229,7 +229,7 @@ class Manager {
         
 
         const result = JSON.parse(JSON.stringify(body));
-        console.log(result);
+        // console.log(result);
         result.id = `${Math.random().toString(36).substring(2, 8)}`;
         result.gitlog = message;
 
@@ -274,13 +274,14 @@ class Manager {
      */
     async change(auth, params, body){        
         const gitEvent = this._decode(body);  
-        console.log(JSON.stringify(gitEvent));      
+        // console.log(JSON.stringify(gitEvent));      
         persistentStore.addEvent(gitEvent);
         const dailyStats = await this.stats.today();
         
         // here we notify the interface, that new change has arrived and
         // it needs to update the stats
-        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', dailyStats);        
+        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', dailyStats);  
+        console.log(`Processed ${gitEvent.remote} with entropy: ${gitEvent.entropy.e}`)      
     }
 
 
