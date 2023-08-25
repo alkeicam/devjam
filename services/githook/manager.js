@@ -113,7 +113,7 @@ class Manager {
      */
     _paseGitLog(message){
         const lines = message.split(/\r?\n/);
-        console.log(lines);
+        // console.log(lines);
         const endOfCommitMessage = lines.indexOf("",4);
 
         const userMessage = lines.slice(4,endOfCommitMessage).join("");
@@ -229,6 +229,7 @@ class Manager {
         
 
         const result = JSON.parse(JSON.stringify(body));
+        console.log(result);
         result.id = `${Math.random().toString(36).substring(2, 8)}`;
         result.gitlog = message;
 
@@ -245,8 +246,8 @@ class Manager {
         result.s = this._score(result);
         this._calculateEntropyScope(result);
 
-        if(result.remote){
-            // when there is no remote configured for repository remote is empty
+        try{
+            
             const myURL = new URL(result.remote);
             const passInURL = myURL.password;
             const userInURL = myURL.username;
@@ -254,7 +255,12 @@ class Manager {
             if(passInURL) result.remote = result.remote.replace(passInURL,"");
             if(userInURL) result.remote = result.remote.replace(userInURL,"");
         }
-        
+        catch(e){
+            if(!result.remote){
+                throw new Error("Remote parameter missing");
+            }
+            // for local git repository which fails new URL do nothing            
+        }
 
         // console.log(`score is ${result.s}`);
         return result;        

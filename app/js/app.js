@@ -70,9 +70,9 @@ class AppDemo {
     }
 
     _ellipsis(text){
-        if(text.length<=40)
+        if(text.length<=50)
             return text;
-        return text.substring(0,18)+"..."+text.substr(text.length-18, text.length)
+        return text.substring(0,18)+"..."+text.substr(text.length-28, text.length)
     }
 
     async handleSetup(e, that){
