@@ -8,9 +8,8 @@
  * @property {string} oper - one of "commit" and "push"
  * @property {string} remote - result of git config --get remote.origin.url (may be empty when only local repo)
  * @property {GitLogDecoded} decoded - decoded git log data
- * @property {GitEventEntropyScore} entropy - git event entropy
- * @property {number} e 
- * 
+ * @property {GitEventEntropyScore} e - git event entropy
+ * @property {number} lst timestamp of the sync
  */
 
 const Store = require('electron-store');
@@ -50,26 +49,42 @@ class PersistentStore{
     }
 
     /**
-     * 
+     * Returns items that are not synced, also makes sure that protected data is cleaned before syncing
      * @returns {GitEvent[]}
      */
     eventsForSync(){                
         const items = this.store.get("last31");
+        const itemsCopy = JSON.parse(JSON.stringify(items));
+
         //GitEvent
-        return items.filter((item)=>{
+        return itemsCopy.filter((item)=>{
             // get events that do not have sync time set
             return !item.lst 
+        }).map((item)=>{
+            // clear diff details
+            delete item.diff
+            // clear gitlog
+            delete item.gitlog
+
+            // remove also technical fields
+            delete item.ttl
+            delete item.lst
+
+            return item;
         })
     }
 
     _getCommonObjectsByProperty(array1, array2, property) {
         return array1.filter(item1 => array2.some(item2 => item2[property] === item1[property]));
     }
-
+    /**
+     * Marks provided items as synced
+     * @param {*} events items to be marked as sync
+     */
     eventsMarkSync(events){
         const syncTimeMs = Date.now();
         const items = this.store.get("last31");
-        var result = this._getCommonObjectsByProperty(items, events, "ct");
+        var result = this._getCommonObjectsByProperty(items, events, "id");
         result.forEach((item)=>{
             item.lst = syncTimeMs;
         })

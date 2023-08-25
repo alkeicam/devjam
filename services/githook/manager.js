@@ -48,7 +48,7 @@
  * @property {string} remote - result of git config --get remote.origin.url (may be empty when only local repo)
  * @property {GitLogDecoded} decoded - decoded git log data
  * @property {GitEventEntropyScore} e - git event entropy
- 
+ * @property {number} lst timestamp of the sync (may be undefined)
  * 
  */
 

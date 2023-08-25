@@ -1,172 +1,140 @@
 openapi: 3.0.0
 info:
-  title: DevJam API
+  title: DevAppMs
   version: 1.0.0
 servers:
-  - url: http://127.0.0.1:5003
+  - url: https://devjam-lab.azurewebsites.net
+  - url: http://localhost:7071
+paths:
+  /receive/{tenantId}:
+    post:
+      parameters:
+        - in: path
+          name: tenantId   # Note the name is  the same as in the path
+          required: true
+          schema:
+            type: string
+          description: Tenant id
+      tags:
+        - Git events
+      summary: Register git events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                version: 
+                  type: string
+                events: 
+                  type: array
+                  items:
+                    type: object
+                    $ref: "#/components/schemas/GitEvent"              
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Thu, 24 Aug 2023 20:47:20 GMT
+            Server:
+              schema:
+                type: string
+                example: Kestrel
+            Transfer-Encoding:
+              schema:
+                type: string
+                example: chunked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                  code: 
+                    type: number
+                  tenantId:
+                    type: string
+                  count:
+                    type: number
+              example:
+                status: OK
+                code: 0
+                tenantId: my tenant3
+                count: 2
 components:
   schemas:
     GitEvent:
       type: object
       properties:
-        gitlog: 
-          type: string
-          example: |
-            commit de83552ba36aa4234a4f2d18e389d5499b968682 \
-            Author: Maciej Grula <maciej.grula@execon.pl> \
-            Date:   Sat Aug 19 08:28:38 2023 +0200 \
-            more testing \
-            services/githook/manager.js | 2 +- \
-            1 file changed 1 insertion(+) 1 deletion(-)"
-        oper: 
-          type: string
-          example: commit
-        remote: 
-          type: string
-          example: https://@github.com/alkeicam/devjam.git
-        diff: 
-          type: string
-          example: |
-            commit de83552ba36aa4234a4f2d18e389d5499b968682 \
-            Author: Maciej Grula <maciej.grula@execon.pl> \
-            Date:   Sat Aug 19 08:28:38 2023 +0200 \
-            more testing \
-            diff --git a/services/githook/manager.js b/services/githook/manager.js \
-            index 9e04fe3..8534e5b 100644 \
-            --- a/services/githook/manager.js \
-            +++ b/services/githook/manager.js \
-            @@ -2637 +2637 @@ class Manager \
-             */ \
-              async change(auth params body)        \
-              const gitEvent = this._decode(body);  \
-            -        console.log(gitEvent);      \
-            +        console.log(JSON.stringify(gitEvent));      \
-              persistentStore.addEvent(gitEvent); \
-              const dailyStats = await this.stats.today();\
-        decoded: 
-          type: object
-          properties: 
-            commit: 
-              type: string
-              example: commit de83552ba36aa4234a4f2d18e389d5499b968682
-            author: 
-              type: object
-              properties: 
-                name: 
-                  type: string
-                  example: Maciej Grula 
-                email: 
-                  type: string
-                  example: maciej.grula@execon.pl
-            date: 
-              type: string
-              example: "Date:   Sat Aug 19 08:28:38 2023 +0200"
-            message: 
-              type: string
-              example:     more testing
-            changes: 
-              type: array              
-            changeSummary: 
-              type: object
-              properties: 
-                raw: 
-                  type: string
-                  example:  1 file changed 1 insertion(+) 1 deletion(-)
-                files: 
-                  type: integer
-                  format: int32
-                  example: 1
-                inserts: 
-                  type: integer
-                  format: int32
-                  example: 1
-                deletions: 
-                  type: integer
-                  format: int32
-                  example: 1
-        ct: 
-          type: integer
-          format: int64
-          example: 1692426518583
-        s: 
-          type: integer
-          format: int32
-          example: 2
-        e: 
-          type: object
-          properties: 
-            ec: 
-              type: number
-              example: 4.025
-            em: 
-              type: number
-              example: 3.024
-            et: 
-              type: integer
-              format: int32
-              example: 0
-            er: 
-              type: number
-              example: 5.11
-            ed: 
-              type: number
-              example: 4.982
-            e: 
-              type: number
-              example: 17.141000000000002
-  # securitySchemes:
-  #   bearerAuth:
-  #     type: http
-  #     scheme: bearer
-tags:
-  - name: Sync
-paths:
-  /sync/v1/ping:
-    post:
-      tags:
-        - Sync
-      summary: Sync with devjam 
-      requestBody:
-        description: Optional description in *Markdown*
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GitEvent'     
-      responses:
-        '200':
-          description: OK
-          headers:            
-            Content-Type:
-              schema:
+          gitlog: 
+            type: string
+          oper: 
+            type: string
+          remote: 
+            type: string
+          diff: 
+            type: string
+          id: 
+            type: string
+          decoded: 
+            type: object
+            properties: 
+              commit: 
                 type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
+              author: 
+                type: object
+                properties: 
+                  name: 
+                    type: string
+                  email: 
+                    type: string
+              date: 
+                type: string
+              message: 
+                type: string
+              changes: 
+                type: array
+              changeSummary: 
+                type: object
+                properties: 
+                  raw: 
+                    type: string
+                  files: 
+                    type: integer
+                    format: int32
+                  inserts: 
+                    type: integer
+                    format: int32
+                  deletions: 
+                    type: integer
+                    format: int32
+          ct: 
+            type: integer
+            format: int64
+          s: 
+            type: integer
+            format: int32
+          e: 
+            type: object
+            properties: 
+              ec: 
+                type: number
+              em: 
+                type: number
+              et: 
                 type: integer
-                example: '5821'
-            ETag:
-              schema:
-                type: string
-                example: W/"16bd-EFWotwGF0t/GqmxVcmFRQTdI8Dc"
-            Date:
-              schema:
-                type: string
-                example: Sat, 01 Oct 2022 11:30:12 GMT
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
-          # content:
-          #   application/json:
-          #     schema:
-          #       type: object
-          #     examples:
-          #       example-1:
-          #         summary: Organizations
-          #         value:
-          #           count: 24        
+                format: int32
+              er: 
+                type: number
+              ed: 
+                type: number
+              e: 
+                type: number    

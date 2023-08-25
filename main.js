@@ -7,7 +7,7 @@ const path = require('path')
 const fetch = require("node-fetch");
 
 const AppMenu = require("./logic/menu")
-
+const SyncManager = require("./logic/sync-manager")
 
 const createWindow = () => {
   // Create the browser window.
@@ -31,7 +31,7 @@ const createWindow = () => {
     mainWindow.webContents.send("listener_appShowed",{});
     setTimeout(() => {
       mainWindow.focus();
-    }, 200);
+    }, 200);    
   })
 
 
@@ -69,6 +69,10 @@ app.whenReady().then(() => {
 
   // websockets
   require("./services/ws")
+
+  // start syncing with hub
+  SyncManager.getInstance(1000*10,[" http://localhost:7071/receive/__demo2"]);  
+
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
