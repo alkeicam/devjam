@@ -47,7 +47,7 @@
  * @property {string} oper - one of "commit" and "push"
  * @property {string} remote - result of git config --get remote.origin.url (may be empty when only local repo)
  * @property {GitLogDecoded} decoded - decoded git log data
- * @property {GitEventEntropyScore} entropy - git event entropy
+ * @property {GitEventEntropyScore} e - git event entropy
  
  * 
  */
@@ -281,7 +281,7 @@ class Manager {
         // here we notify the interface, that new change has arrived and
         // it needs to update the stats
         BrowserWindow.fromId(1).webContents.send('listener_commitReceived', dailyStats);  
-        console.log(`Processed ${gitEvent.remote} with entropy: ${gitEvent.entropy.e}`)    
+        console.log(`Processed ${gitEvent.remote} with entropy: ${gitEvent.e.e}`)    
 
     }
 
