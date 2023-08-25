@@ -231,6 +231,7 @@ class Manager {
         const result = JSON.parse(JSON.stringify(body));
         // console.log(result);
         result.id = `${Math.random().toString(36).substring(2, 18)}`;
+        console.log(result.id);
         result.gitlog = message;
 
         if(body.diff){
