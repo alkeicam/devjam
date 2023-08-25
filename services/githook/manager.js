@@ -281,7 +281,8 @@ class Manager {
         // here we notify the interface, that new change has arrived and
         // it needs to update the stats
         BrowserWindow.fromId(1).webContents.send('listener_commitReceived', dailyStats);  
-        console.log(`Processed ${gitEvent.remote} with entropy: ${gitEvent.entropy.e}`)      
+        console.log(`Processed ${gitEvent.remote} with entropy: ${gitEvent.entropy.e}`)    
+          
     }
 
 
