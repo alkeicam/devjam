@@ -35,7 +35,7 @@ class SyncManager {
                 return Math.min(accumulator, current.ct);
             },Number.MAX_SAFE_INTEGER);
     
-            console.log(`${Date.now()} Syncing with mixCt=${minCt} and maxCt=${maxCt} ... `);
+            // console.log(`${Date.now()} Syncing #${eventsForSync.length} events with mixCt=${minCt} and maxCt=${maxCt} ... `);
     
             // get first url that did not fail
             let urlCandidate = this.syncUrls.find((item)=>{return item != this.lastFailedUrl});
@@ -72,7 +72,7 @@ class SyncManager {
                   }
             });
     
-            console.log(`${Date.now()} Sync with mixCt=${minCt} and maxCt=${maxCt} completed.`);
+            console.log(`${Date.now()} Syncing #${eventsForSync.length} events with mixCt=${minCt} and maxCt=${maxCt} completed.`);
     
             persistentStore.eventsMarkSync(eventsForSync);
         }
