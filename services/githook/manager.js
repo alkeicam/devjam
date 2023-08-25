@@ -187,11 +187,11 @@ class Manager {
         */
 
         const entropy = {
-            ec: this._entropy(gitEvent.decoded.commit||""),
-            em: this._entropy(gitEvent.decoded.message||""),
-            et: this._entropy(gitEvent.decoded.ticket||""),
-            er: this._entropy(gitEvent.gitlog||""),
-            ed: this._entropy(gitEvent.diff||"")            
+            ec: this._entropy(gitEvent.decoded.commit||0),
+            em: this._entropy(gitEvent.decoded.message||0),
+            et: this._entropy(gitEvent.decoded.ticket||0),
+            er: this._entropy(gitEvent.gitlog||0),
+            ed: this._entropy(gitEvent.diff||0)            
         }
 
         entropy.e = entropy.ec+entropy.em+entropy.et+entropy.er+entropy.ed;
@@ -282,7 +282,7 @@ class Manager {
         // it needs to update the stats
         BrowserWindow.fromId(1).webContents.send('listener_commitReceived', dailyStats);  
         console.log(`Processed ${gitEvent.remote} with entropy: ${gitEvent.entropy.e}`)    
-          
+
     }
 
 
