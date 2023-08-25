@@ -262,7 +262,7 @@ class Manager {
             // for local git repository which fails new URL do nothing            
         }
 
-        // console.log(`score is ${result.s}`);
+        
         return result;        
     }
 
