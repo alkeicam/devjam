@@ -21,6 +21,7 @@ class SyncManager {
         
             if(eventsForSync.length==0){
                 setTimeout(this._sync.bind(this),this.intervalMs);
+                console.log(`${Date.now()} Sync empty. No events.`);
                 return;
             }
 
