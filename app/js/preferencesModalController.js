@@ -99,7 +99,7 @@ class PreferencesModalController {
         //         valid = that.model.form[fieldName].errorMsg?true:false;
         //         break;
         // }
-        console.log(fieldName, valid);
+        // console.log(fieldName, valid);
         return valid;
     }
 

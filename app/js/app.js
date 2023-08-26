@@ -90,7 +90,7 @@ class AppDemo {
     }
 
     async onPreferencesChange(email, syncUrl, accountId){
-        await electronAPI.API.setupEmailAndSyncUrl(email,[syncUrl], accountId);
+        await electronAPI.API.setupEmailAndSyncUrls(email,[syncUrl], accountId);
     }
 
     static async getInstance(emitter, container){
