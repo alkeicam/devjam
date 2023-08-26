@@ -8,7 +8,7 @@ class SyncManager {
         this.syncUrls = syncUrls || ["https://devjam-lab.azurewebsites.net/receive/__demo"]
         this.lastFailedUrl = "" // the sync url that failed recently
         // this.maxSyncThresholdMs = 1000*60*12
-        this.maxSyncThresholdMs = 1000*30
+        this.maxSyncThresholdMs = 1000*60*10
     }
     static getInstance(intervalMs, syncUrls){
         const a = new SyncManager(intervalMs, syncUrls);

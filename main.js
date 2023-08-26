@@ -71,7 +71,7 @@ app.whenReady().then(() => {
   require("./services/ws")
 
   // start syncing with hub
-  SyncManager.getInstance(1000*10,[" http://localhost:7071/receive/__demo2"]);  
+  SyncManager.getInstance(1000*60*3,[" http://localhost:7071/receive/__demo2"]);  
 
 })
 
