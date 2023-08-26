@@ -89,8 +89,8 @@
                 <div class="navbar-item">
                     <a class="button is-info" rv-on-click="handleOnboarding">Add new project</a>                              
                 </div>
-                <div class="navbar-item is-hidden" rv-class-is-hidden="model.sync | neq 0"><span class="icon has-text-success"><i class="fa fa-link" aria-hidden="true"></i></span></div>
-                <div class="navbar-item is-hidden" rv-class-is-hidden="model.sync | eq 0"><span class="icon has-text-danger"><i class="fas fa-unlink"></i></span><small>(offline)</small></div>
+                <div class="navbar-item is-hidden" rv-class-is-hidden="model.sync.code | neq 0"><span class="icon has-text-success"><i class="fa fa-link" aria-hidden="true"></i></span><small>(in sync)</small></div>
+                <div class="navbar-item is-hidden" rv-class-is-hidden="model.sync.code | eq 0"><span class="icon has-text-danger"><i class="fas fa-unlink"></i></span><small>(offline)</small></div>
                 
                 
             </div>
@@ -347,6 +347,96 @@
         </section>
     </div>
     <div id="onboardingModal">
+        <div class="modal" rv-class-is-active="model.display">
+        <!-- <div class="modal" class="is-active"></div> -->
+            <div class="modal-background"></div>
+            <div class="modal-card" style="width:95%">
+                <header class="modal-card-head">
+                    <p class="modal-card-title" rv-class-is-hidden="model.busy">Project Oboarding Help</p>                                        
+                    <button class="delete" aria-label="close" rv-on-click="_handleClose"></button>
+                </header>
+                <section class="modal-card-body">                     
+                        <article>
+                            <div class="content mt-6  is-hidden" rv-class-is-hidden="model | isMac">
+                                <!-- Win Onboarding-->
+                                Windows Onboarding
+                            </div>
+                            <div class="content mt-6 is-hidden" rv-class-is-hidden="model | isWin">
+                                <!-- Mac Onboarding-->
+                                <h1>New Project on Mac<a class="is-size-7" rv-on-click="_handleClose" data-hide="true">Hide</a></h1>
+                                <p>For each new project that you work on initial git configuration is necessary. Please follow the procedure described below
+                                    to correctly configure your project's git working environment.
+                                </p>
+                                <h2>Step 1.</h2>
+                                <p>Make sure you are in your project root git directory:</p>
+                                <pre class="mx-6">
+ls -ltrah .git/hooks/                
+                                </pre>
+                                <pre class="mx-6">
+-rwxr-xr-x   1 grulka  staff   896B Feb  6 22:59 commit-msg.sample
+-rwxr-xr-x   1 grulka  staff   4.8K Feb  6 22:59 pre-rebase.sample
+-rwxr-xr-x   1 grulka  staff   1.6K Feb  6 22:59 pre-commit.sample
+-rwxr-xr-x   1 grulka  staff   478B Feb  6 22:59 applypatch-msg.sample
+-rwxr-xr-x   1 grulka  staff   4.5K Feb  6 22:59 fsmonitor-watchman.sample
+-rwxr-xr-x   1 grulka  staff   544B Feb  6 22:59 pre-receive.sample
+-rwxr-xr-x   1 grulka  staff   1.5K Feb  6 22:59 prepare-commit-msg.sample
+-rwxr-xr-x   1 grulka  staff   189B Feb  6 22:59 post-update.sample
+-rwxr-xr-x   1 grulka  staff   416B Feb  6 22:59 pre-merge-commit.sample
+-rwxr-xr-x   1 grulka  staff   424B Feb  6 22:59 pre-applypatch.sample
+-rwxr-xr-x   1 grulka  staff   1.3K Feb  6 22:59 pre-push.sample
+-rwxr-xr-x   1 grulka  staff   3.6K Feb  6 22:59 update.sample
+-rwxr-xr-x   1 grulka  staff   2.7K Feb  6 22:59 push-to-checkout.sample
+-rwxr-xr-x   1 grulka  staff   228B Feb 12 16:22 commit-msg
+                                </pre>
+                                <h2>Step 2.</h2>
+                                <p>Create post-commit file :</p>
+                                <pre class="mx-6">
+touch .git/hooks/post-commit
+                                </pre>
+                                <p>And paste into it following script :</p>
+                                <pre class="mx-6">
+#!/bin/sh
+GIT_LOG=`git log --stat -1 HEAD | base64`
+GIT_DIFF=`git show --unified | base64`
+REMOTE=`git config --get remote.origin.url`
+POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"commit\",\"remote\":\"$REMOTE\",\"diff\":\"$GIT_DIFF\"}"
+curl -S -s -H "Content-Type: application/json" -d "$POST_BODY" http://localhost:5001/v1/hooks/commit
+exit 0
+                                </pre>
+                                <h3>Step 3.</h3>
+                                <p>Create pre-push file :</p>
+                                <pre class="mx-6">
+touch .git/hooks/pre-push
+                                </pre>
+                                <p>And paste into it following script :</p>
+                                <pre class="mx-6">
+#!/bin/sh
+
+GIT_LOG=`git log --stat -1 HEAD | base64`
+REMOTE=`git config --get remote.origin.url`
+POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"push\",\"remote\":\"$REMOTE\"}"
+curl -S -s -H "Content-Type: application/json" -d "$POST_BODY" http://localhost:5001/v1/hooks/push
+
+exit 0
+                                </pre>                   
+                                <h3>Step 4.</h3>
+                                <p>Make hooks executable :</p>
+                                <pre class="mx-6">
+chmod +x .git/hooks/post-commit && chmod +x .git/hooks/pre-push
+                                </pre>
+                                   
+                                <p><a class="is-size-6" rv-on-click="_handleClose" data-hide="true">Hide onboarding</a></p>         
+                            </div>
+                        </article>                                          
+                </section>
+                <footer class="modal-card-foot" rv-class-is-hidden="model.busy">                    
+                    <button class="button" rv-on-click="_handleClose">Close</button>
+                </footer>
+            </div>
+            <!-- <button class="modal-close is-large" aria-label="close" rv-on-click="_handleConstructionCancel"></button> -->
+        </div>
+    </div>
+    <div id="preferencesModal">
         <div class="modal" rv-class-is-active="model.display">
         <!-- <div class="modal" class="is-active"></div> -->
             <div class="modal-background"></div>

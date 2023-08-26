@@ -1,11 +1,14 @@
 const axios = require('axios');
 const persistentStore = require("./store")
+const { BrowserWindow } = require('electron')
 
 class SyncManager {
     constructor(intervalMs, syncUrls){
         this.intervalMs = intervalMs || 120000;
         this.syncUrls = syncUrls || ["https://devjam-lab.azurewebsites.net/receive/__demo"]
         this.lastFailedUrl = "" // the sync url that failed recently
+        // this.maxSyncThresholdMs = 1000*60*12
+        this.maxSyncThresholdMs = 1000*30
     }
     static getInstance(intervalMs, syncUrls){
         const a = new SyncManager(intervalMs, syncUrls);
@@ -17,14 +20,15 @@ class SyncManager {
     async _sync(){
         let that = this;
         try{
-            const eventsForSync = persistentStore.eventsForSync();
+            const eventsForSync = persistentStore.eventsForSync();            
         
             if(eventsForSync.length==0){
                 setTimeout(this._sync.bind(this),this.intervalMs);
-                console.log(`${Date.now()} Sync empty. No events.`);
+                BrowserWindow.fromId(1).webContents.send('listener_eventsSync', {sync: true});  
+                console.log(`${Date.now()} Sync up to date. No new events.`);
                 return;
             }
-
+            
 
             // max creation timestamp in the events array
             const maxCt = eventsForSync.reduce((accumulator, current)=>{
@@ -34,6 +38,9 @@ class SyncManager {
             const minCt = eventsForSync.reduce((accumulator, current)=>{
                 return Math.min(accumulator, current.ct);
             },Number.MAX_SAFE_INTEGER);
+
+            if(Date.now()-minCt>=this.maxSyncThresholdMs)
+                BrowserWindow.fromId(1).webContents.send('listener_eventsSync', {sync: false});  
     
             // console.log(`${Date.now()} Syncing #${eventsForSync.length} events with mixCt=${minCt} and maxCt=${maxCt} ... `);
     
@@ -75,9 +82,13 @@ class SyncManager {
             console.log(`${Date.now()} Syncing #${eventsForSync.length} events with mixCt=${minCt} and maxCt=${maxCt} completed.`);
     
             persistentStore.eventsMarkSync(eventsForSync);
+            BrowserWindow.fromId(1).webContents.send('listener_eventsSync', {
+                sync: true,
+                message: `Up to date`
+            });  
         }
-        catch(e){
-            setTimeout(that._sync.bind(that),that.intervalMs);
+        catch(e){     
+            BrowserWindow.fromId(1).webContents.send('listener_eventsSync', {sync: false});         
             console.error(e);
         }
         
