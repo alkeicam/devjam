@@ -50,6 +50,7 @@ async function handleApiSetupPreferences(email, syncUrls, accountId, syncInterva
 }
 ipcMain.handle('api_setup_preferences', (electronEE, ...args)=>{return handleApiSetupPreferences(...args)});
 
+ipcMain.handle('api_preferences_reset', ()=>{persistentStore.resetPreferences()});
 
 
 // receive responses from application listeners

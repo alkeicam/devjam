@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     setupEmail: (email) => ipcRenderer.invoke('api_setup_email', email),
     setupPreferences: (email, syncUrls, accountId, syncIntervalMs) => ipcRenderer.invoke('api_setup_preferences', email, syncUrls, accountId, syncIntervalMs),    
     preferences: () => ipcRenderer.invoke('api_preferences'),    
+    preferencesReset: () => ipcRenderer.invoke('api_preferences_reset'),    
   },
   // here we send data to callback functions in renderer/view js 
   listenerAPI: {    

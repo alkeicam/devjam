@@ -43,7 +43,7 @@ class AppDemo {
                 handleUnhide: this.handleUnhide.bind(this)
             },
             process:{
-                step: "PREPARE" // PREPARE // WORKOUT                
+                step: "ONBOARDING" // PREPARE // WORKOUT                
             },
             sync:{
                 code: 0,
@@ -94,13 +94,19 @@ class AppDemo {
         await electronAPI.API.setupPreferences(email,[syncUrl], accountId, syncIntervalMs);
     }
 
+    async onPreferencesReset(){
+        // reset preferences
+        await electronAPI.API.preferencesReset();
+    }
+
     static async getInstance(emitter, container){
         const a = new AppDemo(emitter, container)
 
         a.emitter.on("PreferencesModalController:preferencesChange", a.onPreferencesChange.bind(a));
+        a.emitter.on("External:preferencesReset", a.onPreferencesReset.bind(a));
 
         electronAPI.listenerAPI.onEventsSync(async (_event, message)=>{
-            console.log("got sync event", message);
+            // console.log("got sync event", message);
             if(message&&message.sync){
                 a.model.sync.code = 0
                 a.model.sync.message = message.message
@@ -116,14 +122,30 @@ class AppDemo {
         })
 
         electronAPI.listenerAPI.onAppShowed(async (_event, message)=>{
-            const effortData = await electronAPI.API.effort();        
-            a.showData2(effortData)                   
+            const effortData = await electronAPI.API.effort();  
+            const onboarding = await a.isOnboarding();
+            if(!onboarding)
+                a.showData2(effortData)                                           
         })
         // load initially
-        const effortData = await electronAPI.API.effort();        
-        a.showData2(effortData)                   
+        const onboarding = await a.isOnboarding();
+        if(!onboarding){
+            const effortData = await electronAPI.API.effort();        
+            a.showData2(effortData)                   
+        }
+        
                 
         return a;
+    }
+
+    async isOnboarding(){
+        const preferences = await electronAPI.API.preferences();
+        let result = false;
+        if(!preferences || !preferences.email){
+            this.model.process.step = "ONBOARDING";
+            result = true;
+        }
+        return result;
     }
 
     async drawPlot(){

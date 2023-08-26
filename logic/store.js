@@ -101,7 +101,7 @@ class PersistentStore{
     }
 
     addPreferences(email, syncUrls, accountId, syncIntervalMs){
-        let preferences = this.preferences()|{};
+        let preferences = this.preferences()||{};
         if(typeof preferences !== 'object')
             preferences = {}
         // let preferences = {};
@@ -112,9 +112,13 @@ class PersistentStore{
         this.store.set("preferences",preferences);
     }
     addPreferencesEmail(email){
-        const preferences = this.preferences()|{};
+        const preferences = this.preferences()||{};
         preferences.email = email;
         this.store.set("preferences",preferences);
+    }
+
+    resetPreferences(){
+        this.store.delete("preferences");
     }
 
     /**
