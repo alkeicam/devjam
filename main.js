@@ -3,11 +3,18 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
-// fetch is used by grm api
-const fetch = require("node-fetch");
+
+const CONSTANTS = require("./logic/constants");
+const persistentStore = require("./logic/store")
+
+const { ipcMain } = require('electron')
 
 const AppMenu = require("./logic/menu")
 const SyncManager = require("./logic/sync-manager")
+
+const context = {
+  syncManager: undefined
+}
 
 const createWindow = () => {
   // Create the browser window.
@@ -69,10 +76,20 @@ app.whenReady().then(() => {
 
   // websockets
   require("./services/ws")
+}).then(async ()=>{
+  const preferences = await persistentStore.preferences();
+
+  let syncUrls = preferences&&preferences.syncUrls&&preferences.syncUrls.length>0?preferences.syncUrls:CONSTANTS.SYNC.DEFAULT_URLS;
+  let accountId = preferences&&preferences.accountId?preferences.accountId:CONSTANTS.SYNC.DEFAULT_ACCOUNT_ID;
 
   // start syncing with hub
-  SyncManager.getInstance(1000*60*3,[" http://localhost:7071/receive/__demo2"]);  
+  context.syncManager = SyncManager.getInstance(CONSTANTS.SYNC.SYNC_INTERVAL_MS, syncUrls, accountId);  
 
+  // update sync manager parameters when preferences change
+  ipcMain.handle('preferences', (preferences)=>{
+    context.syncManager.setSyncUrls(preferences.syncUrls);
+    context.syncManager.setAccountId(preferences.accountId);
+  });
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common

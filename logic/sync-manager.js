@@ -1,31 +1,41 @@
 const axios = require('axios');
 const persistentStore = require("./store")
 const { BrowserWindow } = require('electron')
+var moment = require('moment');
 
 class SyncManager {
-    constructor(intervalMs, syncUrls){
+    constructor(intervalMs, syncUrls, accountId){
         this.intervalMs = intervalMs || 120000;
-        this.syncUrls = syncUrls || ["https://devjam-lab.azurewebsites.net/receive/__demo"]
+        this.syncUrls = syncUrls || ["https://devjam-lab.azurewebsites.net/receive"]
         this.lastFailedUrl = "" // the sync url that failed recently
+        this.accountId = accountId || "_guest";
         // this.maxSyncThresholdMs = 1000*60*12
         this.maxSyncThresholdMs = 1000*60*10
     }
-    static getInstance(intervalMs, syncUrls){
-        const a = new SyncManager(intervalMs, syncUrls);
+    static getInstance(intervalMs, syncUrls, accountId){
+        const a = new SyncManager(intervalMs, syncUrls, accountId);
         a._sync();
         console.log("Sync Manager started");
         return a;
-    }    
+    }  
+    
+    setSyncUrls(urls){
+        this.syncUrls = urls;
+    }
+
+    setAccountId(accountId){
+        this.accountId = accountId;
+    }
 
     async _sync(){
         let that = this;
         try{
             const eventsForSync = persistentStore.eventsForSync();            
-        
+            console.log(`SyncManager: ${this.syncUrls} ${this.accountId}`);
             if(eventsForSync.length==0){
                 setTimeout(this._sync.bind(this),this.intervalMs);
                 BrowserWindow.fromId(1).webContents.send('listener_eventsSync', {sync: true});  
-                console.log(`${Date.now()} Sync up to date. No new events.`);
+                console.log(`${moment().format("YYYY-MM-DD HH:mm:ss")} Sync up to date. No new events.`);
                 return;
             }
             
@@ -50,6 +60,10 @@ class SyncManager {
                 // none non failed found, so try with the first one
                 urlCandidate = this.syncUrls[0]
             }
+
+            urlCandidate += `/${this.accountId}`
+
+            console.log(`Going to sync with ${urlCandidate}`);
 
             const request = {
                 version: "1",
@@ -79,7 +93,7 @@ class SyncManager {
                   }
             });
     
-            console.log(`${Date.now()} Syncing #${eventsForSync.length} events with mixCt=${minCt} and maxCt=${maxCt} completed.`);
+            console.log(`${moment().format("YYYY-MM-DD HH:mm:ss")} Syncing #${eventsForSync.length} events with min=${moment(minCt).format("YYYY-MM-DD HH:mm:ss")} and max=${moment(maxCt).format("YYYY-MM-DD HH:mm:ss")} completed.`);
     
             persistentStore.eventsMarkSync(eventsForSync);
             BrowserWindow.fromId(1).webContents.send('listener_eventsSync', {

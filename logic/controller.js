@@ -9,6 +9,10 @@ const AppMenu = require("./menu")
 
 const stats = new Stats();
 
+
+
+
+
 function handleUIEvent (eventName, data){
     
     switch (eventName) {
@@ -23,22 +27,28 @@ function handleUIEvent (eventName, data){
     }
 }
 
-
-// 
-ipcMain.handle('seapi_saveFile', (electronEE, ...args)=>{return fileManager.saveFile(...args)});
-ipcMain.handle('seapi_loadFile', (electronEE, ...args)=>{return fileManager.loadFile(...args)});
-ipcMain.handle('seapi_editorUIEvent', (electronEE, ...args)=>{return handleUIEvent(...args)});
-
 async function handleApiEffort(){
     return stats.today();
 }
 ipcMain.handle('api_effort', (electronEE, ...args)=>{return handleApiEffort(...args)});
 
-async function handleApiSetup(preferences){
-    persistentStore.addPreferences(preferences)    
+async function handleApiPreferences(){
+    return persistentStore.preferences();
 }
-ipcMain.handle('api_setup', (electronEE, ...args)=>{return handleApiSetup(...args)});
+ipcMain.handle('api_preferences', (electronEE, ...args)=>{return handleApiPreferences(...args)});
 
+async function handleApiSetupEmail(email){
+    persistentStore.addPreferencesEmail(email)    
+}
+ipcMain.handle('api_setup_email', (electronEE, ...args)=>{return handleApiSetupEmail(...args)});
+
+async function handleApiSetupEmailSyncUrls(email, syncUrls, accountId){
+    persistentStore.addPreferences(email, syncUrls, accountId)
+    const preferences = persistentStore.preferences();
+    ipcMain.emit("preferencesChanged", preferences)
+
+}
+ipcMain.handle('api_setup_email_syncurl', (electronEE, ...args)=>{return handleApiSetupEmailSyncUrls(...args)});
 
 
 
@@ -56,4 +66,5 @@ ipcMain.on('listener_saveFile_response', async (_event, contents, fileMetadata) 
         fullPath: fileContents.fullPath
     })
 })
+
 

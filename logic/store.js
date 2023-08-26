@@ -100,9 +100,26 @@ class PersistentStore{
         this.store.set("last31", news);
     }
 
-    addPreferences(preferenceItem){
-        this.store.set("preferences",preferenceItem);
+    addPreferences(email, syncUrls, accountId){
+        let preferences = this.preferences()|{};
+        if(typeof preferences !== 'object')
+            preferences = {}
+        // let preferences = {};
+        preferences.email = email;
+        preferences.syncUrls = syncUrls; 
+        preferences.accountId = accountId;           
+        this.store.set("preferences",preferences);
     }
+    addPreferencesEmail(email){
+        const preferences = this.preferences()|{};
+        preferences.email = email;
+        this.store.set("preferences",preferences);
+    }
+
+    /**
+     * 
+     * @returns {*} preferences
+     */
     preferences(){
         return this.store.get("preferences");
     }

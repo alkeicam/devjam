@@ -46,7 +46,7 @@ class AppDemo {
                 step: "PREPARE" // PREPARE // WORKOUT                
             },
             sync:{
-                code: 2,
+                code: 0,
                 message: ""
             },
             forms:{
@@ -76,21 +76,27 @@ class AppDemo {
     }
 
     async handleSetup(e, that){
-        await electronAPI.API.setup({
-            name: that.model.forms.f1.f1.v,
-            status: "OK"
-        })
+        await electronAPI.API.setupEmail(that.model.forms.f1.f1.v)
         that.model.process.step = "PREPARE"
     }
 
-    async handleOnboarding(e, that){
-        
+    async handleOnboarding(e, that){        
         that.emitter.emit("showModal:onboarding",{})
+    }
+
+    async handlePreferences(e, that){    
+        const preferences = await electronAPI.API.preferences();
+        that.emitter.emit("showModal:preferences",preferences)
+    }
+
+    async onPreferencesChange(email, syncUrl, accountId){
+        await electronAPI.API.setupEmailAndSyncUrl(email,[syncUrl], accountId);
     }
 
     static async getInstance(emitter, container){
         const a = new AppDemo(emitter, container)
 
+        a.emitter.on("PreferencesModalController:preferencesChange", a.onPreferencesChange.bind(a));
 
         electronAPI.listenerAPI.onEventsSync(async (_event, message)=>{
             console.log("got sync event", message);
