@@ -90,6 +90,7 @@ class AppDemo {
     }
 
     async onPreferencesChange(email, syncUrl, accountId, syncIntervalMs){
+        // sync preferences to underlying app
         await electronAPI.API.setupPreferences(email,[syncUrl], accountId, syncIntervalMs);
     }
 
