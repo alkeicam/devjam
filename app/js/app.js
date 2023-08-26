@@ -89,8 +89,8 @@ class AppDemo {
         that.emitter.emit("showModal:preferences",preferences)
     }
 
-    async onPreferencesChange(email, syncUrl, accountId){
-        await electronAPI.API.setupEmailAndSyncUrls(email,[syncUrl], accountId);
+    async onPreferencesChange(email, syncUrl, accountId, syncIntervalMs){
+        await electronAPI.API.setupPreferences(email,[syncUrl], accountId, syncIntervalMs);
     }
 
     static async getInstance(emitter, container){

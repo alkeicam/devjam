@@ -27,11 +27,15 @@ class SyncManager {
         this.accountId = accountId;
     }
 
+    setIntervalMs(intervalMs){
+        this.intervalMs = intervalMs;
+    }
+
     async _sync(){
         let that = this;
         try{
             const eventsForSync = persistentStore.eventsForSync();            
-            console.log(`SyncManager: ${this.syncUrls} ${this.accountId}`);
+            console.log(`SyncManager: ${this.syncUrls} ${this.accountId} ${this.intervalMs}`);
             if(eventsForSync.length==0){
                 setTimeout(this._sync.bind(this),this.intervalMs);
                 BrowserWindow.fromId(1).webContents.send('listener_eventsSync', {sync: true});  
@@ -63,7 +67,7 @@ class SyncManager {
 
             urlCandidate += `/${this.accountId}`
 
-            console.log(`Going to sync with ${urlCandidate}`);
+            console.log(`${moment().format("YYYY-MM-DD HH:mm:ss")} Going to sync with ${urlCandidate}`);
 
             const request = {
                 version: "1",

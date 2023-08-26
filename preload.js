@@ -4,7 +4,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   API: {
     effort: () => ipcRenderer.invoke('api_effort'),
     setupEmail: (email) => ipcRenderer.invoke('api_setup_email', email),
-    setupEmailAndSyncUrls: (email, syncUrls, accountId) => ipcRenderer.invoke('api_setup_email_syncurl', email, syncUrls, accountId),    
+    setupPreferences: (email, syncUrls, accountId, syncIntervalMs) => ipcRenderer.invoke('api_setup_preferences', email, syncUrls, accountId, syncIntervalMs),    
     preferences: () => ipcRenderer.invoke('api_preferences'),    
   },
   // here we send data to callback functions in renderer/view js 

@@ -81,15 +81,17 @@ app.whenReady().then(() => {
 
   let syncUrls = preferences&&preferences.syncUrls&&preferences.syncUrls.length>0?preferences.syncUrls:CONSTANTS.SYNC.DEFAULT_URLS;
   let accountId = preferences&&preferences.accountId?preferences.accountId:CONSTANTS.SYNC.DEFAULT_ACCOUNT_ID;
+  let syncIntervalMs = preferences&&preferences.syncIntervalMs?preferences.syncIntervalMs:CONSTANTS.SYNC.SYNC_INTERVAL_MS;
 
   // start syncing with hub
-  context.syncManager = SyncManager.getInstance(CONSTANTS.SYNC.SYNC_INTERVAL_MS, syncUrls, accountId);  
+  context.syncManager = SyncManager.getInstance(syncIntervalMs, syncUrls, accountId);  
 
   // update sync manager parameters when preferences change
   
   ipcMain.on('preferencesChanged', (preferences)=>{
     context.syncManager.setSyncUrls(preferences.syncUrls);
     context.syncManager.setAccountId(preferences.accountId);
+    context.syncManager.setIntervalMs(preferences.syncIntervalMs);
   });
 })
 

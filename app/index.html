@@ -501,6 +501,22 @@ chmod +x .git/hooks/post-commit && chmod +x .git/hooks/pre-push
                         </div>
                         <p class="help is-danger is-hidden" rv-class-is-hidden="model.form.f3.errorMsg | empty">{{model.form.f3.errorMsg}}</p>
                     </div>
+                    <div class="field">
+                        <label class="label">Sync Interval (Ms)</label>
+                        <div class="control has-icons-left has-icons-right">
+                          <input class="input" type="number" placeholder="Text input" rv-value="model.form.f4.value" rv-on-input="_handleOnChange" data-field="f4" rv-class-is-danger="model.form.f4.errorMsg | notEmpty" rv-class-is-success="model.form.f4.errorMsg | empty" >
+                          <span class="icon is-small is-left">
+                            <i class="fa fa-link" aria-hidden="true"></i>
+                          </span>
+                          <span class="icon is-small is-right is-hidden" rv-class-is-hidden="model.form.f4.errorMsg | notEmpty">
+                            <i class="fas fa-check"></i>                            
+                          </span>
+                          <span class="icon is-small is-right is-hidden" rv-class-is-hidden="model.form.f4.errorMsg | empty">                            
+                            <i class="fas fa-exclamation-triangle" ></i>
+                          </span>
+                        </div>
+                        <p class="help is-danger is-hidden" rv-class-is-hidden="model.form.f4.errorMsg | empty">{{model.form.f4.errorMsg}}</p>
+                    </div>
                 </section>
                 <footer class="modal-card-foot" rv-class-is-hidden="model.busy">                    
                     <button class="button is-success" rv-on-click="_handleOK">Save</button>

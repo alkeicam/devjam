@@ -42,13 +42,13 @@ async function handleApiSetupEmail(email){
 }
 ipcMain.handle('api_setup_email', (electronEE, ...args)=>{return handleApiSetupEmail(...args)});
 
-async function handleApiSetupEmailSyncUrls(email, syncUrls, accountId){
-    persistentStore.addPreferences(email, syncUrls, accountId)
+async function handleApiSetupPreferences(email, syncUrls, accountId, syncIntervalMs){
+    persistentStore.addPreferences(email, syncUrls, accountId, syncIntervalMs)
     const preferences = persistentStore.preferences();
     ipcMain.emit("preferencesChanged", preferences)
 
 }
-ipcMain.handle('api_setup_email_syncurl', (electronEE, ...args)=>{return handleApiSetupEmailSyncUrls(...args)});
+ipcMain.handle('api_setup_preferences', (electronEE, ...args)=>{return handleApiSetupPreferences(...args)});
 
 
 

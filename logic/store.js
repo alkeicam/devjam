@@ -100,14 +100,15 @@ class PersistentStore{
         this.store.set("last31", news);
     }
 
-    addPreferences(email, syncUrls, accountId){
+    addPreferences(email, syncUrls, accountId, syncIntervalMs){
         let preferences = this.preferences()|{};
         if(typeof preferences !== 'object')
             preferences = {}
         // let preferences = {};
         preferences.email = email;
         preferences.syncUrls = syncUrls; 
-        preferences.accountId = accountId;           
+        preferences.accountId = accountId;  
+        preferences.syncIntervalMs = syncIntervalMs;         
         this.store.set("preferences",preferences);
     }
     addPreferencesEmail(email){
