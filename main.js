@@ -86,7 +86,8 @@ app.whenReady().then(() => {
   context.syncManager = SyncManager.getInstance(CONSTANTS.SYNC.SYNC_INTERVAL_MS, syncUrls, accountId);  
 
   // update sync manager parameters when preferences change
-  ipcMain.handle('preferences', (preferences)=>{
+  
+  ipcMain.on('preferencesChanged', (preferences)=>{
     context.syncManager.setSyncUrls(preferences.syncUrls);
     context.syncManager.setAccountId(preferences.accountId);
   });
