@@ -159,13 +159,17 @@ class Manager {
 
         // you get 100 points for each push
         if(item.oper == "push"){
-            score+=100
+            score+=13
             return score;
         }
-        
+        let insertDelScore = 0
         // and point for each insertion, deletion
-        score += item.decoded.changeSummary.inserts;
-        score += item.decoded.changeSummary.deletions;
+        insertDelScore += item.decoded.changeSummary.inserts;
+        insertDelScore += item.decoded.changeSummary.deletions;
+
+        score = item.e.e*insertDelScore/100
+
+        score = parseFloat(score.toFixed(3))
 
         return score;
     }
@@ -244,8 +248,9 @@ class Manager {
         result.decoded = decoded;
         
         result.ct = moment().valueOf();
-        result.s = this._score(result);
         this._calculateEntropyScope(result);
+        result.s = this._score(result);
+        
 
         try{
             
