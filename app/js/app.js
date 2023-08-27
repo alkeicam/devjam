@@ -118,14 +118,18 @@ class AppDemo {
 
 
         electronAPI.listenerAPI.onCommitReceived(async (_event, message)=>{
-            a.showData2(message);                        
+            const onboarding = await a.isOnboarding();
+            if(!onboarding)
+                a.showData2(message);                        
         })
 
         electronAPI.listenerAPI.onAppShowed(async (_event, message)=>{
             const effortData = await electronAPI.API.effort();  
             const onboarding = await a.isOnboarding();
-            if(!onboarding)
-                a.showData2(effortData)                                           
+            if(!onboarding){
+                a.showData2(effortData)                                                           
+            }
+                
         })
         // load initially
         const onboarding = await a.isOnboarding();
@@ -258,6 +262,8 @@ class AppDemo {
 
         if(this.model.messages.users.length >= 1){
             this.model.process.step = "WORKOUT"
+        }else{
+            this.model.process.step = "PREPARE";
         }                
     }
 

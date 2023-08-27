@@ -1,9 +1,10 @@
 {
   "name": "execon-dev-tool",
   "version": "1.0.10",
-  "description": "Secure Text Editor with AES Encryption",
+  "description": "Code, track, measure your dev effort.",
   "main": "main.js",
-  "productName": "ExeDevDay",
+  "productName": "Dev Workout",
+  "publisherName": "Execon One Sp. z o.o.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
@@ -15,10 +16,10 @@
     "release": "electron-builder",
     "rc": "npm version patch && git push origin && git push origin --tags"
   },
-  "author": "",
+  "author": "Maciej Grula",
   "license": "ISC",
   "build": {
-    "appId": "pl.execon.devday",
+    "appId": "pl.execon.apps.devworkout",
     "mac": {
       "category": "public.app-category.productivity",
       "icon": "app/build/icon.png",
