@@ -5,6 +5,8 @@ const fileManager = FileManager.getInstance();
 const persistentStore = require("./store")
 const {Stats} = require("./stats");
 
+const apiManager = require("./apiManager");
+
 const AppMenu = require("./menu")
 
 const stats = new Stats();
@@ -51,6 +53,13 @@ async function handleApiSetupPreferences(email, syncUrls, accountId, syncInterva
 ipcMain.handle('api_setup_preferences', (electronEE, ...args)=>{return handleApiSetupPreferences(...args)});
 
 ipcMain.handle('api_preferences_reset', ()=>{persistentStore.resetPreferences()});
+
+
+ipcMain.handle('api_auth_join', async (electronEE, invitationCode)=>{
+    const response = await apiManager.join(invitationCode);
+    persistentStore.addAccount(response.data.account);
+    return response.data.account;    
+});
 
 
 // receive responses from application listeners

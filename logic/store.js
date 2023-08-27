@@ -12,6 +12,21 @@
  * @property {number} lst timestamp of the sync
  */
 
+/**
+ * Project data
+ * @typedef {Object} Project
+ * @property {string} id - project id
+ * @property {string} name - project name 
+ */
+
+/**
+ * Sponsors data
+ * @typedef {Object} Account
+ * @property {string} id - sponsor account id
+ * @property {string} name - sponsor account name
+ * @property {Project} project - sponsor account id
+ */
+
 const Store = require('electron-store');
 
 
@@ -119,6 +134,28 @@ class PersistentStore{
 
     resetPreferences(){
         this.store.delete("preferences");
+    }
+
+    /**
+     * 
+     * @param {Account} account 
+     */
+    addAccount(account){
+        let accounts = this.store.get("accounts")||[]
+        // remove the account if exists
+        accounts = accounts.filter((item)=>item&&item.id != account.id);
+
+        accounts.push(account);
+
+        this.store.set("accounts",accounts);
+    }
+    /**
+     * 
+     * @returns {Account[]}
+     */
+    accounts(){
+        let accounts = this.store.get("accounts")||[]
+        return accounts;
     }
 
     /**

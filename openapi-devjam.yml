@@ -6,6 +6,71 @@ servers:
   - url: https://devjam-lab.azurewebsites.net
   - url: http://localhost:7071
 paths:
+  /join/{invitationCode}:
+    get:
+      parameters:
+        - in: path
+          name: tenantId   # Note the name is  the same as in the path
+          required: true
+          schema:
+            type: string
+          description: Tenant id
+      tags:
+        - Auth
+      summary: Join      
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Date:
+              schema:
+                type: string
+                example: Thu, 24 Aug 2023 20:47:20 GMT
+            Server:
+              schema:
+                type: string
+                example: Kestrel
+            Transfer-Encoding:
+              schema:
+                type: string
+                example: chunked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                  code: 
+                    type: number
+                  account:
+                    type: object
+                    properties:                      
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      invitee:
+                        type: object
+                        properties:                      
+                          email:
+                            type: string
+                          name:
+                            type: string              
+                      project:
+                        type: object
+                        properties:                      
+                          id:
+                            type: string
+                          name:
+                            type: string
+              example:
+                status: OK
+                code: 0
   /receive/{tenantId}:
     post:
       parameters:
