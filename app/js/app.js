@@ -78,7 +78,8 @@ class AppDemo {
     async handleSetup(e, that){
         await electronAPI.API.setupEmail(that.model.forms.f1.f1.v)
         that.model.process.step = "PREPARE"
-        await that.showData2(message);  
+        const effortData = await electronAPI.API.effort();  
+        await that.showData2(effortData);  
     }
 
     async handleOnboarding(e, that){        
