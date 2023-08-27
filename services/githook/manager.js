@@ -169,7 +169,7 @@ class Manager {
 
         score = item.e.e*insertDelScore/100
 
-        score = parseFloat(score.toFixed(3))
+        score = parseFloat(score.toFixed(1))
 
         return score;
     }
