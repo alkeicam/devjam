@@ -185,8 +185,8 @@ class AppDemo {
                         return 0;
                     return item.users[0].score
                 }).reverse(),
-                name: 'Effort',
-                type: 'bar'
+                name: 'Calories',
+                type: 'scatter'
             }             
 
             var pace = {
@@ -217,7 +217,7 @@ class AppDemo {
             //   };
               
             //   var data = [calories, pushes, commits];
-              var data = [pushes, commits];
+              var data = [pushes, commits, calories];
               
               var layout = {barmode: 'stack'};
               
@@ -233,10 +233,14 @@ class AppDemo {
                 return;
 
             // const last = this.model.last9DaysMessages.map((item)=>{return item.day.daysAgo}).reverse()
-            const last = this.model.last9DaysMessages;
+            const last = this.model.last9DaysMessages
                             
             var data = [
                 {
+                    // z[i][] - y czyli 24 godziny (24 tabele)
+                    // z[][i] - wartosc to ilosc zdarzen w danym dniu tygodnia (czyli tyle wartosci ile dni - 9)
+                    // z[0][i] - y
+                    // z[j][0] - x
                     z: [[1, null, 30, 50, 1], [20, 1, 60, 80, 30], [30, 60, 1, -10, 20]],
                     x: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
                     y: ['Morning', 'Afternoon', 'Evening'],

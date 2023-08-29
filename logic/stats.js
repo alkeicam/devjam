@@ -12,22 +12,12 @@ class Stats {
         return startOfWork.valueOf();
     }
 
-    async processSingleDayEvents(day, rawEvents){
-        const maxCt = rawEvents.reduce((accumulator, current)=>{
-            return Math.max(accumulator, current.ct);
-        },-1);
+    async processSingleDayEvents(dayWrapper){
+        dayWrapper.users = [];
 
-        const startOfToday = moment().startOf("day").valueOf();
-        const result = {
-            day: {
-                ts: day,
-                today: day>=startOfToday?true:false,
-                daysAgo: day>=startOfToday?moment(maxCt).fromNow():moment(day).endOf("day").add(-8,"hours").fromNow(),
-                dayName: moment(day).format("dddd"),
-                dayName: moment(day).format("YYYY-MM-DD"),
-            },            
-            users: []
-        }
+        const rawEvents = dayWrapper.events;
+
+        const result = dayWrapper;
 
         if(!rawEvents)
             return result;
@@ -43,7 +33,7 @@ class Stats {
                 stats: item.decoded.changeSummary,
                 score: item.s,
                 name: item.decoded.author.name,
-                email: item.decoded.author.email,
+                email: item.user?item.user:item.decoded.author.email,
                 type: item.oper
             }            
         })
@@ -162,23 +152,38 @@ class Stats {
         }
         return result;
     }
-    async today(){
-        const allEvents = persistentStore.events();
+
+    wrapWithDayInfo(day, rawEvents){
+        const maxCt = rawEvents.reduce((accumulator, current)=>{
+            return Math.max(accumulator, current.ct);
+        },-1);
 
         const startOfToday = moment().startOf("day").valueOf();
+        const result = {
+            day: {
+                ts: day,
+                today: day>=startOfToday?true:false,
+                daysAgo: day>=startOfToday?moment(maxCt).fromNow():moment(day).endOf("day").add(-8,"hours").fromNow(),
+                dayName: moment(day).format("dddd"),
+                dayName: moment(day).format("YYYY-MM-DD"),
+            },            
+            events  : rawEvents
+        }
 
-        const start = startOfToday - this.last9DaysMs;
+        return result;
+    }
 
-        // 1000*60*60*24*9
-
+    async eventsForLastNDays(ndays){
+        const allEvents = persistentStore.events();
+        const startOfToday = moment().startOf("day").valueOf();
         const result = [];
 
-        for(let i=0; i<9; i++){
+        for(let i=0; i<ndays; i++){
             const dayStart = startOfToday-1000*60*60*24*i
             const dayEnd = Math.min(startOfToday-1000*60*60*24*i+1000*60*60*24, moment().valueOf());
 
             
-            let sot = moment(startOfToday).format("YYYY-MM-DD HH:mm")
+            // let sot = moment(startOfToday).format("YYYY-MM-DD HH:mm")
             let s = moment(dayStart).format("YYYY-MM-DD HH:mm")
             let e = moment(dayEnd).format("YYYY-MM-DD HH:mm")
 
@@ -187,19 +192,21 @@ class Stats {
             
 
             // from newest to oldest
-            const dayEvents = allEvents.filter((item)=>{return item.ct>=dayStart && item.ct<dayEnd});
-            const dayResult = await this.processSingleDayEvents(dayStart, dayEvents)  
+            const dayEvents = allEvents.filter((item)=>{return item.ct>=dayStart && item.ct<dayEnd});            
+            result.push(this.wrapWithDayInfo(dayStart, dayEvents));
+        }
+        return result;
+    }
+
+    async today(){
+        const result = [];
+
+        const allEventsWrapped = await this.eventsForLastNDays(9);
+        for(let i=0; i<allEventsWrapped.length; i++){
+            const dayResult = await this.processSingleDayEvents(allEventsWrapped[i])  
             result.push(dayResult);
         }
         
-        
-        // // console.log(allEvents);
-        // // get all events from today
-        // const last9DaysEvents = allEvents.filter((item)=>{return item.ct>=start});
-        // // console.log(todayEvents);
-        
-        // const result = await this.processSingleDayEvents(last9DaysEvents)                                 
-        // // console.log(JSON.stringify(result));
         return result;
     }
 }
