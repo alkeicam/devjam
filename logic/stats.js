@@ -13,11 +13,16 @@ class Stats {
     }
 
     async processSingleDayEvents(day, rawEvents){
+        const maxCt = rawEvents.reduce((accumulator, current)=>{
+            return Math.max(accumulator, current.ct);
+        },-1);
+
+        const startOfToday = moment().startOf("day").valueOf();
         const result = {
             day: {
                 ts: day,
-                today: moment().valueOf()-day<1000*60*60*12?true:false,
-                daysAgo: moment(day).fromNow(),
+                today: day>=startOfToday?true:false,
+                daysAgo: day>=startOfToday?moment(maxCt).fromNow():moment(day).fromNow(),
                 dayName: moment(day).format("dddd"),
                 dayName: moment(day).format("YYYY-MM-DD"),
             },            
@@ -177,9 +182,13 @@ class Stats {
             let s = moment(dayStart).format("YYYY-MM-DD HH:mm")
             let e = moment(dayEnd).format("YYYY-MM-DD HH:mm")
 
+            console.log(i, s, e);
+
+            
+
             // from newest to oldest
             const dayEvents = allEvents.filter((item)=>{return item.ct>=dayStart && item.ct<dayEnd});
-            const dayResult = await this.processSingleDayEvents(dayEnd, dayEvents)  
+            const dayResult = await this.processSingleDayEvents(dayStart, dayEvents)  
             result.push(dayResult);
         }
         

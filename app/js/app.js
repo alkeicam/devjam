@@ -157,8 +157,7 @@ class AppDemo {
 
             if(this.model.last9DaysMessages.length == 0)
                 return;
-            
-                this.model.last9DaysMessages
+                            
             var commits = {
                 x: this.model.last9DaysMessages.map((item)=>{return item.day.daysAgo}).reverse(),
                 y: this.model.last9DaysMessages.map((item)=>{
@@ -225,6 +224,34 @@ class AppDemo {
               Plotly.newPlot(this.container, data, layout, {displayModeBar: false});
         }                  
     }
+    async drawHeatmap(){
+        if(this.container){
+            if(!this.model.last9DaysMessages)
+                return;
+
+            if(this.model.last9DaysMessages.length == 0)
+                return;
+
+            // const last = this.model.last9DaysMessages.map((item)=>{return item.day.daysAgo}).reverse()
+            const last = this.model.last9DaysMessages;
+                            
+            var data = [
+                {
+                    z: [[1, null, 30, 50, 1], [20, 1, 60, 80, 30], [30, 60, 1, -10, 20]],
+                    x: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                    y: ['Morning', 'Afternoon', 'Evening'],
+                    type: 'heatmap',
+                    hoverongaps: false
+                }
+                ];
+              
+              
+            // var layout = {barmode: 'stack'};
+              
+            //   Plotly.newPlot("heatmapGraph", data, layout, {displayModeBar: false});
+            Plotly.newPlot('heatmapGraph', data);
+        }                  
+    }
     
     async showData2(message){
         let that = this;
@@ -257,6 +284,7 @@ class AppDemo {
         this.model.messages = todayMessage;
         this.model.last9DaysMessages = message;
         this.drawPlot();
+        this.drawHeatmap();
 
         if(this.model.messages.users.length >= 1){
             this.model.process.step = "WORKOUT"
