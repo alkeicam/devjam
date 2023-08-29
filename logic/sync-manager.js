@@ -65,46 +65,54 @@ class SyncManager {
                 urlCandidate = this.syncUrls[0]
             }
 
-            urlCandidate += `/${this.accountId}`
+            // urlCandidate += `/${this.accountId}`
 
-            console.log(`${moment().format("YYYY-MM-DD HH:mm:ss")} Going to sync with ${urlCandidate}`);
+            
 
 
 
-            const request = {
-                version: "1",
-                events: eventsForSync
-            }
+            
 
             // group by accounts
             const organizedByAccounts = eventsForSync.reduce((map, e) => ({
                 ...map,
                 [e.account||this.accountId]: [...(map[e.account] ?? []), e]
               }), {});
-                          
+                      
+            for (const account in organizedByAccounts){
+                const events = organizedByAccounts[account];
+                let url = `${urlCandidate}/${account}`
+                const request = {
+                    version: "2",
+                    events: events
+                }   
+                console.log(`${moment().format("YYYY-MM-DD HH:mm:ss")} Going to sync with ${url}`);     
+                const response = await axios.post(url,request).catch((error)=>{
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        // console.log(error.response.data);
+                        // console.log(error.response.status);
+                        // console.log(error.response.headers);
+                        this.lastFailedUrl = url;
+                        throw new Error(`Failed to sync ${url} due to http status ${error.response.status}`)
+                      } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser 
+                        // and an instance of http.ClientRequest in node.js
+                        // console.log(error.request);
+                        this.lastFailedUrl = url;
+                        throw new Error(`Failed to sync ${url} - unable to connect`)                
+                      } else {
+                        // Something happened in setting up the request that triggered an Error
+                        this.lastFailedUrl = url;
+                        throw error;
+                      }
+                });
+            }
+            
 
-            const response = await axios.post(urlCandidate,request).catch((error)=>{
-                if (error.response) {
-                    // The request was made and the server responded with a status code
-                    // that falls out of the range of 2xx
-                    // console.log(error.response.data);
-                    // console.log(error.response.status);
-                    // console.log(error.response.headers);
-                    this.lastFailedUrl = urlCandidate;
-                    throw new Error(`Failed to sync ${urlCandidate} due to http status ${error.response.status}`)
-                  } else if (error.request) {
-                    // The request was made but no response was received
-                    // `error.request` is an instance of XMLHttpRequest in the browser 
-                    // and an instance of http.ClientRequest in node.js
-                    // console.log(error.request);
-                    this.lastFailedUrl = urlCandidate;
-                    throw new Error(`Failed to sync ${urlCandidate} - unable to connect`)                
-                  } else {
-                    // Something happened in setting up the request that triggered an Error
-                    this.lastFailedUrl = urlCandidate;
-                    throw error;
-                  }
-            });
+            
     
             console.log(`${moment().format("YYYY-MM-DD HH:mm:ss")} Syncing #${eventsForSync.length} events with min=${moment(minCt).format("YYYY-MM-DD HH:mm:ss")} and max=${moment(maxCt).format("YYYY-MM-DD HH:mm:ss")} completed.`);
     
