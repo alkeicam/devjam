@@ -8,6 +8,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     preferences: () => ipcRenderer.invoke('api_preferences'),    
     preferencesReset: () => ipcRenderer.invoke('api_preferences_reset'),    
     authJoin: (invitationCode) => ipcRenderer.invoke('api_auth_join', invitationCode),
+    accounts:() => ipcRenderer.invoke('api_accounts'),
+    accountsReset: () => ipcRenderer.invoke('api_accounts_reset'),  
+    
   },
   // here we send data to callback functions in renderer/view js 
   listenerAPI: {    

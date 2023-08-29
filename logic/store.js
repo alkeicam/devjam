@@ -158,6 +158,10 @@ class PersistentStore{
         return accounts;
     }
 
+    resetAccounts(){
+        this.store.delete("accounts");
+    }
+
     /**
      * 
      * @returns {*} preferences

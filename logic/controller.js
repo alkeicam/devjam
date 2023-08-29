@@ -61,6 +61,12 @@ ipcMain.handle('api_auth_join', async (electronEE, invitationCode)=>{
     return response.data.account;    
 });
 
+ipcMain.handle('api_accounts', async (electronEE)=>{    
+    return persistentStore.accounts();    
+});
+
+ipcMain.handle('api_accounts_reset', ()=>{persistentStore.resetAccounts()});
+
 
 // receive responses from application listeners
 ipcMain.on('listener_saveFile_response', async (_event, contents, fileMetadata) => {    

@@ -18,6 +18,7 @@ class HelloController {
             process:{
                 step: "ONBOARDING" // PREPARE // WORKOUT                
             },
+            notBusy: true,
             forms:{
                 f1: {
                     v: "",
@@ -45,8 +46,12 @@ class HelloController {
 
     async handleJoin(e, that){
         try{
+            that.model.notBusy = false;
             const account = await electronAPI.API.authJoin(that.model.forms.f1.v);  
+            that.model.notBusy = true;
+            window.location = "index.html";
         }catch(error){
+            that.model.notBusy = true;
             that.model.forms.f1.e.code=1
             that.model.forms.f1.e.message="Invalid invitation code"
         }
@@ -54,7 +59,7 @@ class HelloController {
     }
 
     async handleInput(e, that){
-        if(that.model.forms.f1.v && that.model.forms.f1.v.length>6){
+        if(that.model.forms.f1.v && that.model.forms.f1.v.length>=6){
             that.model.forms.f1.e.code=0
             that.model.forms.f1.e.message="OK"
         }else{

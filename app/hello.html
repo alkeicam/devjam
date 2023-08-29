@@ -83,7 +83,15 @@
                 </div>
             </article>
         </section>
+        <div class="busyModal is-hidden" rv-class-is-hidden="model.notBusy">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <progress class="progress is-warning" max="100">30%</progress>
+            </div>
+            <!-- <button class="modal-close is-large" aria-label="close"></button> -->
+        </div>
     </div>    
+    
     <div id="preferencesModal">
         <div class="modal" rv-class-is-active="model.display">
         <!-- <div class="modal" class="is-active"></div> -->
@@ -167,6 +175,7 @@
             <!-- <button class="modal-close is-large" aria-label="close" rv-on-click="_handleConstructionCancel"></button> -->
         </div>
     </div>
+
         
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

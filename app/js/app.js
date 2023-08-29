@@ -104,8 +104,15 @@ class AppDemo {
     static async getInstance(emitter, container){
         const a = new AppDemo(emitter, container)
 
+        const accounts = await electronAPI.API.accounts();
+        if(accounts.length == 0){
+            // need onboarding
+            window.location = "hello.html";
+        }
+
         a.emitter.on("PreferencesModalController:preferencesChange", a.onPreferencesChange.bind(a));
         a.emitter.on("External:preferencesReset", a.onPreferencesReset.bind(a));
+        a.emitter.on("External:accountsReset", async ()=>{await electronAPI.API.accountsReset()});
 
         electronAPI.listenerAPI.onEventsSync(async (_event, message)=>{
             // console.log("got sync event", message);
