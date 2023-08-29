@@ -38,7 +38,7 @@
 </head>
 
 <body >
-    <div id="app">
+    <div id="app">        
         <nav class="navbar is-hidden" role="navigation" aria-label="main navigation" rv-class-is-hidden="model.process.step | eq 'ONBOARDING'">
             <!-- <div class="navbar-brand">
             <a class="navbar-item" href="https://bulma.io">
@@ -53,54 +53,62 @@
             </div> -->
         
             <div id="navbarBasicExample" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item" href="hello.html">
-                Login
-                </a>
-        
-                <!-- <a class="navbar-item">
-                Documentation
-                </a> -->
-        
-                <!-- <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">
-                    More
-                </a>
-        
-                <div class="navbar-dropdown">
-                    <a class="navbar-item">
-                    About
+                <div class="navbar-start">
+                    <a class="navbar-item" href="hello.html">
+                    Login
                     </a>
-                    <a class="navbar-item">
-                    Jobs
+            
+                    <!-- <a class="navbar-item">
+                    Documentation
+                    </a> -->
+            
+                    <!-- <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        More
                     </a>
-                    <a class="navbar-item">
-                    Contact
-                    </a>
-                    <hr class="navbar-divider">
-                    <a class="navbar-item">
-                    Report an issue
-                    </a>
+            
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item">
+                        About
+                        </a>
+                        <a class="navbar-item">
+                        Jobs
+                        </a>
+                        <a class="navbar-item">
+                        Contact
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item">
+                        Report an issue
+                        </a>
+                    </div>
+                    </div> -->
                 </div>
-                </div> -->
-            </div>
         
-            <div class="navbar-end">                
-                <div class="navbar-item">
-                    <a class="button is-info" rv-on-click="handleOnboarding">Add new project</a>                              
+                <div class="navbar-end">                
+                    <div class="navbar-item">
+                        <a class="button is-info" rv-on-click="handleOnboarding">Add new project</a>                              
+                    </div>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                        Configure project
+                        </a>            
+                        <div class="navbar-dropdown">
+                            <a rv-on-click="model.handlers.handleOnboardProject" rv-each-account="model.accounts" class="navbar-item" rv-data-account-id="account.id">
+                                {{account.project.name}}@{{account.name}}
+                            </a>                      
+                        </div>                    
+                    </div>
+                    <div class="navbar-item">
+                        <a rv-on-click="handlePreferences">
+                            <span class="icon">
+                                <i class="fa fa-cog" aria-hidden="true"></i>
+                            </span>
+                        </a>                              
+                    </div>
+                    <div class="navbar-item is-hidden" rv-class-is-hidden="model.sync.code | neq 0"><span class="icon has-text-success"><i class="fa fa-link" aria-hidden="true"></i></span><small>(in sync)</small></div>
+                    <div class="navbar-item is-hidden" rv-class-is-hidden="model.sync.code | eq 0"><span class="icon has-text-danger"><i class="fas fa-unlink"></i></span><small>(offline)</small></div>                                
                 </div>
-                <div class="navbar-item">
-                    <a rv-on-click="handlePreferences">
-                        <span class="icon">
-                            <i class="fa fa-cog" aria-hidden="true"></i>
-                        </span>
-                    </a>                              
-                </div>
-                <div class="navbar-item is-hidden" rv-class-is-hidden="model.sync.code | neq 0"><span class="icon has-text-success"><i class="fa fa-link" aria-hidden="true"></i></span><small>(in sync)</small></div>
-                <div class="navbar-item is-hidden" rv-class-is-hidden="model.sync.code | eq 0"><span class="icon has-text-danger"><i class="fas fa-unlink"></i></span><small>(offline)</small></div>
-                
-                
-            </div>
             </div>
         </nav>
     
@@ -359,7 +367,7 @@
             <div class="modal-background"></div>
             <div class="modal-card" style="width:95%">
                 <header class="modal-card-head">
-                    <p class="modal-card-title" rv-class-is-hidden="model.busy">Project Oboarding Help</p>                                        
+                    <p class="modal-card-title" rv-class-is-hidden="model.busy">Project Oboarding Guidebook</p>                                        
                     <button class="delete" aria-label="close" rv-on-click="_handleClose"></button>
                 </header>
                 <section class="modal-card-body">                     
@@ -370,10 +378,12 @@
                             </div>
                             <div class="content mt-6 is-hidden" rv-class-is-hidden="model | isWin">
                                 <!-- Mac Onboarding-->
-                                <h1>New Project on Mac<a class="is-size-7" rv-on-click="_handleClose" data-hide="true">Hide</a></h1>
-                                <p>For each new project that you work on initial git configuration is necessary. Please follow the procedure described below
+                                <h1>Joining Project on Mac<a class="is-size-7 mx-1" rv-on-click="_handleClose" data-hide="true">Hide</a></h1>
+                                <p>For each new project that you wish to work on initial git configuration is necessary. Please follow the procedure described below
                                     to correctly configure your project's git working environment.
                                 </p>
+                                <h2>Step 0.</h2>
+                                <p>Open terminal app in the root directory of your project</p>
                                 <h2>Step 1.</h2>
                                 <p>Make sure you are in your project root git directory:</p>
                                 <pre class="mx-6">
@@ -406,8 +416,22 @@ touch .git/hooks/post-commit
 GIT_LOG=`git log --stat -1 HEAD | base64`
 GIT_DIFF=`git show --unified | base64`
 REMOTE=`git config --get remote.origin.url`
-POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"commit\",\"remote\":\"$REMOTE\",\"diff\":\"$GIT_DIFF\"}"
+LOCAL=`git rev-parse --show-toplevel`
+ACCOUNT="{{model.item.id}}"
+USER="{{model.item.invitee.email}}"
+PROJECT="{{model.item.project.id}}"
+
+FINAL_REMOTE=""
+
+if [ -n "$REMOTE" ]; then
+    FINAL_REMOTE=$REMOTE
+else
+    FINAL_REMOTE=$LOCAL
+fi
+
+POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"commit\",\"remote\":\"$FINAL_REMOTE\",\"diff\":\"$GIT_DIFF\",\"account\":\"$ACCOUNT\",\"user\":\"$USER\",\"project\":\"$PROJECT\"}"
 curl -S -s -H "Content-Type: application/json" -d "$POST_BODY" http://localhost:5001/v1/hooks/commit
+
 exit 0
                                 </pre>
                                 <h3>Step 3.</h3>
@@ -421,7 +445,21 @@ touch .git/hooks/pre-push
 
 GIT_LOG=`git log --stat -1 HEAD | base64`
 REMOTE=`git config --get remote.origin.url`
-POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"push\",\"remote\":\"$REMOTE\"}"
+LOCAL=`git rev-parse --show-toplevel`
+ACCOUNT="{{model.item.id}}"
+USER="{{model.item.invitee.email}}"
+PROJECT="{{model.item.project.id}}"
+
+FINAL_REMOTE=""
+
+if [ -n "$REMOTE" ]; then
+    FINAL_REMOTE=$REMOTE
+else
+    FINAL_REMOTE=$LOCAL
+fi
+
+POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"push\",\"remote\":\"$FINAL_REMOTE\",\"account\":\"$ACCOUNT\",\"user\":\"$USER\",\"project\":\"$PROJECT\"}"
+
 curl -S -s -H "Content-Type: application/json" -d "$POST_BODY" http://localhost:5001/v1/hooks/push
 
 exit 0
@@ -431,8 +469,11 @@ exit 0
                                 <pre class="mx-6">
 chmod +x .git/hooks/post-commit && chmod +x .git/hooks/pre-push
                                 </pre>
+                                <h3>Step 5.</h3>
+                                <p>Close this Guidebook and make some commits and pushes and check if the data is presented correctly.</p>
+                                
                                    
-                                <p><a class="is-size-6" rv-on-click="_handleClose" data-hide="true">Hide onboarding</a></p>         
+                                
                             </div>
                         </article>                                          
                 </section>

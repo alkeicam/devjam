@@ -34,16 +34,18 @@ class AppDemo {
                 label: "Effort Dashboard",
                 that: this
             }],
+            accounts:[],
             activeTab: 0,
             onboarding: {
                 hide: true
             },
             handlers: {
                 handleHide: this.handleHide.bind(this),
-                handleUnhide: this.handleUnhide.bind(this)
+                handleUnhide: this.handleUnhide.bind(this),
+                handleOnboardProject: this.handleOnboardProject.bind(this)
             },
             process:{
-                step: "ONBOARDING" // PREPARE // WORKOUT                
+                step: "PREPARE" // PREPARE // WORKOUT                
             },
             sync:{
                 code: 0,
@@ -82,6 +84,13 @@ class AppDemo {
         await that.showData2(effortData);  
     }
 
+    async handleOnboardProject(e, that){
+        const account = that.model.accounts.find((item)=>{
+            return item.id == e.target.dataset.accountId
+        })
+        that.emitter.emit("showModal:onboarding",account)
+    }
+
     async handleOnboarding(e, that){        
         that.emitter.emit("showModal:onboarding",{})
     }
@@ -109,6 +118,7 @@ class AppDemo {
             // need onboarding
             window.location = "hello.html";
         }
+        a.model.accounts = accounts;
 
         a.emitter.on("PreferencesModalController:preferencesChange", a.onPreferencesChange.bind(a));
         a.emitter.on("External:preferencesReset", a.onPreferencesReset.bind(a));
@@ -126,41 +136,20 @@ class AppDemo {
         })
 
 
-        electronAPI.listenerAPI.onCommitReceived(async (_event, message)=>{
-            const onboarding = await a.isOnboarding();
-            if(!onboarding)
-                a.showData2(message);                        
+        electronAPI.listenerAPI.onCommitReceived(async (_event, message)=>{        
+            await a.showData2(message);                        
         })
 
         electronAPI.listenerAPI.onAppShowed(async (_event, message)=>{
-            const effortData = await electronAPI.API.effort();  
-            const onboarding = await a.isOnboarding();
-            if(!onboarding){
-                a.showData2(effortData)                                                           
-            }
-                
+            const effortData = await electronAPI.API.effort();              
+            a.showData2(effortData)                                                                                       
         })
-        // load initially
-        const onboarding = await a.isOnboarding();
-        if(!onboarding){
-            const effortData = await electronAPI.API.effort();        
-            a.showData2(effortData)                   
-        }
-        
-                
+        // load initially        
+        const effortData = await electronAPI.API.effort();        
+        a.showData2(effortData)                   
         return a;
     }
-
-    async isOnboarding(){
-        const preferences = await electronAPI.API.preferences();
-        let result = false;
-        if(!preferences || !preferences.email){
-            this.model.process.step = "ONBOARDING";
-            result = true;
-        }
-        return result;
-    }
-
+    
     async drawPlot(){
         if(this.container){
             if(!this.model.last9DaysMessages)
