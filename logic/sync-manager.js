@@ -69,13 +69,20 @@ class SyncManager {
 
             console.log(`${moment().format("YYYY-MM-DD HH:mm:ss")} Going to sync with ${urlCandidate}`);
 
-            
+
 
             const request = {
                 version: "1",
                 events: eventsForSync
             }
-            
+
+            // group by accounts
+            const organizedByAccounts = eventsForSync.reduce((map, e) => ({
+                ...map,
+                [e.account||this.accountId]: [...(map[e.account] ?? []), e]
+              }), {});
+                          
+
             const response = await axios.post(urlCandidate,request).catch((error)=>{
                 if (error.response) {
                     // The request was made and the server responded with a status code
