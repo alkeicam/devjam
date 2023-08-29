@@ -85,10 +85,7 @@
                     </div> -->
                 </div>
         
-                <div class="navbar-end">                
-                    <div class="navbar-item">
-                        <a class="button is-info" rv-on-click="handleOnboarding">Add new project</a>                              
-                    </div>
+                <div class="navbar-end">                                    
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">
                         Configure project
@@ -98,6 +95,9 @@
                                 {{account.project.name}}@{{account.name}}
                             </a>                      
                         </div>                    
+                    </div>
+                    <div class="navbar-item">
+                        <a class="is-info" href="hello.html">Join project</a>                              
                     </div>
                     <div class="navbar-item">
                         <a rv-on-click="handlePreferences">
@@ -210,7 +210,7 @@
                     <div class="level-item has-text-centered">
                         <div class="box">
                         <p class="heading">Effort</p>
-                        <p class="title">{{user.score}} cal</p>
+                        <p class="title">{{user.score | numberRoundDecimal 2}} cal</p>
                         </div>
                     </div>
                     <div class="level-item has-text-centered">
@@ -247,7 +247,7 @@
                 <div class="card" style="margin-bottom: 1em;" rv-each-project="user.projects">
                     <header class="card-header">
                     <p class="card-header-title">
-                        {{project.id}}<span class="mx-6">{{project.score}} cal, {{project.pushCnt}} pushes, {{project.commitCnt}} commits</span>
+                        {{project.id}}<span class="mx-6">{{project.score | numberRoundDecimal 2}} cal, {{project.pushCnt}} pushes, {{project.commitCnt}} commits</span>
                     </p>
                     <button class="card-header-icon is-hidden" aria-label="more options" rv-class-is-hidden="project.hide" rv-on-click="model.handlers.handleHide">
                         <span class="icon " >
@@ -287,7 +287,7 @@
                                     <div class="level-item has-text-centered">
                                         <div>
                                         <p class="heading is-6">Effort</p>
-                                        <p class="title is-6">{{task.score}} cal</p>
+                                        <p class="title is-6">{{task.score | numberRoundDecimal 2}} cal</p>
                                         </div>
                                     </div>
                                     <div class="level-item has-text-centered">
