@@ -54,9 +54,9 @@
         
             <div id="navbarBasicExample" class="navbar-menu">
                 <div class="navbar-start">
-                    <a class="navbar-item" href="hello.html">
+                    <!-- <a class="navbar-item" href="hello.html">
                     Login
-                    </a>
+                    </a> -->
             
                     <!-- <a class="navbar-item">
                     Documentation
@@ -140,13 +140,13 @@
         </div>          
         <div class="is-hidden" rv-class-is-hidden="model.process.step | neq 'WORKOUT'">
             <div class="box is-hidden" rv-class-is-hidden="model.last9DaysMessages | sizeLt 1">
-                <h3 class="title is-3">Last 9 days</h3>
+                <h3 class="title is-3">Last 14 days</h3>
                 <div id="userGraph" class="content"></div>
             </div>
-            <div class="box is-hidden" rv-class-is-hidden="model.last9DaysMessages | sizeLt 1">
-                <h3 class="title is-3">Last 9 days</h3>
+            <!-- <div class="box is-hidden" rv-class-is-hidden="model.last9DaysMessages | sizeLt 1">
+                <h3 class="title is-3">Last 14 days</h3>
                 <div id="heatmapGraph" class="content"></div>
-            </div>
+            </div> -->
         </div>   
         
         <article class="message is-hidden" rv-class-is-hidden="model.process.step | neq 'ONBOARDING'">
@@ -495,7 +495,7 @@ chmod +x .git/hooks/post-commit && chmod +x .git/hooks/pre-push
                     <button class="delete" aria-label="close" rv-on-click="_handleClose"></button>
                 </header>
                 <section class="modal-card-body">                     
-                    <div class="field">
+                    <!-- <div class="field">
                         <label class="label">Email</label>
                         <div class="control has-icons-left has-icons-right">
                           <input class="input" type="email" placeholder="al@capone.com" rv-value="model.form.f1.value" rv-on-input="_handleOnChange" data-field="f1" rv-class-is-danger="model.form.f1.errorMsg | notEmpty" rv-class-is-success="model.form.f1.errorMsg | empty" >
@@ -510,9 +510,9 @@ chmod +x .git/hooks/post-commit && chmod +x .git/hooks/pre-push
                           </span>
                         </div>
                         <p class="help is-danger is-hidden" rv-class-is-hidden="model.form.f1.errorMsg | empty">{{model.form.f1.errorMsg}}</p>
-                    </div> 
+                    </div>  -->
                     <div class="field">
-                        <label class="label">Sync Url</label>
+                        <label class="label">API Url</label>
                         <div class="control has-icons-left has-icons-right">
                           <input class="input" type="text" placeholder="https://some..." rv-value="model.form.f2.value" rv-on-input="_handleOnChange" data-field="f2" rv-class-is-danger="model.form.f2.errorMsg | notEmpty" rv-class-is-success="model.form.f2.errorMsg | empty" >
                           <span class="icon is-small is-left">
@@ -527,7 +527,7 @@ chmod +x .git/hooks/post-commit && chmod +x .git/hooks/pre-push
                         </div>
                         <p class="help is-danger is-hidden" rv-class-is-hidden="model.form.f2.errorMsg | empty">{{model.form.f2.errorMsg}}</p>
                     </div>
-                    <div class="field">
+                    <!-- <div class="field">
                         <label class="label">Account Id</label>
                         <div class="control has-icons-left has-icons-right">
                           <input class="input" type="text" placeholder="Text input" rv-value="model.form.f3.value" rv-on-input="_handleOnChange" data-field="f3" rv-class-is-danger="model.form.f3.errorMsg | notEmpty" rv-class-is-success="model.form.f3.errorMsg | empty" >
@@ -542,7 +542,7 @@ chmod +x .git/hooks/post-commit && chmod +x .git/hooks/pre-push
                           </span>
                         </div>
                         <p class="help is-danger is-hidden" rv-class-is-hidden="model.form.f3.errorMsg | empty">{{model.form.f3.errorMsg}}</p>
-                    </div>
+                    </div> -->
                     <div class="field">
                         <label class="label">Sync Interval (Ms)</label>
                         <div class="control has-icons-left has-icons-right">

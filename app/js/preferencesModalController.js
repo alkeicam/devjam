@@ -59,7 +59,8 @@ class PreferencesModalController {
 
     async _handleOK(e, that){
         
-        if(that.validate("f1")&&that.validate("f2")&&that.validate("f3")&&that.validate("f4")){
+        // if(that.validate("f1")&&that.validate("f2")&&that.validate("f3")&&that.validate("f4")){
+        if(that.validate("f2")&&that.validate("f4") ){
             that.emitter.emit("PreferencesModalController:preferencesChange",that.model.form.f1.value, that.model.form.f2.value, that.model.form.f3.value, that.model.form.f4.value);
             that.model.notify.errors = [];
             that.model.display = false;
@@ -82,10 +83,16 @@ class PreferencesModalController {
             f4: "Sync interval must be an integer greater than 1000*60 ms"
 
         }
+        // const validators = {
+        //     f1: /(?:[a-z0-9+!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/gi,
+        //     f2: /^(ftp|http|https):\/\/[^ "]+$/gi,
+        //     f3: /.+$/gi,
+        //     f4: (value)=>{return Number.isInteger(parseFloat(value))&&value>=1000*60}
+        // }
         const validators = {
-            f1: /(?:[a-z0-9+!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/gi,
+            f1: /.*/gi,
             f2: /^(ftp|http|https):\/\/[^ "]+$/gi,
-            f3: /.+$/gi,
+            f3: /.*/gi,
             f4: (value)=>{return Number.isInteger(parseFloat(value))&&value>=1000*60}
         }
 

@@ -11,9 +11,11 @@ const { ipcMain } = require('electron')
 
 const AppMenu = require("./logic/menu")
 const SyncManager = require("./logic/sync-manager")
+const apiManager = require("./logic/apiManager");
 
 const context = {
-  syncManager: undefined
+  syncManager: undefined,
+  apiManager: undefined
 }
 
 const createWindow = () => {
@@ -79,19 +81,22 @@ app.whenReady().then(() => {
 }).then(async ()=>{
   const preferences = await persistentStore.preferences();
 
-  let syncUrls = preferences&&preferences.syncUrls&&preferences.syncUrls.length>0?preferences.syncUrls:CONSTANTS.SYNC.DEFAULT_URLS;
-  let accountId = preferences&&preferences.accountId?preferences.accountId:CONSTANTS.SYNC.DEFAULT_ACCOUNT_ID;
+  let syncUrls = preferences&&preferences.syncUrls&&preferences.syncUrls.length>0?preferences.syncUrls:CONSTANTS.API.BASE_URLS;
+  // let accountId = preferences&&preferences.accountId?preferences.accountId:CONSTANTS.SYNC.DEFAULT_ACCOUNT_ID;
   let syncIntervalMs = preferences&&preferences.syncIntervalMs?preferences.syncIntervalMs:CONSTANTS.SYNC.SYNC_INTERVAL_MS;
 
   // start syncing with hub
-  context.syncManager = SyncManager.getInstance(syncIntervalMs, syncUrls, accountId);  
+  context.syncManager = SyncManager.getInstance(syncIntervalMs, syncUrls);  
+  apiManager.setBaseUrl(syncUrls[0])
+  context.apiManager = apiManager;
+
 
   // update sync manager parameters when preferences change
   
   ipcMain.on('preferencesChanged', (preferences)=>{
-    context.syncManager.setSyncUrls(preferences.syncUrls);
-    context.syncManager.setAccountId(preferences.accountId);
+    context.syncManager.setBaseUrls(preferences.syncUrls);    
     context.syncManager.setIntervalMs(preferences.syncIntervalMs);
+    context.apiManager.setBaseUrl(preferences.syncUrls[0]);
   });
 })
 

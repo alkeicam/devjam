@@ -187,7 +187,7 @@ class Stats {
             let s = moment(dayStart).format("YYYY-MM-DD HH:mm")
             let e = moment(dayEnd).format("YYYY-MM-DD HH:mm")
 
-            console.log(i, s, e);
+            //console.log(i, s, e);
 
             
 
@@ -201,7 +201,7 @@ class Stats {
     async today(){
         const result = [];
 
-        const allEventsWrapped = await this.eventsForLastNDays(9);
+        const allEventsWrapped = await this.eventsForLastNDays(15);
         for(let i=0; i<allEventsWrapped.length; i++){
             const dayResult = await this.processSingleDayEvents(allEventsWrapped[i])  
             result.push(dayResult);

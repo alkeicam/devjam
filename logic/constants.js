@@ -1,10 +1,12 @@
 module.exports = {
+    API: {
+        BASE_URLS: ["https://devjam-lab.azurewebsites.net"]
+    },
     SYNC: {
-        DEFAULT_URLS: ["https://devjam-lab.azurewebsites.net/receive"],
-        DEFAULT_ACCOUNT_ID: "_guest",
-        SYNC_INTERVAL_MS: 1000*60*2 // every 2 minutes
+        SYNC_INTERVAL_MS: 1000*60*2, // every 2 minutes,
+        PATH: "/receive"
     },
     JOIN: {
-        DEFAULT_URLS: ["https://devjam-lab.azurewebsites.net/auth/join"],
+        PATH: "/auth/join"
     }
 }

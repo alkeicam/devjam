@@ -26,10 +26,15 @@ const axios = require('axios');
 
 class ApiManager{
     constructor(){        
+      this.baseUrl = CONSTANTS.API.BASE_URLS[0];
     }
     static getInstance(){
         const r = new ApiManager();
         return r;
+    }
+
+    setBaseUrl(url){
+      this.baseUrl = url;
     }
 
     /**
@@ -38,7 +43,7 @@ class ApiManager{
      * @returns {JoinAck} on successful join operation
      */
     async join(invitationCode){
-        let urlCandidate = `${CONSTANTS.JOIN.DEFAULT_URLS[0]}/${invitationCode}`;
+        let urlCandidate = `${this.baseUrl}${CONSTANTS.JOIN.PATH}/${invitationCode}`;
 
         const response = await axios.get(urlCandidate).catch((error)=>{
             if (error.response) {

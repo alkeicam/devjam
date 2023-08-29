@@ -288,7 +288,7 @@ class AppDemo {
         this.model.messages = todayMessage;
         this.model.last9DaysMessages = message;
         this.drawPlot();
-        this.drawHeatmap();
+        // this.drawHeatmap();
 
         if(this.model.messages.users.length >= 1){
             this.model.process.step = "WORKOUT"
