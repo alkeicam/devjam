@@ -143,7 +143,7 @@ class PersistentStore{
     addAccount(account){
         let accounts = this.store.get("accounts")||[]
         // remove the account if exists
-        accounts = accounts.filter((item)=>item&&item.id != account.id);
+        accounts = accounts.filter((item)=>{return (item&&item.id != account.id)||(item&&item.id == account.id&&item.project&&item.project.id!=account.project.id)});
 
         accounts.push(account);
 
