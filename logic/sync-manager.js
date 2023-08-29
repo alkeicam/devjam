@@ -69,6 +69,8 @@ class SyncManager {
 
             console.log(`${moment().format("YYYY-MM-DD HH:mm:ss")} Going to sync with ${urlCandidate}`);
 
+            
+
             const request = {
                 version: "1",
                 events: eventsForSync

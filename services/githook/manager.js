@@ -49,6 +49,7 @@
  * @property {GitLogDecoded} decoded - decoded git log data
  * @property {GitEventEntropyScore} e - git event entropy
  * @property {number} lst timestamp of the sync (may be undefined)
+ * @property {string} accountId - tenant/account if of the event
  * 
  */
 
