@@ -44,7 +44,24 @@ class HelloController {
     }
 
     async handleJoin(e, that){
-        const account = await electronAPI.API.authJoin(that.model.forms.f1.v);  
+        try{
+            const account = await electronAPI.API.authJoin(that.model.forms.f1.v);  
+        }catch(error){
+            that.model.forms.f1.e.code=1
+            that.model.forms.f1.e.message="Invalid invitation code"
+        }
+        
+    }
+
+    async handleInput(e, that){
+        if(that.model.forms.f1.v && that.model.forms.f1.v.length>6){
+            that.model.forms.f1.e.code=0
+            that.model.forms.f1.e.message="OK"
+        }else{
+            that.model.forms.f1.e.code=1
+            that.model.forms.f1.e.message="Invalid invitation code"
+        }
+            
     }
 
     getQueryParam(paramName){
