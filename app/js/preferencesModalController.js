@@ -93,7 +93,7 @@ class PreferencesModalController {
             f1: /.*/gi,
             f2: /^(ftp|http|https):\/\/[^ "]+$/gi,
             f3: /.*/gi,
-            f4: (value)=>{return Number.isInteger(parseFloat(value))&&value>=1000*60}
+            f4: (value)=>{return Number.isInteger(parseFloat(value))&&value>=1000*10}
         }
 
         if (typeof validators[fieldName] === 'function'){
