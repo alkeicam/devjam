@@ -91,7 +91,7 @@
                         Configure project
                         </a>            
                         <div class="navbar-dropdown">
-                            <a rv-on-click="model.handlers.handleOnboardProject" rv-each-account="model.accounts" class="navbar-item" rv-data-account-id="account.id">
+                            <a rv-on-click="model.handlers.handleOnboardProject" rv-each-account="model.accounts" class="navbar-item" rv-data-account-id="account.id" rv-data-project-id="account.project.id">
                                 {{account.project.name}}@{{account.name}}
                             </a>                      
                         </div>                    

@@ -86,7 +86,7 @@ class AppDemo {
 
     async handleOnboardProject(e, that){
         const account = that.model.accounts.find((item)=>{
-            return item.id == e.target.dataset.accountId
+            return item.id == e.target.dataset.accountId && item.project.id == e.target.dataset.projectId
         })
         that.emitter.emit("showModal:onboarding",account)
     }
