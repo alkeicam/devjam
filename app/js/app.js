@@ -270,11 +270,28 @@ class AppDemo {
         todayMessage.users.forEach((user)=>{
             user.projects.sort((a,b)=>{return b.score-a.score});
             user.work = moment.duration(user.duration).humanize();
+
+            
+
             user.projects.forEach((project)=>{
+                // preserve project hide status
+                // try to find a matching project in recent messages
+                // check if there are any projects already for the given user
+                let previousProject = undefined;
+
+                if(Object.keys(that.model.messages).length>0&&that.model.messages.users&&that.model.messages.users.length>0){
+                    let usersFromPrevious = that.model.messages.users.find((item)=>{return item.id == user.id});
+                    if(usersFromPrevious){
+                        // try to find project
+                        previousProject = usersFromPrevious.projects.find((item)=>{return item.id == project.id})
+                    }
+                }
+                
+
                 project.tasks.sort((a,b)=>{return b.score-a.score});
                 project.work = moment.duration(project.duration).humanize()
                 project.id = this._ellipsis(project.id)                
-                project.hide = Object.keys(that.model.messages).length>0&&that.model.messages.users&&that.model.messages.users.length>0&&that.model.messages.users.find((item)=>{return item.id == user.id}).projects.find((item)=>{return item.id == project.id})?that.model.messages.users.find((item)=>{return item.id == user.id}).projects.find((item)=>{return item.id == project.id}).hide:true
+                project.hide = previousProject?previousProject.hide:true
                 project.tasks.forEach((task)=>{
                     task.work = moment.duration(task.duration).humanize()
                     // task.id = task.id?task.id:"Unnamed Task"
