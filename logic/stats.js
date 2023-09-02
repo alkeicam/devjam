@@ -163,7 +163,7 @@ class Stats {
             day: {
                 ts: day,
                 today: day>=startOfToday?true:false,
-                daysAgo: day>=startOfToday?moment(maxCt).fromNow():moment(day).endOf("day").add(-8,"hours").fromNow(),
+                daysAgo: day>=startOfToday?moment(maxCt).fromNow():moment(day).endOf("day").add(-8,"hours").fromNow(), // -8 hours for "a day ago"
                 dayName: moment(day).format("dddd"),
                 dayName: moment(day).format("YYYY-MM-DD"),
             },            
