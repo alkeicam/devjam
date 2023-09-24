@@ -99,6 +99,7 @@ const { BrowserWindow } = require('electron')
 const persistentStore = require("../../logic/store")
 var moment = require('moment');
 const {Stats} = require("../../logic/stats");
+const log = require('electron-log');
 
 
 class Manager {
@@ -286,7 +287,7 @@ class Manager {
         // here we notify the interface, that new change has arrived and
         // it needs to update the stats
         BrowserWindow.fromId(1).webContents.send('listener_commitReceived', dailyStats);  
-        console.log(`Processed ${gitEvent.remote} with entropy: ${gitEvent.e.e} and message: ${gitEvent.decoded.message}`)    
+        log.log(`Processed ${gitEvent.remote} with entropy: ${gitEvent.e.e} and message: ${gitEvent.decoded.message}`)    
 
     }
 

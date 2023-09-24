@@ -38,7 +38,7 @@ log.info(`${apiName} API Starting...`);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(expressjwt({secret: process.env.JWT_SECRET_KEY, algorithms: ["HS256"],credentialsRequired: false}));
+// app.use(expressjwt({secret: process.env.JWT_SECRET_KEY, algorithms: ["HS256"],credentialsRequired: false}));
 
 
 function attachNewGetOperation(appHandler, version, path, context, operationHandlerMethod){
@@ -51,11 +51,11 @@ function attachNewGetOperation(appHandler, version, path, context, operationHand
                 // }          
                 res.send(items);
             }).catch ((error)=>{
-                console.log(error);
+                log.log(error);
                 return res.status(500).send("Uuups something went wrong. We are working on it.");
             })        
         }catch(error){        
-            console.log(error);
+            log.log(error);
             return res.status(500).send("Uuups something went wrong. We are working on it.");
         }        
     });
@@ -72,11 +72,11 @@ function attachNewPostOperation(appHandler, version, path, context, operationHan
                 // }          
                 res.send(items);
             }).catch ((error)=>{
-                console.log(error);
+                log.log(error);
                 return res.status(500).send("Uuups something went wrong. We are working on it.");
             })        
         }catch(error){        
-            console.log(error);
+            log.log(error);
             return res.status(500).send("Uuups something went wrong. We are working on it.");
         }        
     });

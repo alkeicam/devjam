@@ -13,6 +13,8 @@ const AppMenu = require("./logic/menu")
 const SyncManager = require("./logic/sync-manager")
 const apiManager = require("./logic/apiManager");
 
+const log = require('electron-log');
+
 
 
 const context = {
@@ -100,6 +102,8 @@ app.whenReady().then(() => {
     context.syncManager.setIntervalMs(preferences.syncIntervalMs);
     context.apiManager.setBaseUrl(preferences.syncUrls[0]);
   });
+}).catch((e)=>{
+  log.error(e);
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common

@@ -117,7 +117,7 @@ class SyncManager {
         }
         catch(e){     
             BrowserWindow.fromId(1).webContents.send('listener_eventsSync', {sync: false});         
-            console.error(e);
+            log.error(e);
         }
         
         setTimeout(this._sync.bind(this),this.intervalMs);
