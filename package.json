@@ -79,7 +79,8 @@
     "md5": "^2.3.0",
     "ws": "8.12.1",
     "moment": "2.29.4",
-    "axios": "^1.4.0"
+    "axios": "^1.4.0",
+    "electron-log": "^4.4.8"
   },
   "nyc": {
     "check-coverage": true,

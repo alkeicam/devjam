@@ -3,6 +3,8 @@ const persistentStore = require("./store")
 const { BrowserWindow } = require('electron')
 var moment = require('moment');
 const CONSTANTS = require("./constants");
+const log = require('electron-log');
+
 
 class SyncManager {
     constructor(intervalMs, baseUrls){
@@ -15,7 +17,7 @@ class SyncManager {
     static getInstance(intervalMs, baseUrls){
         const a = new SyncManager(intervalMs, baseUrls);
         a._sync();
-        console.log("Sync Manager started");
+        log.info("Sync Manager started");
         return a;
     }  
     
@@ -31,11 +33,11 @@ class SyncManager {
         let that = this;
         try{
             const eventsForSync = persistentStore.eventsForSync();            
-            console.log(`SyncManager: ${this.baseUrls}${CONSTANTS.SYNC.PATH} ${this.intervalMs}`);
+            log.info(`SyncManager: ${this.baseUrls}${CONSTANTS.SYNC.PATH} ${this.intervalMs}`);
             if(eventsForSync.length==0){
                 setTimeout(this._sync.bind(this),this.intervalMs);
                 BrowserWindow.fromId(1).webContents.send('listener_eventsSync', {sync: true});  
-                console.log(`${moment().format("YYYY-MM-DD HH:mm:ss")} Sync up to date. No new events.`);
+                log.info(`${moment().format("YYYY-MM-DD HH:mm:ss")} Sync up to date. No new events.`);
                 return;
             }
             
@@ -77,7 +79,7 @@ class SyncManager {
                     version: "2",
                     events: events
                 }   
-                console.log(`${moment().format("YYYY-MM-DD HH:mm:ss")} Going to sync with ${url}`);     
+                log.info(`${moment().format("YYYY-MM-DD HH:mm:ss")} Going to sync with ${url}`);     
                 const response = await axios.post(url,request).catch((error)=>{
                     if (error.response) {
                         // The request was made and the server responded with a status code
@@ -105,7 +107,7 @@ class SyncManager {
 
             
     
-            console.log(`${moment().format("YYYY-MM-DD HH:mm:ss")} Syncing #${eventsForSync.length} events with min=${moment(minCt).format("YYYY-MM-DD HH:mm:ss")} and max=${moment(maxCt).format("YYYY-MM-DD HH:mm:ss")} completed.`);
+            log.info(`${moment().format("YYYY-MM-DD HH:mm:ss")} Syncing #${eventsForSync.length} events with min=${moment(minCt).format("YYYY-MM-DD HH:mm:ss")} and max=${moment(maxCt).format("YYYY-MM-DD HH:mm:ss")} completed.`);
     
             persistentStore.eventsMarkSync(eventsForSync);
             BrowserWindow.fromId(1).webContents.send('listener_eventsSync', {

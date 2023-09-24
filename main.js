@@ -13,6 +13,8 @@ const AppMenu = require("./logic/menu")
 const SyncManager = require("./logic/sync-manager")
 const apiManager = require("./logic/apiManager");
 
+
+
 const context = {
   syncManager: undefined,
   apiManager: undefined
@@ -107,6 +109,6 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
 
-app.setAppLogsPath();
+// app.setAppLogsPath();
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

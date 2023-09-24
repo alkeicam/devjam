@@ -15,6 +15,7 @@ dotenv.config();
 const {Manager} = require('./manager')
 // const manager = new Manager(api);
 const manager = new Manager({});
+const log = require('electron-log');
 
 const app = express();
 
@@ -25,11 +26,11 @@ const version = "v1";
 const path = "hooks";
 
 
-console.log(`${apiName} API Starting...`);
+log.info(`${apiName} API Starting...`);
 // api.connect().then(()=>{
 //     console.log('Task API DB initialized...');    
     app.listen(PORT, () => {
-        console.log(`${apiName} API is up and running on ${PORT} ...`);
+        log.info(`${apiName} API is up and running on ${PORT} ...`);
         });
 // })
 
