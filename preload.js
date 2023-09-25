@@ -10,7 +10,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     authJoin: (invitationCode) => ipcRenderer.invoke('api_auth_join', invitationCode),
     accounts:() => ipcRenderer.invoke('api_accounts'),
     accountsReset: () => ipcRenderer.invoke('api_accounts_reset'),  
-    
+    eventsSince: (sinceMs) => ipcRenderer.invoke('api_events_since', sinceMs)
   },
   // here we send data to callback functions in renderer/view js 
   listenerAPI: {    

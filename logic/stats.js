@@ -1,5 +1,6 @@
 var moment = require('moment');
 const persistentStore = require("./store")
+const log = require('electron-log');
 
 class Stats {
     constructor(){
@@ -208,6 +209,21 @@ class Stats {
         }
         
         return result;
+    }
+
+    async getEventsSince(sinceMs){
+        const allEvents = persistentStore.events();        
+        const events = allEvents.filter(item=>item.ct>=sinceMs);
+
+        events.sort((a,b)=>a.ct-b.ct);
+
+        const maxCt = events.map(item=>item.ct).reduce((accu, curr)=>{return Math.max(accu, curr)},-1);
+        const minCt = events.map(item=>item.ct).reduce((accu, curr)=>{return Math.min(accu, curr)},Number.MAX_SAFE_INTEGER);
+
+        log.debug(`Retrieved ${events.length} events since ${sinceMs} with min ${minCt} and max ${maxCt}`);
+
+
+        return events;
     }
 }
 

@@ -36,6 +36,10 @@ class PersistentStore{
         this.expiryMs = 1000*60*60*24*7
         // 31 days+31 buffer
         this.expiry31Ms = 1000*60*60*24*(31+31)
+
+        // 6 months
+        this.expiry186Ms = 1000*60*60*24*(6*31)
+
         this.store = new Store();
     }
 
@@ -47,19 +51,19 @@ class PersistentStore{
     }
 
     _setup(){
-        if(!this.store.get("last31"))
-            this.store.set("last31",[]);
+        if(!this.store.get("events"))
+            this.store.set("events",[]);
     }
 
     events(){
-        return this.store.get("last31");
+        return this.store.get("events");
     }
 
     addEvent(item){        
-        item.ttl = Date.now()+this.expiry31Ms;
-        const items = this.store.get("last31");
+        item.ttl = Date.now()+this.expiry186Ms;
+        const items = this.store.get("events");
         items.unshift(item);
-        this.store.set("last31",items);
+        this.store.set("events",items);
         this._expiry(); 
     }
 
@@ -68,7 +72,7 @@ class PersistentStore{
      * @returns {GitEvent[]}
      */
     eventsForSync(){                
-        const items = this.store.get("last31");
+        const items = this.store.get("events");
         const itemsCopy = JSON.parse(JSON.stringify(items));
 
         //GitEvent
@@ -98,21 +102,21 @@ class PersistentStore{
      */
     eventsMarkSync(events){
         const syncTimeMs = Date.now();
-        const items = this.store.get("last31");
+        const items = this.store.get("events");
         var result = this._getCommonObjectsByProperty(items, events, "id");
         result.forEach((item)=>{
             item.lst = syncTimeMs;
         })
-        this.store.set("last31",items);
+        this.store.set("events",items);
     }
 
     _expiry(){
-        const old = this.store.get("last31");
+        const old = this.store.get("events");
         const news = old.filter((item)=>{
             // console.log("Item", item, Date.now());
             return item.ttl>=Date.now()
         });
-        this.store.set("last31", news);
+        this.store.set("events", news);
     }
 
     addPreferences(email, syncUrls, accountId, syncIntervalMs){

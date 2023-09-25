@@ -61,6 +61,12 @@ class AppDemo {
                         }
                     }
                 }                
+            },
+            events: {
+                all_time: []
+            },
+            trends: {
+                all_time: {}
             }
         }
 
@@ -136,15 +142,18 @@ class AppDemo {
         })
 
 
-        electronAPI.listenerAPI.onCommitReceived(async (_event, message)=>{        
+        electronAPI.listenerAPI.onCommitReceived(async (_event, message)=>{  
+            await a.reloadData()      
             await a.showData2(message);                        
         })
 
         electronAPI.listenerAPI.onAppShowed(async (_event, message)=>{
+            await a.reloadData()    
             const effortData = await electronAPI.API.effort();              
             a.showData2(effortData)                                                                                       
         })
         // load initially        
+        await a.reloadData()    
         const effortData = await electronAPI.API.effort();        
         a.showData2(effortData)                   
         return a;
@@ -257,6 +266,11 @@ class AppDemo {
         }                  
     }
     
+    async reloadData(){
+        this.model.events.all_time = await electronAPI.API.eventsSince(-1);   
+        this.model.trends.all_time = (new EventProcessor()).userTrends(this.model.events.all_time, 14);
+    }
+
     async showData2(message){
         let that = this;
         console.log(`${Date.now()} Got message`, message);  

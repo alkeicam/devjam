@@ -67,6 +67,8 @@ ipcMain.handle('api_accounts', async (electronEE)=>{
 
 ipcMain.handle('api_accounts_reset', ()=>{persistentStore.resetAccounts()});
 
+ipcMain.handle('api_events_since', (electronEE, ...args)=>{return stats.getEventsSince(...args)});
+
 
 // receive responses from application listeners
 ipcMain.on('listener_saveFile_response', async (_event, contents, fileMetadata) => {    
