@@ -1,9 +1,8 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
-const md5 = require("md5");
-var { expressjwt } = require("express-jwt");
+
+
 
 
 
