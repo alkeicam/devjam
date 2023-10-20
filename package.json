@@ -1,6 +1,6 @@
 {
   "name": "execon-dev-tool",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Code, track, measure your dev effort.",
   "main": "main.js",
   "productName": "Dev Workout",
