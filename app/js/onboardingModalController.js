@@ -52,8 +52,7 @@ class OnboardingModalController {
     }
 
     async generateCommand(item){
-        const postCommitCommand = `
-#!/bin/sh
+        const postCommitCommand = `#!/bin/sh
 GIT_LOG=\`git log --stat -1 HEAD | base64\`
 GIT_DIFF=\`git show --unified | base64\`
 REMOTE=\`git config --get remote.origin.url\`
@@ -77,8 +76,7 @@ exit 0
 
         `
 
-        const prePushCommand = `
-#!/bin/sh
+        const prePushCommand = `#!/bin/sh
 
 GIT_LOG=\`git log --stat -1 HEAD | base64\`
 REMOTE=\`git config --get remote.origin.url\`
