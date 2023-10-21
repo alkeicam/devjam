@@ -16,7 +16,7 @@
     "release": "electron-builder",
     "rc": "npm version patch && git push origin && git push origin --tags"
   },
-  "author": "Maciej Grula",
+  "author": "Execon One Sp. z o.o.",
   "license": "ISC",
   "build": {
     "appId": "pl.execon.apps.devworkout",
