@@ -21,6 +21,7 @@ class OnboardingModalController {
             },
             item: {},
             command: "",
+            commandWin: "",
             howMany: 0,
             current: 0,
             notify: {
@@ -46,16 +47,17 @@ class OnboardingModalController {
             this.model.display = true;
             this.model.item = item
             this.model.command = await this.generateCommand(item);
+            this.model.commandWin = await this.generateCommand(item, true);
 
         })
         
     }
 
-    async generateCommand(item){
+    async generateCommand(item, isWin){
         const postCommitCommand = 
 `#!/bin/sh
-GIT_LOG=\`git log --stat -1 HEAD | base64\`
-GIT_DIFF=\`git show --unified | base64\`
+GIT_LOG=\`git log --stat -1 HEAD | base64 ${isWin?"-w 0":""}\`
+GIT_DIFF=\`git show --unified | base64 ${isWin?"-w 0":""}\`
 REMOTE=\`git config --get remote.origin.url\`
 LOCAL=\`git rev-parse --show-toplevel\`
 ACCOUNT="${item.id}"
@@ -80,7 +82,7 @@ exit 0
         const prePushCommand = 
 `#!/bin/sh
 
-GIT_LOG=\`git log --stat -1 HEAD | base64\`
+GIT_LOG=\`git log --stat -1 HEAD | base64 ${isWin?"-w 0":""}\`
 REMOTE=\`git config --get remote.origin.url\`
 LOCAL=\`git rev-parse --show-toplevel\`
 ACCOUNT="${item.id}"
