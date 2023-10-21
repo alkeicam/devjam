@@ -368,8 +368,50 @@
                 <section class="modal-card-body">                     
                         <article>
                             <div class="content mt-6  is-hidden" rv-class-is-hidden="model | isMac">
+                            <!-- <div class="content mt-6"> -->
                                 <!-- Win Onboarding-->
-                                Windows Onboarding
+                                <h1>Joining Project on Windows<a class="is-size-7 mx-1" rv-on-click="_handleClose" data-hide="true">Hide</a></h1>
+                                <p>For each new project that you wish to work on initial git configuration is necessary. Please follow the procedure described below
+                                    to correctly configure your project's git working environment.
+                                </p>
+                                <h2>Step 0.</h2>
+                                <p>Open MINGW terminal in the root directory of your project</p>
+                                <p><strong>Windows Git Gui</strong> (installed with git scm for windows) Open your project and then select <em>"Repository" -> "Git Bash"</em> from menu OR right click in your project's root folder and select <em>"Open Git Bash here"</em></p>
+                                <p><strong>Windows Source Tree</strong> Open your project and then select <em>"Actions" -> "Open in Terminal"</em> from menu OR select "Terminal" from a toolbar on the right</p>
+                                <h2>Step 1.</h2>
+                                <p>Make sure you are in your project root directory with proper access to git config files:</p>
+                                <pre class="mx-6">
+pwd && ls -ltrah .git/hooks/                
+                                </pre>
+                                <pre class="mx-6">
+user@DESKTOP-9KTOLUV MINGW64 ~/Documents/.../Projects/P1 (master)                                    
+total 144
+-rwxr-xr-x   1 grulka  staff   896B Oct 21 07:52 commit-msg.sample
+-rwxr-xr-x   1 grulka  staff   4.8K Oct 21 07:52 pre-rebase.sample
+-rwxr-xr-x   1 grulka  staff   2.3K Oct 21 07:52 sendemail-validate.sample
+-rwxr-xr-x   1 grulka  staff   1.6K Oct 21 07:52 pre-commit.sample
+-rwxr-xr-x   1 grulka  staff   478B Oct 21 07:52 applypatch-msg.sample
+-rwxr-xr-x   1 grulka  staff   4.6K Oct 21 07:52 fsmonitor-watchman.sample
+-rwxr-xr-x   1 grulka  staff   544B Oct 21 07:52 pre-receive.sample
+-rwxr-xr-x   1 grulka  staff   1.5K Oct 21 07:52 prepare-commit-msg.sample
+-rwxr-xr-x   1 grulka  staff   189B Oct 21 07:52 post-update.sample
+-rwxr-xr-x   1 grulka  staff   416B Oct 21 07:52 pre-merge-commit.sample
+-rwxr-xr-x   1 grulka  staff   424B Oct 21 07:52 pre-applypatch.sample
+-rwxr-xr-x   1 grulka  staff   1.3K Oct 21 07:52 pre-push.sample
+-rwxr-xr-x   1 grulka  staff   3.6K Oct 21 07:52 update.sample
+-rwxr-xr-x   1 grulka  staff   2.7K Oct 21 07:52 push-to-checkout.sample
+drwxr-xr-x   9 grulka  staff   288B Oct 21 07:52 ..
+-rwxr-xr-x   1 grulka  staff   618B Oct 21 07:57 post-commit
+drwxr-xr-x  18 grulka  staff   576B Oct 21 07:57 .
+-rwxr-xr-x   1 grulka  staff   558B Oct 21 07:57 pre-push                                </pre>
+                                <h2>Step 2.</h2>
+                                <p>Copy and paste following command</p>
+                                <pre class="mx-6">
+{{model.command}}                                    
+                                </pre>
+                                <h3>Step 5.</h3>
+                                <p>Close this Guidebook and make some commits and pushes and check if the data is presented correctly.</p>                                                                
+
                             </div>
                             <div class="content mt-6 is-hidden" rv-class-is-hidden="model | isWin">
                                 <!-- Mac Onboarding-->
@@ -380,89 +422,35 @@
                                 <h2>Step 0.</h2>
                                 <p>Open terminal app in the root directory of your project</p>
                                 <h2>Step 1.</h2>
-                                <p>Make sure you are in your project root git directory:</p>
+                                <p>Make sure you are in your project root directory with proper access to git config files:</p>
                                 <pre class="mx-6">
-ls -ltrah .git/hooks/                
+pwd && ls -ltrah .git/hooks/                
                                 </pre>
                                 <pre class="mx-6">
--rwxr-xr-x   1 grulka  staff   896B Feb  6 22:59 commit-msg.sample
--rwxr-xr-x   1 grulka  staff   4.8K Feb  6 22:59 pre-rebase.sample
--rwxr-xr-x   1 grulka  staff   1.6K Feb  6 22:59 pre-commit.sample
--rwxr-xr-x   1 grulka  staff   478B Feb  6 22:59 applypatch-msg.sample
--rwxr-xr-x   1 grulka  staff   4.5K Feb  6 22:59 fsmonitor-watchman.sample
--rwxr-xr-x   1 grulka  staff   544B Feb  6 22:59 pre-receive.sample
--rwxr-xr-x   1 grulka  staff   1.5K Feb  6 22:59 prepare-commit-msg.sample
--rwxr-xr-x   1 grulka  staff   189B Feb  6 22:59 post-update.sample
--rwxr-xr-x   1 grulka  staff   416B Feb  6 22:59 pre-merge-commit.sample
--rwxr-xr-x   1 grulka  staff   424B Feb  6 22:59 pre-applypatch.sample
--rwxr-xr-x   1 grulka  staff   1.3K Feb  6 22:59 pre-push.sample
--rwxr-xr-x   1 grulka  staff   3.6K Feb  6 22:59 update.sample
--rwxr-xr-x   1 grulka  staff   2.7K Feb  6 22:59 push-to-checkout.sample
--rwxr-xr-x   1 grulka  staff   228B Feb 12 16:22 commit-msg
-                                </pre>
+/Users/grulka/.../project1
+total 144
+-rwxr-xr-x   1 grulka  staff   896B Oct 21 07:52 commit-msg.sample
+-rwxr-xr-x   1 grulka  staff   4.8K Oct 21 07:52 pre-rebase.sample
+-rwxr-xr-x   1 grulka  staff   2.3K Oct 21 07:52 sendemail-validate.sample
+-rwxr-xr-x   1 grulka  staff   1.6K Oct 21 07:52 pre-commit.sample
+-rwxr-xr-x   1 grulka  staff   478B Oct 21 07:52 applypatch-msg.sample
+-rwxr-xr-x   1 grulka  staff   4.6K Oct 21 07:52 fsmonitor-watchman.sample
+-rwxr-xr-x   1 grulka  staff   544B Oct 21 07:52 pre-receive.sample
+-rwxr-xr-x   1 grulka  staff   1.5K Oct 21 07:52 prepare-commit-msg.sample
+-rwxr-xr-x   1 grulka  staff   189B Oct 21 07:52 post-update.sample
+-rwxr-xr-x   1 grulka  staff   416B Oct 21 07:52 pre-merge-commit.sample
+-rwxr-xr-x   1 grulka  staff   424B Oct 21 07:52 pre-applypatch.sample
+-rwxr-xr-x   1 grulka  staff   1.3K Oct 21 07:52 pre-push.sample
+-rwxr-xr-x   1 grulka  staff   3.6K Oct 21 07:52 update.sample
+-rwxr-xr-x   1 grulka  staff   2.7K Oct 21 07:52 push-to-checkout.sample
+drwxr-xr-x   9 grulka  staff   288B Oct 21 07:52 ..
+-rwxr-xr-x   1 grulka  staff   618B Oct 21 07:57 post-commit
+drwxr-xr-x  18 grulka  staff   576B Oct 21 07:57 .
+-rwxr-xr-x   1 grulka  staff   558B Oct 21 07:57 pre-push                                </pre>
                                 <h2>Step 2.</h2>
-                                <p>Create post-commit file :</p>
+                                <p>Copy and paste following command</p>
                                 <pre class="mx-6">
-touch .git/hooks/post-commit
-                                </pre>
-                                <p>And paste into it following script :</p>
-                                <pre class="mx-6">
-#!/bin/sh
-GIT_LOG=`git log --stat -1 HEAD | base64`
-GIT_DIFF=`git show --unified | base64`
-REMOTE=`git config --get remote.origin.url`
-LOCAL=`git rev-parse --show-toplevel`
-ACCOUNT="{{model.item.id}}"
-USER="{{model.item.invitee.email}}"
-PROJECT="{{model.item.project.id}}"
-
-FINAL_REMOTE=""
-
-if [ -n "$REMOTE" ]; then
-    FINAL_REMOTE=$REMOTE
-else
-    FINAL_REMOTE=$LOCAL
-fi
-
-POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"commit\",\"remote\":\"$FINAL_REMOTE\",\"diff\":\"$GIT_DIFF\",\"account\":\"$ACCOUNT\",\"user\":\"$USER\",\"project\":\"$PROJECT\"}"
-curl -S -s -H "Content-Type: application/json" -d "$POST_BODY" http://localhost:5001/v1/hooks/commit
-
-exit 0
-                                </pre>
-                                <h3>Step 3.</h3>
-                                <p>Create pre-push file :</p>
-                                <pre class="mx-6">
-touch .git/hooks/pre-push
-                                </pre>
-                                <p>And paste into it following script :</p>
-                                <pre class="mx-6">
-#!/bin/sh
-
-GIT_LOG=`git log --stat -1 HEAD | base64`
-REMOTE=`git config --get remote.origin.url`
-LOCAL=`git rev-parse --show-toplevel`
-ACCOUNT="{{model.item.id}}"
-USER="{{model.item.invitee.email}}"
-PROJECT="{{model.item.project.id}}"
-
-FINAL_REMOTE=""
-
-if [ -n "$REMOTE" ]; then
-    FINAL_REMOTE=$REMOTE
-else
-    FINAL_REMOTE=$LOCAL
-fi
-
-POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"push\",\"remote\":\"$FINAL_REMOTE\",\"account\":\"$ACCOUNT\",\"user\":\"$USER\",\"project\":\"$PROJECT\"}"
-
-curl -S -s -H "Content-Type: application/json" -d "$POST_BODY" http://localhost:5001/v1/hooks/push
-
-exit 0
-                                </pre>                   
-                                <h3>Step 4.</h3>
-                                <p>Make hooks executable :</p>
-                                <pre class="mx-6">
-chmod +x .git/hooks/post-commit && chmod +x .git/hooks/pre-push
+{{model.command}}                                    
                                 </pre>
                                 <h3>Step 5.</h3>
                                 <p>Close this Guidebook and make some commits and pushes and check if the data is presented correctly.</p>                                                                
