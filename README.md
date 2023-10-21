@@ -50,3 +50,4 @@ When completed your performance will be share with project's founder/manager.
 ## Security considerations
 Contents of the files that are managed by the git is not shared. Only statistical data leaves developer's machine for tracking purposes
 
+
