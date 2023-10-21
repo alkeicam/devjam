@@ -52,7 +52,8 @@ class OnboardingModalController {
     }
 
     async generateCommand(item){
-        const postCommitCommand = `#!/bin/sh
+        const postCommitCommand = 
+`#!/bin/sh
 GIT_LOG=\`git log --stat -1 HEAD | base64\`
 GIT_DIFF=\`git show --unified | base64\`
 REMOTE=\`git config --get remote.origin.url\`
@@ -69,14 +70,15 @@ else
     FINAL_REMOTE=$LOCAL
 fi
 
-POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"commit\",\"remote\":\"$FINAL_REMOTE\",\"diff\":\"$GIT_DIFF\",\"account\":\"$ACCOUNT\",\"user\":\"$USER\",\"project\":\"$PROJECT\"}"
+POST_BODY="{\\"gitlog\\":\\"$GIT_LOG\\",\\"oper\\":\\"commit\\",\\"remote\\":\\"$FINAL_REMOTE\\",\\"diff\\":\\"$GIT_DIFF\\",\\"account\\":\\"$ACCOUNT\\",\\"user\\":\\"$USER\\",\\"project\\":\\"$PROJECT\\"}"
 curl -S -s -H "Content-Type: application/json" -d "$POST_BODY" http://localhost:5001/v1/hooks/commit
 
 exit 0
 
         `
 
-        const prePushCommand = `#!/bin/sh
+        const prePushCommand = 
+`#!/bin/sh
 
 GIT_LOG=\`git log --stat -1 HEAD | base64\`
 REMOTE=\`git config --get remote.origin.url\`
@@ -93,7 +95,7 @@ else
     FINAL_REMOTE=$LOCAL
 fi
 
-POST_BODY="{\"gitlog\":\"$GIT_LOG\",\"oper\":\"push\",\"remote\":\"$FINAL_REMOTE\",\"account\":\"$ACCOUNT\",\"user\":\"$USER\",\"project\":\"$PROJECT\"}"
+POST_BODY="{\\"gitlog\\":\\"$GIT_LOG\\",\\"oper\\":\\"push\\",\\"remote\\":\\"$FINAL_REMOTE\\",\\"account\\":\\"$ACCOUNT\\",\\"user\\":\\"$USER\\",\\"project\\":\\"$PROJECT\\"}"
 
 curl -S -s -H "Content-Type: application/json" -d "$POST_BODY" http://localhost:5001/v1/hooks/push
 
