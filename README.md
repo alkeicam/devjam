@@ -11,16 +11,15 @@ Every project that has a git repository is ready to be tracked.
 ## Usage for Founders/Managers
 1. Start tracking your project by joining us at the Founder's Assistant page:
 
-[Founder's Assistant Panel](https://red-coast-08f276410.3.azurestaticapps.net/) @ https://red-coast-08f276410.3.azurestaticapps.net
+[Founder's Assistant Panel](https://devworkout.laascloud.ee/) @ https://devworkout.laascloud.ee/
 
-2. Then add your project on the Onboarding page:
-[Onboarding - add projects](https://red-coast-08f276410.3.azurestaticapps.net/onboarding.html)
+2. Then add your project on the Onboarding page.
 
 3. For each of the developers involved in the project invite each of them as the participant to the project.
 4. Send invitation codes to developers and ask them to download and install Dev Workout application on their computers.
 5. See them joining your project on the Onboarding page status section
 
-When configured properly you will see your project and team live performance on the [Team Overview - live](https://red-coast-08f276410.3.azurestaticapps.net/) page.
+When configured properly you will see your project and team live performance on the [Team Overview - live](https://devworkout.laascloud.ee/) page.
 
 ## Usage for Developers
 Setup your project and configure it with the git repository of the project's founder or manager.
