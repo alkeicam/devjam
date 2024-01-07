@@ -178,21 +178,7 @@
                     heatmap: undefined,
                     element: undefined                 
                 },                                               
-            }    
-            // const stats = {}
-            // const dataset = el.dataset;
-    
-            // const graphData = [];
-    
-            // stats[dataset.kind].forEach((user)=>{
-            //     const data = {
-            //         x: stats.intervals.map(item=>item.name),
-            //         y: user.efforts.map(item=>item.value[dataset.effortKey]),
-            //         mode: 'lines',
-            //         name: user.user
-            //     }
-            //     graphData.push(data);
-            // })
+            }                
 
             var colorscaleValue = [
                 [0, '#f24545'],
@@ -212,12 +198,12 @@
 
             setInterval(()=>{
                 component.heatmapRebuild(controller);
-            },3000)
+            },6000)
 
             return controller;
         },
         heatmapRebuild(controller){
-            console.log(`rebuilding with ${controller.model.entity.events.length} elements` );
+            // console.log(`rebuilding with ${controller.model.entity.events.length} elements` );
             const config = {
                 itemSelector: controller.model.element,
                 range: Math.abs(controller.model.entity.range),
