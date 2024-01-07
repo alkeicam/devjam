@@ -139,8 +139,7 @@
     rivets.components['heat-map-events'] = {
         template: function(item) {        
             const template = `
-        <div class="my-4 ">  
-            Size: {{model.entity.events | size}}
+        <div class="my-4 ">              
             <h5 class="title is-5">{{model.entity.title}}</h5>
             <div class="here-plot"></div>                        
         </div>
