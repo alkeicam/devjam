@@ -1,16 +1,30 @@
 class EventProcessor{
+
+
     /**
-     * Calculates stats from provided events. Stats are calculated per user basis per day, raw and moving averages for effort are calculated
-     * @param {*} events target events
-     * @param {*} window window for moving average calculations
-     * @returns {Stats} stats for events provided, grouped by users and days, with moving average calculated using provided window
+     * 
+     * @param {*} events
+     * @param {string} interval "day" or "hour"
+     * @param {number} window moving average length
+     * @param {number} minTs when provided this is a start date, overwrites start date calculated from the earliest event in set
+     * @param {number} maxTs when provided this is an end date, overwrites end date calculated from the latest event in set
+     * @returns {Stats} stats for events provided, grouped by users and intervals, with moving average calculated using provided window
      */
-    userTrends(events, window){
+    userTrends(events, interval, window, minTs, maxTs){
+
+        const intervals = this.intervalsFromEvents(events, interval, minTs, maxTs);
+
         const result = {
-            days: this.daysFromEvents(events),
+            intervals: intervals,
             users: [], //[{user, daily: [{cals:,commits:,lines:}]}],            
             usersMa: [] //[{user, daily: [{cals:,commits:,lines:}]}],
         }
+
+        const minMaxTs = this.windowTsFromEvents(events)
+        if(minTs)
+            minMaxTs.minTs = minTs
+        if(maxTs)
+            minMaxTs.maxTs = maxTs
 
 
 
@@ -30,11 +44,14 @@ class EventProcessor{
 
         Object.keys(allUsers).forEach((user)=>{
             // const userStats = this.dailyEffort(events.filter((item)=>item.user == user)).map((item)=>item.value);
-            const userStats = this.dailyEffort(events.filter((item)=>item.user == user));
+            // const userStats = this.dailyEffort(events.filter((item)=>item.user == user), minMaxTs.minTs, minMaxTs.maxTs);
+            const userStats = this.effort(events.filter((item)=>item.user == user), minMaxTs.minTs, minMaxTs.maxTs, interval);
             users.push({
                 user: user,
-                daily: userStats
+                efforts: userStats
             })    
+
+            console.log(`User stats ${user} ${userStats[0].interval.nameLong} ${userStats[userStats.length-1].interval.nameLong}`)
 
             const userCals = userStats.map((item)=>item.value.cals);
             const userCommits = userStats.map((item)=>item.value.commits);
@@ -46,12 +63,12 @@ class EventProcessor{
             const userLinesMa = this.movingAverage(userLines, "SMA", window);
             const userEntropyMa = this.movingAverage(userEntropy, "SMA", window);
 
-            const days = this.daysFromEvents(events.filter((item)=>item.user == user));
+            
 
             const dailyMas = []
             for(let i=0; i<userCalsMa.length; i++){
                 dailyMas.push({
-                    day: days[i],
+                    interval: intervals[i],
                     value: {
                         cals: userCalsMa[i],
                         commits: userCommitsMa[i],
@@ -63,7 +80,7 @@ class EventProcessor{
 
             usersMa.push({
                 user: user,
-                daily: dailyMas
+                efforts: dailyMas
             })
             
         })
@@ -73,13 +90,14 @@ class EventProcessor{
         return result;
     }
 
+
     /**
-     * Calculates continous day array that covers all dates from events
-     * @param {*} rawEvents 
-     * @returns {DayInfo[]} sorted by day, ascending
+     * Calculates time window (minTs, maxTs) from a given set of events rounded to interval including all events
+     * @param {*} rawEvents target events
+     * @param {string} interval "day" or "hour"
+     * @returns {minTs, maxTs} window begin and end time, truncated to interval start and end
      */
-    daysFromEvents(rawEvents){
-        const result = []
+    windowTsFromEvents(rawEvents, interval){
         //sorted, ascending by date, missing dates are filled with given value
         const minMaxTs = rawEvents.reduce((prev, curr)=>{
             return {
@@ -88,66 +106,115 @@ class EventProcessor{
             }
         },{minTs: Number.MAX_SAFE_INTEGER, maxTs: -1});
 
-        minMaxTs.minTs = moment(minMaxTs.minTs).startOf("day").valueOf();
-        minMaxTs.maxTs = moment(minMaxTs.maxTs).startOf("day").valueOf();
+        minMaxTs.minTs = moment(minMaxTs.minTs).startOf(interval).valueOf();
+        minMaxTs.maxTs = moment(minMaxTs.maxTs).endOf(interval).valueOf();
 
-        for(let i=minMaxTs.minTs; i<=minMaxTs.maxTs; i = moment(i).add(1,"days").valueOf()){
-            // fore every day between min and max
-            const day = {
-                ts: i,                
-                dayName: moment(i).format("YYYY-MM-DD"),
+        return minMaxTs;
+    }
+
+    /**
+     * Builds continous interval info array for given events or between min and max when provided
+     * @param {*} rawEvents 
+     * @param {*} interval 
+     * @param {*} minTs 
+     * @param {*} maxTs 
+     * @returns {IntervalInfo[]} array of interval infos
+     */
+    intervalsFromEvents(rawEvents, interval, minTs, maxTs){
+        const result = [];        
+        
+        //sorted, ascending by date, missing dates are filled with given value
+        // first from event time period
+        const minMaxTs = rawEvents.reduce((prev, curr)=>{
+            return {
+                minTs: Math.min(prev.minTs, curr.ct),
+                maxTs: Math.max(prev.maxTs, curr.ct)
             }
-            result.push(day);
+        },{minTs: Number.MAX_SAFE_INTEGER, maxTs: -1});
+        
+
+        let begin = moment(minMaxTs.minTs).startOf(interval).valueOf()
+        let end = moment(minMaxTs.maxTs).endOf(interval).valueOf()
+
+        // if min, max provided then override values from events
+        if(minTs)
+            begin = minTs
+        if(maxTs)
+            end = maxTs
+
+        for(let i=begin; i<=end; i = moment(i).add(1,interval.charAt(0)).valueOf()){
+            const stepBegin = moment(i).startOf(interval).valueOf()            
+          
+            const intervalSpecs = {
+                ts: stepBegin,                
+                name: interval == "day"?moment(stepBegin).format("YYYY-MM-DD"):moment(stepBegin).format("HH:mm"),
+                nameLong: moment(stepBegin).format("YYYY-MM-DD HH:mm"),
+            }
+            result.push(intervalSpecs)
         }
         return result;
     }
 
-
     /**
-     * Calculates dayly effort from events provided. Date range is calculated from the most recent to most old event in the function argument.
+     * Calculates interval effort from events provided. 
+     * There is continous and order time range, when no events are at given time then zeros are returned.
      * @param {*} rawEvents 
-     * @returns {DailyStats[]} stats from events for days, sorted by day ascending
+     * @param {*} minTs start timestamp, events registered earlier are discarded
+     * @param {*} maxTs end timestamp, events registered later are discarded 
+     * @param {*} interval one of "day", "hour"
+     * @returns {IntervalStats[]} stats from events for interval, sorted by interval ascending
      */
-    dailyEffort(rawEvents){
-        const result = [];
-        
+    effort(rawEvents, minTs, maxTs, interval){
+        const result = [];        
+        // const begin = moment(minTs).startOf(interval).valueOf()
+        // const end = moment(maxTs).endOf(interval).valueOf()
+        const begin = minTs
+        const end = maxTs
 
-        //sorted, ascending by date, missing dates are filled with given value
-        const minMaxTs = rawEvents.reduce((prev, curr)=>{
-            return {
-                minTs: Math.min(prev.minTs, curr.ct),
-                maxTs: Math.max(prev.maxTs, curr.ct)
-            }
-        },{minTs: Number.MAX_SAFE_INTEGER, maxTs: -1});
+        console.log(`Effort between ${moment(begin).format("YYYY-MM-DD HH:mm")} - ${moment(end).format("YYYY-MM-DD HH:mm")}`)
 
-        minMaxTs.minTs = moment(minMaxTs.minTs).startOf("day").valueOf();
-        minMaxTs.maxTs = moment(minMaxTs.maxTs).startOf("day").valueOf();
-
-        for(let i=minMaxTs.minTs; i<=minMaxTs.maxTs; i = moment(i).add(1,"days").valueOf()){
-            // fore every day between min and max
-            const day = {
-                ts: i,                
-                dayName: moment(i).format("YYYY-MM-DD"),
-            }
-            const events = rawEvents.filter((item)=>item.ct>=i&&item.ct<moment(i).add(1,"days"));
-            const total = events.reduce((prev, curr, currentIndex)=>{
-                return {
-                    cals: prev.cals + curr.s,
-                    commits: prev.commits + (curr.oper=="commit"?1:0),      
-                    lines: prev.lines + curr.decoded.changeSummary.inserts+curr.decoded.changeSummary.deletions,
-                    entropy: prev.entropy + (Number.isNaN(curr.e.e)?0:curr.e.e)
-                }
-            },{cals: 0, commits: 0, lines: 0, entropy: 0});
-            
-            total.entropy /=  events.length>0?events.length:1;
-
-            result.push({
-                day: day,
-                value: total
-            })
-    
+        for(let i=begin; i<moment(end).add(1,interval.charAt(0)).valueOf(); i = moment(i).add(1,interval.charAt(0)).valueOf()){
+            // console.log(`Passing ${moment(i).format("YYYY-MM-DD HH:mm")}`)
+            const intervalStats = this.intervalEffort(rawEvents, i, interval);
+            result.push(intervalStats)
         }
         return result;
+    }
+
+    /**
+     * Takes provided moment, calculates single interval including provided moment and calculates stats from
+     * events registered during the interval
+     * @param {*} rawEvents events
+     * @param {*} i moment in time for which interval and stats will be calculated
+     * @param {*} interval "day" or "hour"
+     * @returns {IntervalStats} single interval stats
+     */
+    intervalEffort(rawEvents, i, interval){
+        const stepBegin = moment(i).startOf(interval).valueOf()
+        const stepEnd = moment(i).endOf(interval).valueOf()
+        // fore every interval between min and max
+        const intervalSpecs = {
+            ts: stepBegin,                
+            name: interval == "day"?moment(stepBegin).format("YYYY-MM-DD"):moment(stepBegin).format("HH:mm"),
+            nameLong: moment(stepBegin).format("YYYY-MM-DD HH:mm"),
+        }
+        // console.log(`Internal Effort between ${moment(stepBegin).format("YYYY-MM-DD HH:mm")} - ${moment(stepEnd).format("YYYY-MM-DD HH:mm")}`)
+        const events = rawEvents.filter((item)=>item.ct>=stepBegin&&item.ct<=stepEnd);
+        const total = events.reduce((prev, curr, currentIndex)=>{
+            return {
+                cals: prev.cals + curr.s,
+                commits: prev.commits + (curr.oper=="commit"?1:0),      
+                lines: prev.lines + curr.decoded.changeSummary.inserts+curr.decoded.changeSummary.deletions,
+                entropy: prev.entropy + (Number.isNaN(curr.e.e)?0:curr.e.e)
+            }
+        },{cals: 0, commits: 0, lines: 0, entropy: 0});
+        
+        total.entropy /=  events.length>0?events.length:1;
+
+        return {
+            interval: intervalSpecs,
+            value: total
+        }
     }
     
     movingAverage(arr, type, size) {
@@ -346,4 +413,103 @@ class EventProcessor{
         }
         return resArr;
     }
+
+    /**
+     * 
+     * @param {Stats} stats 
+     */
+    trendsTo4ValueHitmapZX(stats, effortCode, thresholds, user, showZerowsForFuture, beginTs, endTs){
+        
+        const x = [];
+        const z = [[],[],[],[]];
+        const intervalEfforts = stats.users.find(item=>item.user == user).efforts.filter((item)=>{
+            let isBegin = beginTs?item.interval.ts>=beginTs:true;
+            let isEnd = endTs?item.interval.ts<endTs:true;
+            return isBegin&&isEnd
+        });
+
+        intervalEfforts.forEach((item)=>{
+            x.push(item.interval.nameLong);
+            let value = this.valueToThresholdId(thresholds, item.value[effortCode]);
+            if(!showZerowsForFuture && item.interval.ts>moment().valueOf()){
+                value = -1
+            }
+            if(item.value[effortCode]>0){
+                console.log(`${item.value[effortCode]} => ${value}`)
+            }
+            switch(value){
+                case -1:    // case when we want to not show value instead of zero value
+                    z[0].push(null);
+                    z[1].push(null);
+                    z[2].push(null);
+                    z[3].push(null);
+                    break;
+                case 0:
+                    z[0].push(0);
+                    z[1].push(null);
+                    z[2].push(null);
+                    z[3].push(null);
+                    break;
+                case 1:
+                    z[0].push(1);
+                    z[1].push(1);
+                    z[2].push(null);
+                    z[3].push(null);
+                    break;
+                case 2:
+                    z[0].push(2);
+                    z[1].push(2);
+                    z[2].push(2);
+                    z[3].push(null);
+                    break;
+                case 3:
+                    z[0].push(3);
+                    z[1].push(3);
+                    z[2].push(3);
+                    z[3].push(3);
+                    break;
+            }
+
+            
+        })
+        // z: [
+        //     [0, 1, 2, 3, 3], 
+        //     [null, 1, 2, 3, 3], 
+        //     [null, undefined, 2, 3, 3],
+        //     [undefined, undefined, undefined, 3, 3]
+        //   ],
+        //   x: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        return {
+            z: z,
+            x: x
+        }
+    }
+
+    valueToThresholdId(thresholds, value){
+        let result = undefined;        
+        
+        let found = false;
+        const thresholdsArray = thresholds.trim().replace(/\s/g, '').split(",");
+        for(let i=1; i<thresholdsArray.length; i++){
+            if(value>=thresholdsArray[i-1]&&value<thresholdsArray[i]){
+                result = i-1;
+                found = true;
+                break;
+            }
+        }
+        if(value>=thresholdsArray[thresholdsArray.length-1]){
+            found = true;
+            result = thresholdsArray.length-1
+        }
+        if(!found)
+            throw new Error(`Can't calculate threshold id for [${thresholds}] and ${value}`)
+        return result;
+    }
+
 }
+
+if (typeof module !== 'undefined' && module.exports != null) {
+    module.exports = EventProcessor;
+}
+
+// export { EventProcessor };

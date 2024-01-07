@@ -268,7 +268,8 @@ class AppDemo {
     
     async reloadData(){
         this.model.events.all_time = await electronAPI.API.eventsSince(-1);   
-        this.model.trends.all_time = (new EventProcessor()).userTrends(this.model.events.all_time, 14);
+        // this.model.trends.all_time = (new EventProcessor()).userTrends(this.model.events.all_time, 14);
+        this.model.trends.all_time = (new EventProcessor()).userTrends(this.model.events.all_time, "day", 14);
     }
 
     async showData2(message){
