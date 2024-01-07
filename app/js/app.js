@@ -148,15 +148,17 @@ class AppDemo {
         })
 
         electronAPI.listenerAPI.onAppShowed(async (_event, message)=>{
-            await a.reloadData()    
-            const effortData = await electronAPI.API.effort();              
-            a.showData2(effortData)                                                                                       
+            await a.reloadAndShow();
         })
         // load initially        
-        await a.reloadData()    
-        const effortData = await electronAPI.API.effort();        
-        a.showData2(effortData)                   
+        await a.reloadAndShow();
         return a;
+    }
+
+    async reloadAndShow(){
+        await this.reloadData()    
+        const effortData = await electronAPI.API.effort();        
+        this.showData2(effortData)                   
     }
     
     /**
@@ -288,12 +290,12 @@ class AppDemo {
 
     async showData2(message){
         let that = this;
-        console.log(`${Date.now()} Got message`, message);  
+        // console.log(`${Date.now()} Got message`, message);  
 
         if(!message) return;
 
         let todayMessage = message.find((item)=>{return item.day.today == true});
-        console.log(`todayMessage`, todayMessage); 
+        // console.log(`todayMessage`, todayMessage); 
 
         todayMessage.users.sort((a,b)=>{return b.score-a.score});
         todayMessage.users.forEach((user)=>{
