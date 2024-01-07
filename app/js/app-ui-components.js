@@ -175,7 +175,8 @@
                         code: 0,
                         message: "OK"
                     },
-                    proxy: undefined
+                    heatmap: undefined,
+                    element: undefined                 
                 },                                               
             }    
             // const stats = {}
@@ -202,64 +203,65 @@
               
             
             
-            const theElement = el.getElementsByClassName("here-plot")[0];
+            controller.model.element = el.getElementsByClassName("here-plot")[0];
+            controller.model.heatmap = new CalHeatmap();
 
-            const proxy = new Proxy(data.events,{
-                set: (target, prop, value)=>{
-                    console.log(`changed ${prop} with value ${value}` )
-                },
-                get: ()=>{
-                    console.log(`getting ${prop}`)
-                }
-            })
+            this.component.heatmapRebuild(controller);
 
-            controller.model.proxy = proxy;
-            
+            let component = this.component;
 
+            setInterval(()=>{
+                component.heatmapRebuild(controller);
+            },3000)
+
+            return controller;
+        },
+        heatmapRebuild(controller){
+            console.log(`rebuilding with ${controller.model.entity.events.length} elements` );
             const config = {
-                itemSelector: theElement,
-                range: Math.abs(data.range),
+                itemSelector: controller.model.element,
+                range: Math.abs(controller.model.entity.range),
                 domain: {
-                    type: data.domain
+                    type: controller.model.entity.domain
                 },
-                subDomain: {type: data.subDomain},
+                subDomain: {type: controller.model.entity.subDomain},
                 
                 date:  {},
                 data: {
-                    source: data.events,
+                    source: controller.model.entity.events,
                     x: "ct",
                     y: "s"
     
                 }                
             }
 
-            let date = data.range<0?{start: new Date(moment().add(-(Math.abs(data.range)-1),data.domain).valueOf())}:{};
+            let date = controller.model.entity.range<0?{start: new Date(moment().add(-(Math.abs(controller.model.entity.range)-1),controller.model.entity.domain).valueOf())}:{};
     
-            if(data.startHour){
-                if(data.domain != "hour")
+            if(controller.model.entity.startHour){
+                if(controller.model.entity.domain != "hour")
                     throw new Error(`Can't use "startHour" without domain set to "hour"`);
-                date.start = new Date(moment().hour(data.startHour,"hour").valueOf())
+                date.start = new Date(moment().hour(controller.model.entity.startHour,"hour").valueOf())
             }
 
             config.date = date;
 
             console.log(date.start, moment(date.start).format("HH:mm"), moment(date.start).valueOf());
 
-            if(data.domain == "hour"){
+            if(controller.model.entity.domain == "hour"){
                 config.domain.label = {
                     text: (timestamp)=>{return moment(timestamp).format("HH:mm")}
                 }
             }
             
 
-            const cal = new CalHeatmap();
-            cal.paint(config,
+            
+            controller.model.heatmap.paint(config,
                 [[
                     Tooltip,
                     {
                       text: function (date, value, dayjsDate) {
                         let label;
-                        switch(data.subDomain){
+                        switch(controller.model.entity.subDomain){
                             case "minute": 
                                 label = (value ? value.toFixed(1) + ' calories' : 'No data') + ' on ' + moment(date).format("LT")
                             break;
@@ -276,7 +278,7 @@
                     },
                   ]]
             );   
-            return controller;
+
         }
     } 
 
