@@ -231,7 +231,7 @@
 
             config.date = date;
 
-            console.log(date.start, moment(date.start).format("HH:mm"), moment(date.start).valueOf());
+            // console.log(`User console.log(date.start, moment(date.start).format("HH:mm"), moment(date.start).valueOf());
 
             if(controller.model.entity.domain == "hour"){
                 config.domain.label = {

@@ -51,7 +51,7 @@ class EventProcessor{
                 efforts: userStats
             })    
 
-            console.log(`User stats ${user} ${userStats[0].interval.nameLong} ${userStats[userStats.length-1].interval.nameLong}`)
+            // console.log(`User stats ${user} ${userStats[0].interval.nameLong} ${userStats[userStats.length-1].interval.nameLong}`)
 
             const userCals = userStats.map((item)=>item.value.cals);
             const userCommits = userStats.map((item)=>item.value.commits);
