@@ -140,6 +140,7 @@
         template: function(item) {        
             const template = `
         <div class="my-4 ">  
+            Size: {{model.entity.events | size}}
             <h5 class="title is-5">{{model.entity.title}}</h5>
             <div class="here-plot"></div>                        
         </div>
@@ -173,7 +174,8 @@
                     error:{
                         code: 0,
                         message: "OK"
-                    }
+                    },
+                    proxy: undefined
                 },                                               
             }    
             // const stats = {}
@@ -202,6 +204,16 @@
             
             const theElement = el.getElementsByClassName("here-plot")[0];
 
+            const proxy = new Proxy(data.events,{
+                set: (target, prop, value)=>{
+                    console.log(`changed ${prop} with value ${value}` )
+                },
+                get: ()=>{
+                    console.log(`getting ${prop}`)
+                }
+            })
+
+            controller.model.proxy = proxy;
             
 
             const config = {
