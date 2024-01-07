@@ -159,6 +159,11 @@ class AppDemo {
         return a;
     }
     
+    /**
+     * 
+     * @returns 
+     * @deprecated
+     */
     async drawPlot(){
         if(this.container){
             if(!this.model.last9DaysMessages)
@@ -233,6 +238,12 @@ class AppDemo {
               Plotly.newPlot(this.container, data, layout, {displayModeBar: false});
         }                  
     }
+
+    /**
+     * 
+     * @returns 
+     * @deprecated
+     */
     async drawHeatmap(){
         if(this.container){
             if(!this.model.last9DaysMessages)
@@ -319,7 +330,7 @@ class AppDemo {
         // a.model.messages.push(message.decoded);
         this.model.messages = todayMessage;
         this.model.last9DaysMessages = message;
-        this.drawPlot();
+        // this.drawPlot();
         // this.drawHeatmap();
 
         if(this.model.messages.users.length >= 1){
