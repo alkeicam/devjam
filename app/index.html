@@ -96,11 +96,11 @@
                 <div class="navbar-end">                                    
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">
-                        Configure project
+                        Your projects
                         </a>            
-                        <div class="navbar-dropdown">
+                        <div class="navbar-dropdown is-right">
                             <a rv-on-click="model.handlers.handleOnboardProject" rv-each-account="model.accounts" class="navbar-item" rv-data-account-id="account.id" rv-data-project-id="account.project.id">
-                                {{account.project.name}}@{{account.name}}
+                                {{account.project.name}}@{{account.name}} (click to configure)
                             </a>                      
                         </div>                    
                     </div>
@@ -434,8 +434,8 @@ drwxr-xr-x  18 grulka  staff   576B Oct 21 07:57 .
                                 <pre class="mx-6">
 {{model.commandWin}}                                    
                                 </pre>
-                                <h3>Step 5.</h3>
-                                <p>Close this Guidebook and make some commits and pushes and check if the data is presented correctly.</p>                                                                
+                                <h3>Step 3.</h3>
+                                <p>Close this Guidebook and make some commits and pushes and check if the data is presented/updated correctly.</p>                                                                
 
                             </div>
                             <div class="content mt-6 is-hidden" rv-class-is-hidden="model | isWin">
@@ -477,8 +477,8 @@ drwxr-xr-x  18 grulka  staff   576B Oct 21 07:57 .
                                 <pre class="mx-6">
 {{model.command}}                                    
                                 </pre>
-                                <h3>Step 5.</h3>
-                                <p>Close this Guidebook and make some commits and pushes and check if the data is presented correctly.</p>                                                                
+                                <h3>Step 3.</h3>
+                                <p>Close this Guidebook and make some commits and pushes and check if the data is presented/updated correctly.</p>                                                                
                             </div>
                         </article>                                          
                 </section>
