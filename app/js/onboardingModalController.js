@@ -73,7 +73,7 @@ else
 fi
 
 POST_BODY="{\\"gitlog\\":\\"$GIT_LOG\\",\\"oper\\":\\"commit\\",\\"remote\\":\\"$FINAL_REMOTE\\",\\"diff\\":\\"$GIT_DIFF\\",\\"account\\":\\"$ACCOUNT\\",\\"user\\":\\"$USER\\",\\"project\\":\\"$PROJECT\\"}"
-curl -S -s -H "Content-Type: application/json" -d "$POST_BODY" http://localhost:5001/v1/hooks/commit
+echo $POST_BODY | curl -S -s -H "Content-Type: application/json" -d @- http://localhost:5001/v1/hooks/commit
 
 exit 0
 
@@ -99,7 +99,7 @@ fi
 
 POST_BODY="{\\"gitlog\\":\\"$GIT_LOG\\",\\"oper\\":\\"push\\",\\"remote\\":\\"$FINAL_REMOTE\\",\\"account\\":\\"$ACCOUNT\\",\\"user\\":\\"$USER\\",\\"project\\":\\"$PROJECT\\"}"
 
-curl -S -s -H "Content-Type: application/json" -d "$POST_BODY" http://localhost:5001/v1/hooks/push
+echo $POST_BODY | curl -S -s -H "Content-Type: application/json" -d @- http://localhost:5001/v1/hooks/push
 
 exit 0  
 
