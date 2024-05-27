@@ -126,6 +126,30 @@ class Manager {
 
     }
 
+    _parseTicker(message){
+        const lines = message.split(/\r?\n/);
+        // console.log(lines);
+        const endOfCommitMessage = lines.indexOf("",4);
+
+        const userMessage = lines.slice(4,endOfCommitMessage).join("");
+
+        
+        // either first uppercase word ending with number or in brackets    
+        const ticketFromUppercase = userMessage.match(/([A-Z0-9_]+\-\d+)/g)?userMessage.match(/([A-Z0-9_]+\-\d+)/g)[0]:undefined;
+        // either word in square brackets
+        const ticketFromSquareBrackets = userMessage.match(/(\[.+\])/ig)?userMessage.match(/(\[.+\])/ig)[0].replace(/[\[\]]/ig,""):undefined;
+
+        const ticket = ticketFromUppercase || ticketFromSquareBrackets;
+        // assume that in general ticket has a form of a characters followed by a "-" sign followed by a number
+        // so lets extract ticket prefix, which can be further mapped onto delivery project
+        const ticketPrefix = ticket&&ticket.indexOf("-")!=-1?ticket.split("-")[0]:undefined;
+
+        return {
+            ticket: ticket,
+            ticketPrefix: ticketPrefix
+        }
+    }
+
     /**
      * Parses original git log message
      * @param {*} message raw git log command results
@@ -139,17 +163,15 @@ class Manager {
         const userMessage = lines.slice(4,endOfCommitMessage).join("");
 
         
-        // either first uppercase word ending with number or in brackets    
-        const ticketFromUppercase = userMessage.match(/([A-Z]+\-\d+)/g)?userMessage.match(/([A-Z]+\-\d+)/g)[0]:undefined;
-        // either word in square brackets
-        const ticketFromSquareBrackets = userMessage.match(/(\[.+\])/ig)?userMessage.match(/(\[.+\])/ig)[0].replace(/[\[\]]/ig,""):undefined;
-
-        const ticket = ticketFromUppercase || ticketFromSquareBrackets;
+        
+        const {ticket, ticketPrefix} = this._parseTicker(message);
+        
         
 
 
         const data = {                     
             ticket: ticket,
+            ticketPrefix: ticketPrefix,
             commit: lines[0],
             author: {
                 name: lines[1].replace(/Author\:\s+/ig,"").replace(/\<\S+\>.*/ig,""),
