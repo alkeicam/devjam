@@ -94,7 +94,6 @@
  * @property {DailyStatsUsers[]} users - daily stats for users
  */
 
-//TODO - remove
 const { BrowserWindow } = require('electron')
 const persistentStore = require("../../logic/store")
 var moment = require('moment');
@@ -106,6 +105,25 @@ class Manager {
     constructor(api){
         this.api = api;  
         this.stats = new Stats();      
+    }
+
+    /**
+     * Git commit hook calls this method via REST JSON call. This is an entrypoint to manager processing.
+     * @param {*} auth 
+     * @param {*} params 
+     * @param {*} body 
+     */
+    async change(auth, params, body){        
+        const gitEvent = this._decode(body);  
+        // console.log(JSON.stringify(gitEvent));      
+        persistentStore.addEvent(gitEvent);
+        const dailyStats = await this.stats.today();
+        
+        // here we notify the interface, that new change has arrived and
+        // it needs to update the stats
+        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', dailyStats);  
+        log.log(`Processed ${gitEvent.remote} with entropy: ${gitEvent.e.e} and message: ${gitEvent.decoded.message}`)    
+
     }
 
     /**
@@ -273,33 +291,14 @@ class Manager {
     }
 
     /**
-     * Git commit hook calls this method via REST JSON call
+     * @deprecated seems this operation is no more used, to be removed in future versions of manager
      * @param {*} auth 
      * @param {*} params 
      * @param {*} body 
+     * @returns 
      */
-    async change(auth, params, body){        
-        const gitEvent = this._decode(body);  
-        // console.log(JSON.stringify(gitEvent));      
-        persistentStore.addEvent(gitEvent);
-        const dailyStats = await this.stats.today();
-        
-        // here we notify the interface, that new change has arrived and
-        // it needs to update the stats
-        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', dailyStats);  
-        log.log(`Processed ${gitEvent.remote} with entropy: ${gitEvent.e.e} and message: ${gitEvent.decoded.message}`)    
-
-    }
-
-
-
-
-
     async effort(auth, params, body){
         const events = persistentStore.events();
-
-        //     count: items.length,
-                //     items: items ||[] 
         return events;                
     }
 

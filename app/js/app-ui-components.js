@@ -1,4 +1,26 @@
 (function(){
+    rivets.components['today'] = {
+        template: function(item) {
+            
+            const template = `{{model.todayTs | timeFormatMoment 'dddd'}}, {{model.todayTs | timeFormatMoment 'Do MMMM'}}`
+              return template;
+          },
+        static: [],
+        // dynamic bound: 'errorMsg'
+        initialize: function(el, data) {
+            
+            const controller = {                
+                model: {                    
+                    todayTs: Date.now(),
+                    error:{
+                        code: 0,
+                        message: "OK"
+                    }
+                },                                               
+            }                  
+            return controller;
+        }
+    }
 
     /**
      * Renders stats plot using value provided in rv-plot-stats attribute.

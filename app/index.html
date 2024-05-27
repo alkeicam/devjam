@@ -197,31 +197,54 @@
             </div>
         </article>
         
-        <article class="message is-info is-hidden" rv-class-is-hidden="model.process.step | neq 'PREPARE'">
-            <div class="message-body">
-            Good Day, your daily dev effort and calories list are empty. Let's make some noise, do nice <strong>code</strong> and make some <strong>commits!</strong>.
-            <p class="my-4">Already joined new project? Configure your project git to track progress.</p>
-            </div>
-        </article>  
         
-        
-        <div class="is-hidden" rv-class-is-hidden="model.process.step | neq 'WORKOUT'">
-            
-            <div class="container">
-                <h3 class="title is-3">Your dashboard</h3>
-                <section class="section mt-6" style="padding: 0.5rem 0.5rem;">                        
-                  <heat-map-events title="Today's Effort" events="model.events.all_time" range="18" start-hour="7" domain="hour" sub-domain="minute"></heat-map-events>
-                  <heat-map-events title="Historical Activity" events="model.events.all_time" range="-12" domain="month" sub-domain="day"></heat-map-events>            
-                  <plot-stats title="Effort (trending)" kind="usersMa" effort-key="cals" stats="model.trends.all_time"></plot-stats>
-                  <plot-stats title="Commits (trending)" kind="usersMa" effort-key="commits" stats="model.trends.all_time"></plot-stats>
-                  <plot-stats title="Lines (trending)" kind="usersMa" effort-key="lines" stats="model.trends.all_time"></plot-stats>
-                  <plot-stats title="Entropy (trending)" kind="usersMa" effort-key="entropy" stats="model.trends.all_time"></plot-stats>
-                  
-                </section>
-            </div>
-            
-            <div class="container">
-                <h3 class="title is-3">Today's work (projects & commits)</h3>
+        <!-- <div class="container" rv-class-is-hidden="model.events.all_time | sizeGte 1">
+            <article class="message is-warning is-hidden" rv-class-is-hidden="model.process.step | neq 'PREPARE'">
+                <div class="message-body">
+                Good Day, seems it's a first day together 🤗 Let's make noise, write nice <strong>code</strong> and make some <strong>commits!</strong>.
+                <p class="my-4">Already joined a project via invitation? You may need to configure yourt first project git to track progress - have a look at <strong>Your projects</strong> menu option.</p>
+                </div>
+            </article> 
+        </div> -->
+
+        <div class="container" >
+            <h3 class="title is-3">Today's Workout</h3>
+            <h5 class="subtitle"><today></today></h5>
+            <article class="message is-info is-hidden" rv-class-is-hidden="model.process.step | neq 'PREPARE'">
+                <div class="message-body">
+                Hello 🤗, no calories today yet. Let's make a rumble, write nice <strong>code</strong> and make some <strong>commits!</strong>.
+                <p class="my-4">Got invited to new project? Configure your project git to start tracking progress - have a look at <strong>Your projects</strong> menu option.</p>
+                </div>
+            </article> 
+            <section class="section mt-6" style="padding: 0.5rem 0.5rem;">                                         
+                <heat-map-events title="Today's Effort" events="model.events.all_time" range="18" start-hour="7" domain="hour" sub-domain="minute"></heat-map-events>                
+                <heat-map-events title="Historical Activity" events="model.events.all_time" range="-12" domain="month" sub-domain="day"></heat-map-events>            
+                <div rv-class-is-hidden="model.events.all_time | sizeLt 1">
+                    <plot-stats title="Effort (trending)" kind="usersMa" effort-key="cals" stats="model.trends.all_time"></plot-stats>
+                    <plot-stats title="Commits (trending)" kind="usersMa" effort-key="commits" stats="model.trends.all_time"></plot-stats>
+                    <plot-stats title="Lines (trending)" kind="usersMa" effort-key="lines" stats="model.trends.all_time"></plot-stats>
+                    <plot-stats title="Entropy (trending)" kind="usersMa" effort-key="entropy" stats="model.trends.all_time"></plot-stats>              
+                </div>                
+            </section>
+        </div>
+
+        <div class="container" class="is-hidden" rv-class-is-hidden="model.process.step | neq 'WORKOUT'">
+            <h3 class="title is-5">Projects and commits</h3>            
+            <div >
+                
+                <!-- <div class="container">
+                    <h3 class="title is-3">Your dashboard</h3>
+                    <section class="section mt-6" style="padding: 0.5rem 0.5rem;">                        
+                    <heat-map-events title="Today's Effort" events="model.events.all_time" range="18" start-hour="7" domain="hour" sub-domain="minute"></heat-map-events>
+                    <heat-map-events title="Historical Activity" events="model.events.all_time" range="-12" domain="month" sub-domain="day"></heat-map-events>            
+                    <plot-stats title="Effort (trending)" kind="usersMa" effort-key="cals" stats="model.trends.all_time"></plot-stats>
+                    <plot-stats title="Commits (trending)" kind="usersMa" effort-key="commits" stats="model.trends.all_time"></plot-stats>
+                    <plot-stats title="Lines (trending)" kind="usersMa" effort-key="lines" stats="model.trends.all_time"></plot-stats>
+                    <plot-stats title="Entropy (trending)" kind="usersMa" effort-key="entropy" stats="model.trends.all_time"></plot-stats>
+                    
+                    </section>
+                </div> -->
+                              
                 <div class="box" rv-each-user="model.messages.users">
                     <!-- <h3 class="title is-3">Last 9 days</h3>
                     <div id="userGraph" class="content"></div> -->
@@ -375,6 +398,7 @@
                     <div data-kind="usersMa" data-effort-key="cals" data-title="User Contribution" rv-plot-stats="model.trends.all_time"></div>
                     <div data-kind="usersMa" data-effort-key="entropy" data-title="User Efficiency" rv-plot-stats="model.trends.all_time"></div> -->
                 </div>
+                
             </div>
         </div>
 

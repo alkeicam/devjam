@@ -28,6 +28,7 @@
  */
 
 const Store = require('electron-store');
+var moment = require('moment');
 
 
 class PersistentStore{
@@ -173,44 +174,38 @@ class PersistentStore{
     preferences(){
         return this.store.get("preferences");
     }
+}
 
-    // /**
-    //  * 
-    //  * @param {RecentItem} recent 
-    //  */
-    // addRecent(recent){
-        
-    //     recent.ttl = Date.now()+this.expiryMs;
-    //     const recents = this.store.get("recents")
-    //     const newRecents = recents.filter((item)=>item.fullPath!=recent.fullPath);
-    //     newRecents.unshift(recent);
-    //     this.store.set("recents",newRecents);
-    //     this._expiry();        
-    // }
+class MockNewUserPersistentStore extends PersistentStore{
+    static getInstance(){
+        const store = new MockNewUserPersistentStore();
+        store._setup();
+        store._expiry();
+        return store;
+    }
+    // for new users there are no events
+    events(){
+        return []
+    }
+    
+}
 
-    // /**
-    //  * 
-    //  * @returns {RecentItem[]}
-    //  */
-    // recents(){
-    //     return this.store.get("recents");
-    // }
-
-    // purge(){
-    //     this._setupRecents();
-    // }
-    // _expiry(){
-    //     const oldRecents = this.store.get("recents");
-    //     const newRecents = oldRecents.filter((item)=>{
-    //         console.log("Item", item, Date.now());
-    //         return item.ttl>=Date.now()
-    //     });
-    //     this.store.set("recents", newRecents);
-    // }
-
-    // _setupRecents(){
-    //     this.store.set("recents",[]);
-    // }
+class MockUserNoCommitsTodayPersistentStore extends PersistentStore{
+    static getInstance(){
+        const store = new MockUserNoCommitsTodayPersistentStore();
+        store._setup();
+        store._expiry();
+        return store;
+    }
+    // remove todays commits if there are any
+    events(){
+        const ts = moment.utc().startOf('day').valueOf();
+        const events =  this.store.get("events");
+        return events.filter(item=>item.ct<=ts)
+    }
+    
 }
 
 module.exports = PersistentStore.getInstance();
+// module.exports = MockNewUserPersistentStore.getInstance();
+// module.exports = MockUserNoCommitsTodayPersistentStore.getInstance();

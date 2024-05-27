@@ -2,17 +2,10 @@ const express = require('express');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 
-
-
-
-
 // Set up Global configuration access
 dotenv.config();
 
-// const {BackendAPI} = require('./db')
-// const api = new BackendAPI();
 const {Manager} = require('./manager')
-// const manager = new Manager(api);
 const manager = new Manager({});
 const log = require('electron-log');
 
@@ -26,21 +19,13 @@ const path = "hooks";
 
 
 log.info(`${apiName} API Starting...`);
-// api.connect().then(()=>{
-//     console.log('Task API DB initialized...');    
-    app.listen(PORT, () => {
-        log.info(`${apiName} API is up and running on ${PORT} ...`);
-        });
-// })
 
+app.listen(PORT, () => {
+    log.info(`${apiName} API is up and running on ${PORT} ...`);
+});
 
-
-// app.use(bodyParser.urlencoded({ extended: true, limit: "30mb" }));
-// app.use(bodyParser.json());
-
-app.use(bodyParser.urlencoded({ extended: true, limit: "500mb" }));
-app.use(bodyParser.json({limit: "500mb"}));
-// app.use(expressjwt({secret: process.env.JWT_SECRET_KEY, algorithms: ["HS256"],credentialsRequired: false}));
+app.use(bodyParser.urlencoded({ extended: true, limit: "2048mb" }));
+app.use(bodyParser.json({limit: "2048mb"}));
 
 
 function attachNewGetOperation(appHandler, version, path, context, operationHandlerMethod){
@@ -83,14 +68,6 @@ function attachNewPostOperation(appHandler, version, path, context, operationHan
         }        
     });
 }
-
-
-// attachNewGetOperation(app, version, path, "/commit", manager.task.bind(manager));
-
-
-
-attachNewGetOperation(app, version, path, "/effort", manager.effort.bind(manager));
-
 attachNewPostOperation(app, version, path, "/commit", manager.change.bind(manager));
 attachNewPostOperation(app, version, path, "/push", manager.change.bind(manager));
 
