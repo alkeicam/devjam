@@ -145,7 +145,6 @@ class Manager {
         // so lets extract ticket prefix, which can be further mapped onto delivery project
         const ticketPrefix = ticket&&ticket.indexOf("-")!=-1?ticket.split("-")[0]:undefined;
 
-        
         return {
             ticket: ticket,
             ticketPrefix: ticketPrefix
