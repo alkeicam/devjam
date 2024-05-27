@@ -24,6 +24,7 @@
 
     /**
      * Renders stats plot using value provided in rv-plot-stats attribute.
+     * @deprecated user plot-stats component instead
      * @param {*} el must provide followind data-* attributes: data-kind data-effort-key data-title
      * @param {*} value observable stats object that will be plotted
      */
@@ -293,9 +294,9 @@
     rivets.components['plot-stats'] = {
         template: function(item) {            
             const template = `
-        <div class="my-4">    
+        <div class="my-4" rv-class-is-hidden="model.error.message | notEmpty">    
             <h5 class="title is-5">{{model.entity.title}}</h5>           
-            <div class="here-plot"></div>                        
+            <div class="here-plot"></div>               
         </div>
       `
               return template;
@@ -310,7 +311,7 @@
                     entity: data, // timeAgoEvent, metric
                     error:{
                         code: 0,
-                        message: "OK"
+                        message: undefined
                     }
                 },                                               
             }    
@@ -322,7 +323,7 @@
             // const stats = value
             // const dataset = el.dataset;
 
-            const graphData = [];
+            const graphData = [];                        
 
             data.stats[data.kind].forEach((record)=>{
                 const data4Graph = {
@@ -344,10 +345,12 @@
                     y: -0.3
                 }
             };        
-
-            Plotly.newPlot(theElement, graphData, layout,  {displayModeBar: false, responsive: true});
-    
-            // Plotly.newPlot(theElement, dd, layout,  {displayModeBar: false, responsive: true});                
+            // we plot graphs only when we have at least two intervals datapoints
+            if(data.stats.intervals&&data.stats.intervals.length>1){
+                Plotly.newPlot(theElement, graphData, layout,  {displayModeBar: false, responsive: true});
+            }else{
+                controller.model.error.message = `Graphs hidden. Need more data points.`                
+            }
             return controller;
         }
     } 

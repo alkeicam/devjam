@@ -206,6 +206,23 @@ class MockUserNoCommitsTodayPersistentStore extends PersistentStore{
     
 }
 
+class MockUserOnlyCommitsTodayPersistentStore extends PersistentStore{
+    static getInstance(){
+        const store = new MockUserOnlyCommitsTodayPersistentStore();
+        store._setup();
+        store._expiry();
+        return store;
+    }
+    // remove todays commits if there are any
+    events(){
+        const ts = moment.utc().startOf('day').valueOf();
+        const events =  this.store.get("events");
+        return events.filter(item=>item.ct>=ts)
+    }
+    
+}
+
 module.exports = PersistentStore.getInstance();
 // module.exports = MockNewUserPersistentStore.getInstance();
 // module.exports = MockUserNoCommitsTodayPersistentStore.getInstance();
+// module.exports = MockUserOnlyCommitsTodayPersistentStore.getInstance();
