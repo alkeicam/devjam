@@ -1,6 +1,6 @@
 {
   "name": "laascloud-dev-tool",
-  "version": "1.0.39",
+  "version": "1.0.40",
   "description": "Code, track, measure your dev effort.",
   "main": "main.js",
   "productName": "Dev Workout",
