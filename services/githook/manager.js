@@ -161,8 +161,7 @@ class Manager {
         // console.log(lines);
         const endOfCommitMessage = lines.indexOf("",4);
         const userMessage = lines.slice(4,endOfCommitMessage).join("");
-        const {ticket, ticketPrefix} = this._parseTicket(message);
-        
+        const {ticket, ticketPrefix} = this._parseTicket(message);        
         const data = {                     
             ticket: ticket,
             ticketPrefix: ticketPrefix,
