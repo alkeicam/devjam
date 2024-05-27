@@ -18,6 +18,7 @@
  * Person code action event
  * @typedef {Object} GitLogDecoded
  * @property {string} ticket - id of the ticket
+ * @property {string} ticketPrefix - ticket prefix, usually this should map to external project id/code
  * @property {string} commit - commit line with commit hash
  * @property {Author} author - author data
  * @property {string} date - date line
@@ -126,7 +127,7 @@ class Manager {
 
     }
 
-    _parseTicker(message){
+    _parseTicket(message){
         const lines = message.split(/\r?\n/);
         // console.log(lines);
         const endOfCommitMessage = lines.indexOf("",4);
@@ -159,16 +160,9 @@ class Manager {
         const lines = message.split(/\r?\n/);
         // console.log(lines);
         const endOfCommitMessage = lines.indexOf("",4);
-
         const userMessage = lines.slice(4,endOfCommitMessage).join("");
-
+        const {ticket, ticketPrefix} = this._parseTicket(message);
         
-        
-        const {ticket, ticketPrefix} = this._parseTicker(message);
-        
-        
-
-
         const data = {                     
             ticket: ticket,
             ticketPrefix: ticketPrefix,
