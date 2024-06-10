@@ -339,6 +339,7 @@ class Manager {
             // for local git repository which fails new URL do nothing            
         }
 
+        
         return event;
     }
 
