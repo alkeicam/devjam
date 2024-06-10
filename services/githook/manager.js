@@ -339,7 +339,7 @@ class Manager {
             // for local git repository which fails new URL do nothing            
         }
 
-        
+
         return event;
     }
 
@@ -361,9 +361,7 @@ class Manager {
         
         this._calculateEntropyScope(result);
         result.s = this._score(result);
-        
-
-        
+    
         return result;        
     }
 
