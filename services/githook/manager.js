@@ -39,18 +39,39 @@
  */
 
 /**
- * Person code action event
- * @typedef {Object} GitEvent
+ * @typedef {Object} GitEventRaw
  * @property {number} ct - creation timestamp
  * @property {number} s - score
  * @property {string} gitlog - result of git log --stat -1 HEAD in base64.
  * @property {string} diff - result of git show.
  * @property {string} oper - one of "commit" and "push"
  * @property {string} remote - result of git config --get remote.origin.url (may be empty when only local repo)
+ * @property {string} accountId - tenant/account if of the event
+ */
+
+/**
+ * @typedef {Object} GitEvent
+ * @property {number} ct - creation timestamp
+ * @property {number} s - score
+ * @property {string} gitlog - result of git log --stat -1 HEAD decoded as string
+ * @property {string} diff - result of git show as string
+ * @property {string} oper - one of "commit" and "push"
+ * @property {string} remote - result of git config --get remote.origin.url (may be empty when only local repo)
+ * @property {string} accountId - tenant/account if of the event
+ */
+/**
+ * Person code action event
+ * @typedef {Object} GitEventProcessed
+ * @property {number} ct - creation timestamp
+ * @property {number} s - score
+ * @property {string} gitlog - result of git log --stat -1 HEAD.
+ * @property {string} diff - result of git show.
+ * @property {string} oper - one of "commit" and "push"
+ * @property {string} remote - result of git config --get remote.origin.url (may be empty when only local repo) 
+ * @property {string} accountId - tenant/account if of the event
  * @property {GitLogDecoded} decoded - decoded git log data
  * @property {GitEventEntropyScore} e - git event entropy
  * @property {number} lst timestamp of the sync (may be undefined)
- * @property {string} accountId - tenant/account if of the event
  * 
  */
 
@@ -105,26 +126,39 @@ const log = require('electron-log');
 class Manager {
     constructor(api){
         this.api = api;  
-        this.stats = new Stats();      
+        this.stats = new Stats();  
+        this.persistentStore = persistentStore;    
     }
 
     /**
      * Git commit hook calls this method via REST JSON call. This is an entrypoint to manager processing.
      * @param {*} auth 
      * @param {*} params 
-     * @param {*} body 
+     * @param {GitEventRaw} body json containing code change metadatadas from hook
      */
-    async change(auth, params, body){        
+    async change(auth, params, body){      
+
         const gitEvent = this._decode(body);  
-        // console.log(JSON.stringify(gitEvent));      
-        persistentStore.addEvent(gitEvent);
+
+        this.persistentStore.addEvent(gitEvent);
+
+        await this._emitStats();
+        
+        log.log(`Processed ${gitEvent.remote} with entropy: ${gitEvent.e.e} and message: ${gitEvent.decoded.message}`)    
+    }
+
+    async _emitStats(){
         const dailyStats = await this.stats.today();
         
         // here we notify the interface, that new change has arrived and
         // it needs to update the stats
-        BrowserWindow.fromId(1).webContents.send('listener_commitReceived', dailyStats);  
-        log.log(`Processed ${gitEvent.remote} with entropy: ${gitEvent.e.e} and message: ${gitEvent.decoded.message}`)    
+        // BrowserWindow.fromId(1).webContents.send('listener_commitReceived', dailyStats);  
+        this._emitEvent('listener_commitReceived', dailyStats);
+    }
 
+    /* istanbul ignore next */
+    _emitEvent(name, data){
+        BrowserWindow.fromId(1).webContents.send(name, data);  
     }
 
     _parseTicket(message){
@@ -145,45 +179,14 @@ class Manager {
         // so lets extract ticket prefix, which can be further mapped onto delivery project
         const ticketPrefix = ticket&&ticket.indexOf("-")!=-1?ticket.split("-")[0]:undefined;
 
-        
+
         return {
             ticket: ticket,
             ticketPrefix: ticketPrefix
         }
     }
 
-    /**
-     * Parses original git log message
-     * @param {*} message raw git log command results
-     * @returns {GitLogDecoded} decoded git log data
-     */
-    _paseGitLog(message){
-        const lines = message.split(/\r?\n/);
-        // console.log(lines);
-        const endOfCommitMessage = lines.indexOf("",4);
-        const userMessage = lines.slice(4,endOfCommitMessage).join("");
-        const {ticket, ticketPrefix} = this._parseTicket(message);        
-        const data = {                     
-            ticket: ticket,
-            ticketPrefix: ticketPrefix,
-            commit: lines[0],
-            author: {
-                name: lines[1].replace(/Author\:\s+/ig,"").replace(/\<\S+\>.*/ig,""),
-                email: lines[1].replace(/.+\</ig,"").replace(/\>.?/ig,"")
-            },
-            date: lines[2],
-            message: userMessage,
-            changes: lines.slice(endOfCommitMessage+1, lines.length-2),
-            changeSummary: {
-                raw: lines[lines.length-2],
-                files: parseInt(lines[lines.length-2].match(/(\d+ file)/ig)?lines[lines.length-2].match(/(\d+ file)/ig)[0].match(/(\d+)/ig)[0]:0),
-                inserts: parseInt(lines[lines.length-2].match(/(\d+ insertion)/ig)?lines[lines.length-2].match(/(\d+ insertion)/ig)[0].match(/(\d+)/ig)[0]:0),
-                deletions: parseInt(lines[lines.length-2].match(/(\d+ deletion)/ig)?lines[lines.length-2].match(/(\d+ deletion)/ig)[0].match(/(\d+)/ig)[0]:0)
-            }
-        }
-        return data;
-
-    }
+    
 
     /**
      * calculates effor score
@@ -257,52 +260,109 @@ class Manager {
     }
 
     /**
-     * Parses and decodes raw commit message from client endpoint
-     * @param {*} body - request body with json from client endpoint
-     * @returns {GitEvent} git event data
+     * Decodes event gitlog data (which is a result of "git log --stat -1 HEAD | base64" operation)
+     * @param {GitEventRaw} event 
+     * @returns {GitEvent} event with updated gitlog field
      */
-    _decode(body){
-        let buff = Buffer.from(body.gitlog, 'base64');  
+    _decodeGitMessage(event){
+        const result = event;
+        let buff = Buffer.from(event.gitlog, 'base64');  
         let message = buff.toString('utf-8');
-        
-        
-        
-
-        const result = JSON.parse(JSON.stringify(body));
-        // console.log(result);
-        result.id = `${Math.random().toString(36).substring(2, 24)}`;
-        
         result.gitlog = message;
 
-        if(body.diff){
-            let diffBuff = Buffer.from(body.diff, 'base64');  
+        return result;
+    }
+
+    /**
+     * Decodes event diff field (when provided - which is a result of "git show --unified | base64")
+     * @param {GitEventRaw} event 
+     * @returns {GitEvent} event with updated diff field
+     */
+    _decodeGitDiff(event){
+        const result = event;
+        if(event.diff){
+            let diffBuff = Buffer.from(event.diff, 'base64');  
             let diff = diffBuff.toString('utf-8');
             result.diff = diff;
         }
+        return result;
+    }
 
-        const decoded = this._paseGitLog(message);
-        result.decoded = decoded;
+    /**
+     * Decodes git log data into json object
+     * @param {GitEvent} event git event
+     * @returns {GitLogDecoded} event with decoded git log data
+     */
+    _decodeGitLog(event){
+        const message = event.gitlog;
+        const lines = message.split(/\r?\n/);
+        // console.log(lines);
+        const endOfCommitMessage = lines.indexOf("",4);
+        const userMessage = lines.slice(4,endOfCommitMessage).map(item=>item.trim()).join("");
+        const {ticket, ticketPrefix} = this._parseTicket(message);        
+        const data = {                     
+            ticket: ticket,
+            ticketPrefix: ticketPrefix,
+            commit: lines[0],
+            author: {
+                name: lines[1].replace(/Author\:\s+/ig,"").replace(/\<\S+\>.*/ig,"").trim(),
+                email: lines[1].replace(/.+\</ig,"").replace(/\>.?/ig,"").trim()
+            },
+            date: lines[2],
+            message: userMessage,
+            changes: lines.slice(endOfCommitMessage+1, lines.length-2),
+            changeSummary: {
+                raw: lines[lines.length-2],
+                files: parseInt(lines[lines.length-2].match(/(\d+ file)/ig)?lines[lines.length-2].match(/(\d+ file)/ig)[0].match(/(\d+)/ig)[0]:0),
+                inserts: parseInt(lines[lines.length-2].match(/(\d+ insertion)/ig)?lines[lines.length-2].match(/(\d+ insertion)/ig)[0].match(/(\d+)/ig)[0]:0),
+                deletions: parseInt(lines[lines.length-2].match(/(\d+ deletion)/ig)?lines[lines.length-2].match(/(\d+ deletion)/ig)[0].match(/(\d+)/ig)[0]:0)
+            }
+        }
         
-        result.ct = moment().valueOf();
-        this._calculateEntropyScope(result);
-        result.s = this._score(result);
-        
+        event.decoded = data;
+        return event;
+    }
 
-        try{
-            
-            const myURL = new URL(result.remote);
+    _decodeRemote(event){
+        try{            
+            const myURL = new URL(event.remote);
             const passInURL = myURL.password;
             const userInURL = myURL.username;
             
-            if(passInURL) result.remote = result.remote.replace(passInURL,"");
-            if(userInURL) result.remote = result.remote.replace(userInURL,"");
+            if(passInURL) event.remote = event.remote.replace(passInURL,"");
+            if(userInURL) event.remote = event.remote.replace(userInURL,"");
         }
         catch(e){
-            if(!result.remote){
+            if(!event.remote){
                 throw new Error("Remote parameter missing");
             }
             // for local git repository which fails new URL do nothing            
         }
+
+        return event;
+    }
+
+    /**
+     * Parses and decodes raw commit message from client endpoint
+     * @param {GitEventRaw} body - request body with json from client endpoint
+     * @returns {GitEventProcessed} processed git event data
+     */
+    _decode(body){
+        let result = JSON.parse(JSON.stringify(body)); 
+        result.id = `${Math.random().toString(36).substring(2, 24)}`;                        
+        result.ct = moment().valueOf();
+
+        result = this._decodeGitMessage(result);                        
+        result = this._decodeGitDiff(result);
+        result = this._decodeGitLog(result);  
+        result = this._decodeRemote(result);
+
+        
+        this._calculateEntropyScope(result);
+        result.s = this._score(result);
+        
+
+        
         return result;        
     }
 

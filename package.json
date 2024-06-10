@@ -6,7 +6,8 @@
   "productName": "Dev Workout",
   "publisherName": "LaaS Cloud OÜ",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
+    "coverage": "nyc --reporter html --reporter text npm test",
     "start": "electron .",
     "pack": "build --dir",
     "dist:patch": "npm version patch && electron-builder",
@@ -88,19 +89,14 @@
     "branches": 100,
     "lines": 100,
     "functions": 100,
-    "statements": 100,
-    "exclude-after-remap": false,
-    "extension": [
-      ".ts",
-      ".tsx"
-    ],
+    "statements": 100,        
     "exclude": [
-      "**/*.d.ts",
-      "**/*.js",
+      "**/*.d.ts",      
       "**/*.notest.ts",
       "**/*.mock.ts",
-      "**/*.test.ts"
-    ],
-    "all": true
+      "**/*.test.ts",
+      "**/*.mock.js", 
+      "**/*.test.js"
+    ]    
   }
 }
