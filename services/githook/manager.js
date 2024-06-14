@@ -328,9 +328,14 @@ class Manager {
             const myURL = new URL(event.remote);
             const passInURL = myURL.password;
             const userInURL = myURL.username;
-            
-            if(passInURL) event.remote = event.remote.replace(passInURL,"");
+
+            // user and password
+            if(userInURL) event.remote = event.remote.replace(userInURL+":","");
+            // api key/no user
             if(userInURL) event.remote = event.remote.replace(userInURL,"");
+            // password
+            if(passInURL) event.remote = event.remote.replace(passInURL,"");
+            
         }
         catch(e){
             if(!event.remote){
@@ -364,19 +369,6 @@ class Manager {
     
         return result;        
     }
-
-    /**
-     * @deprecated seems this operation is no more used, to be removed in future versions of manager
-     * @param {*} auth 
-     * @param {*} params 
-     * @param {*} body 
-     * @returns 
-     */
-    async effort(auth, params, body){
-        const events = persistentStore.events();
-        return events;                
-    }
-
 }
 
 module.exports = {Manager};

@@ -89,6 +89,34 @@ describe('hook manager', () => {
             expect(result.decoded.message).eq('PWR-01 cleaning');
             expect(result.decoded.ticket).eq('PWR-01');
             expect(result.decoded.ticketPrefix).eq('PWR');
+
+            const result2 = theManager._decode(MocksModule.MOCKS.hookEvents.three_no_ticket);
+            expect(result2.decoded.ticket).is.empty;
+            expect(result2.decoded.ticketPrefix).is.empty;
+
+            const result3 = theManager._decode(MocksModule.MOCKS.hookEvents.five_ticket_bracket_format);
+            expect(result3.decoded.ticket).eq('PWR-11')
+            expect(result3.decoded.ticketPrefix).eq('PWR');
+        })
+
+        it("populates remote - remote is configured",()=>{
+            // here remote is available
+            const result = theManager._decode(MocksModule.MOCKS.hookEvents.six_remote_user_password);
+            const result2 = theManager._decode(MocksModule.MOCKS.hookEvents.seven_remote_apikey);
+
+            // make sure that api key/credentials are removed from remote and remote is retrieved
+            expect(result.remote).includes("https://@github.com/alkeicam/devjam.git");
+            expect(result2.remote).includes("https://@github.com/alkeicam/devjam.git");                        
+        })
+        it("populates remote - remote is not configured - local dev",()=>{
+            // here remote is available
+            const result = theManager._decode(MocksModule.MOCKS.hookEvents.one);
+            
+            // make sure that api key/credentials are removed from remote and remote is retrieved
+            expect(result.remote).eq(MocksModule.MOCKS.hookEvents.one.remote);            
+        })
+        it("populates remote - invalid request - no remote at all",()=>{                        
+            expect(()=>{theManager._decode(MocksModule.MOCKS.hookEvents.eight_invalid_no_remote)}).to.throw("Remote parameter missing")                                
         })
 
     })

@@ -16,7 +16,60 @@ const MOCKS = {
             account: 'a_execon',
             user: 'maciej.grula@execon.pl',
             project: '4r3t7x7fj6'
-        }        
+        },
+        three_no_ticket: {
+            gitlog: 'Y29tbWl0IGM4ZTQ5MTIxOGQ5MThjY2RlZWI4NTJjMWQxOTc4ZmQxZjQ2MDE5MmMKQXV0aG9yOiBNYWNpZWogR3J1bGEgPG1hY2llai5ncnVsYUBleGVjb24ucGw+CkRhdGU6ICAgTW9uIEp1biAxMCAxNjo0NzowMiAyMDI0ICswMjAwCgogICAgbm8gdGkgY2tldCBpZAoKIHNlcnZpY2VzL2dpdGhvb2svbWFuYWdlci5qcyB8IDYgKystLS0tCiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQo=',
+            oper: 'commit',
+            remote: 'https://ghp_26pVh@github.com/alkeicam/devjam.git',
+            diff: 'Y29tbWl0IGM4ZTQ5MTIxOGQ5MThjY2RlZWI4NTJjMWQxOTc4ZmQxZjQ2MDE5MmMKQXV0aG9yOiBNYWNpZWogR3J1bGEgPG1hY2llai5ncnVsYUBleGVjb24ucGw+CkRhdGU6ICAgTW9uIEp1biAxMCAxNjo0NzowMiAyMDI0ICswMjAwCgogICAgbm8gdGkgY2tldCBpZAoKZGlmZiAtLWdpdCBhL3NlcnZpY2VzL2dpdGhvb2svbWFuYWdlci5qcyBiL3NlcnZpY2VzL2dpdGhvb2svbWFuYWdlci5qcwppbmRleCBiNmZkZDQ5Li40ZTBjOWI2IDEwMDY0NAotLS0gYS9zZXJ2aWNlcy9naXRob29rL21hbmFnZXIuanMKKysrIGIvc2VydmljZXMvZ2l0aG9vay9tYW5hZ2VyLmpzCkBAIC0zMzksNyArMzM5LDcgQEAgY2xhc3MgTWFuYWdlciB7CiAgICAgICAgICAgICAvLyBmb3IgbG9jYWwgZ2l0IHJlcG9zaXRvcnkgd2hpY2ggZmFpbHMgbmV3IFVSTCBkbyBub3RoaW5nICAgICAgICAgICAgCiAgICAgICAgIH0KIAotICAgICAgICAKKwogICAgICAgICByZXR1cm4gZXZlbnQ7CiAgICAgfQogCkBAIC0zNjEsOSArMzYxLDcgQEAgY2xhc3MgTWFuYWdlciB7CiAgICAgICAgIAogICAgICAgICB0aGlzLl9jYWxjdWxhdGVFbnRyb3B5U2NvcGUocmVzdWx0KTsKICAgICAgICAgcmVzdWx0LnMgPSB0aGlzLl9zY29yZShyZXN1bHQpOwotICAgICAgICAKLQotICAgICAgICAKKyAgICAKICAgICAgICAgcmV0dXJuIHJlc3VsdDsgICAgICAgIAogICAgIH0KIAo=',
+            account: 'a_execon',
+            user: 'alkeicam@yahoo.com',
+            project: 'wn04l6pv9y'
+        },
+        four_no_remote: {
+            gitlog: 'Y29tbWl0IDMwMjNlODA3OTUyZThjZjQyYjVlYjYyYzdjMjkzODZhNmMzMTVhNjUKQXV0aG9yOiBNYWNpZWogR3J1bGEgPG1hY2llai5ncnVsYUBleGVjb24ucGw+CkRhdGU6ICAgTW9uIEp1biAxMCAxNjo1MTo0MCAyMDI0ICswMjAwCgogICAgc29tZSBjaGFuZ2VzIFtQV1ItMTFdCgogbW9kZWwvZG9tYWluLnRzIHwgMSArCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykK',
+            oper: 'commit',
+            remote: '/Users/grulka/Documents/Projekty/gitspace/private/exe-dev-app-ms_v3',
+            diff: 'Y29tbWl0IDMwMjNlODA3OTUyZThjZjQyYjVlYjYyYzdjMjkzODZhNmMzMTVhNjUKQXV0aG9yOiBNYWNpZWogR3J1bGEgPG1hY2llai5ncnVsYUBleGVjb24ucGw+CkRhdGU6ICAgTW9uIEp1biAxMCAxNjo1MTo0MCAyMDI0ICswMjAwCgogICAgc29tZSBjaGFuZ2VzIFtQV1ItMTFdCgpkaWZmIC0tZ2l0IGEvbW9kZWwvZG9tYWluLnRzIGIvbW9kZWwvZG9tYWluLnRzCmluZGV4IGNjMTY5ZDIuLjgxNzUwY2MgMTAwNjQ0Ci0tLSBhL21vZGVsL2RvbWFpbi50cworKysgYi9tb2RlbC9kb21haW4udHMKQEAgLTY3LDYgKzY3LDcgQEAgZXhwb3J0IGludGVyZmFjZSBJbnZpdGF0aW9uewogICAgIHVzZWQ6IGJvb2xlYW4KIH0KIAorCiBleHBvcnQgaW50ZXJmYWNlIEV2ZW50ewogICAgIG9wZXI6ICJjb21taXQifCJwdXNoIiwKICAgICByZW1vdGU6IHN0cmluZywK',
+            account: 'a_execon',
+            user: 'maciej.grula@execon.pl',
+            project: 'a_execon_devjam_ms'
+        },
+        five_ticket_bracket_format: {
+            gitlog: 'Y29tbWl0IDMwMjNlODA3OTUyZThjZjQyYjVlYjYyYzdjMjkzODZhNmMzMTVhNjUKQXV0aG9yOiBNYWNpZWogR3J1bGEgPG1hY2llai5ncnVsYUBleGVjb24ucGw+CkRhdGU6ICAgTW9uIEp1biAxMCAxNjo1MTo0MCAyMDI0ICswMjAwCgogICAgc29tZSBjaGFuZ2VzIFtQV1ItMTFdCgogbW9kZWwvZG9tYWluLnRzIHwgMSArCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykK',
+            oper: 'commit',
+            remote: '/Users/grulka/Documents/Projekty/gitspace/private/exe-dev-app-ms_v3',
+            diff: 'Y29tbWl0IDMwMjNlODA3OTUyZThjZjQyYjVlYjYyYzdjMjkzODZhNmMzMTVhNjUKQXV0aG9yOiBNYWNpZWogR3J1bGEgPG1hY2llai5ncnVsYUBleGVjb24ucGw+CkRhdGU6ICAgTW9uIEp1biAxMCAxNjo1MTo0MCAyMDI0ICswMjAwCgogICAgc29tZSBjaGFuZ2VzIFtQV1ItMTFdCgpkaWZmIC0tZ2l0IGEvbW9kZWwvZG9tYWluLnRzIGIvbW9kZWwvZG9tYWluLnRzCmluZGV4IGNjMTY5ZDIuLjgxNzUwY2MgMTAwNjQ0Ci0tLSBhL21vZGVsL2RvbWFpbi50cworKysgYi9tb2RlbC9kb21haW4udHMKQEAgLTY3LDYgKzY3LDcgQEAgZXhwb3J0IGludGVyZmFjZSBJbnZpdGF0aW9uewogICAgIHVzZWQ6IGJvb2xlYW4KIH0KIAorCiBleHBvcnQgaW50ZXJmYWNlIEV2ZW50ewogICAgIG9wZXI6ICJjb21taXQifCJwdXNoIiwKICAgICByZW1vdGU6IHN0cmluZywK',
+            account: 'a_execon',
+            user: 'maciej.grula@execon.pl',
+            project: 'a_execon_devjam_ms'
+        },
+        six_remote_user_password: {
+            gitlog: 'Y29tbWl0IGM4ZTQ5MTIxOGQ5MThjY2RlZWI4NTJjMWQxOTc4ZmQxZjQ2MDE5MmMKQXV0aG9yOiBNYWNpZWogR3J1bGEgPG1hY2llai5ncnVsYUBleGVjb24ucGw+CkRhdGU6ICAgTW9uIEp1biAxMCAxNjo0NzowMiAyMDI0ICswMjAwCgogICAgbm8gdGkgY2tldCBpZAoKIHNlcnZpY2VzL2dpdGhvb2svbWFuYWdlci5qcyB8IDYgKystLS0tCiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQo=',
+            oper: 'commit',
+            remote: 'https://user:pass@github.com/alkeicam/devjam.git',
+            diff: 'Y29tbWl0IGM4ZTQ5MTIxOGQ5MThjY2RlZWI4NTJjMWQxOTc4ZmQxZjQ2MDE5MmMKQXV0aG9yOiBNYWNpZWogR3J1bGEgPG1hY2llai5ncnVsYUBleGVjb24ucGw+CkRhdGU6ICAgTW9uIEp1biAxMCAxNjo0NzowMiAyMDI0ICswMjAwCgogICAgbm8gdGkgY2tldCBpZAoKZGlmZiAtLWdpdCBhL3NlcnZpY2VzL2dpdGhvb2svbWFuYWdlci5qcyBiL3NlcnZpY2VzL2dpdGhvb2svbWFuYWdlci5qcwppbmRleCBiNmZkZDQ5Li40ZTBjOWI2IDEwMDY0NAotLS0gYS9zZXJ2aWNlcy9naXRob29rL21hbmFnZXIuanMKKysrIGIvc2VydmljZXMvZ2l0aG9vay9tYW5hZ2VyLmpzCkBAIC0zMzksNyArMzM5LDcgQEAgY2xhc3MgTWFuYWdlciB7CiAgICAgICAgICAgICAvLyBmb3IgbG9jYWwgZ2l0IHJlcG9zaXRvcnkgd2hpY2ggZmFpbHMgbmV3IFVSTCBkbyBub3RoaW5nICAgICAgICAgICAgCiAgICAgICAgIH0KIAotICAgICAgICAKKwogICAgICAgICByZXR1cm4gZXZlbnQ7CiAgICAgfQogCkBAIC0zNjEsOSArMzYxLDcgQEAgY2xhc3MgTWFuYWdlciB7CiAgICAgICAgIAogICAgICAgICB0aGlzLl9jYWxjdWxhdGVFbnRyb3B5U2NvcGUocmVzdWx0KTsKICAgICAgICAgcmVzdWx0LnMgPSB0aGlzLl9zY29yZShyZXN1bHQpOwotICAgICAgICAKLQotICAgICAgICAKKyAgICAKICAgICAgICAgcmV0dXJuIHJlc3VsdDsgICAgICAgIAogICAgIH0KIAo=',
+            account: 'a_execon',
+            user: 'alkeicam@yahoo.com',
+            project: 'wn04l6pv9y'
+        },
+        seven_remote_apikey: {
+            gitlog: 'Y29tbWl0IGM4ZTQ5MTIxOGQ5MThjY2RlZWI4NTJjMWQxOTc4ZmQxZjQ2MDE5MmMKQXV0aG9yOiBNYWNpZWogR3J1bGEgPG1hY2llai5ncnVsYUBleGVjb24ucGw+CkRhdGU6ICAgTW9uIEp1biAxMCAxNjo0NzowMiAyMDI0ICswMjAwCgogICAgbm8gdGkgY2tldCBpZAoKIHNlcnZpY2VzL2dpdGhvb2svbWFuYWdlci5qcyB8IDYgKystLS0tCiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQo=',
+            oper: 'commit',
+            remote: 'https://ghp_26pVh@github.com/alkeicam/devjam.git',
+            diff: 'Y29tbWl0IGM4ZTQ5MTIxOGQ5MThjY2RlZWI4NTJjMWQxOTc4ZmQxZjQ2MDE5MmMKQXV0aG9yOiBNYWNpZWogR3J1bGEgPG1hY2llai5ncnVsYUBleGVjb24ucGw+CkRhdGU6ICAgTW9uIEp1biAxMCAxNjo0NzowMiAyMDI0ICswMjAwCgogICAgbm8gdGkgY2tldCBpZAoKZGlmZiAtLWdpdCBhL3NlcnZpY2VzL2dpdGhvb2svbWFuYWdlci5qcyBiL3NlcnZpY2VzL2dpdGhvb2svbWFuYWdlci5qcwppbmRleCBiNmZkZDQ5Li40ZTBjOWI2IDEwMDY0NAotLS0gYS9zZXJ2aWNlcy9naXRob29rL21hbmFnZXIuanMKKysrIGIvc2VydmljZXMvZ2l0aG9vay9tYW5hZ2VyLmpzCkBAIC0zMzksNyArMzM5LDcgQEAgY2xhc3MgTWFuYWdlciB7CiAgICAgICAgICAgICAvLyBmb3IgbG9jYWwgZ2l0IHJlcG9zaXRvcnkgd2hpY2ggZmFpbHMgbmV3IFVSTCBkbyBub3RoaW5nICAgICAgICAgICAgCiAgICAgICAgIH0KIAotICAgICAgICAKKwogICAgICAgICByZXR1cm4gZXZlbnQ7CiAgICAgfQogCkBAIC0zNjEsOSArMzYxLDcgQEAgY2xhc3MgTWFuYWdlciB7CiAgICAgICAgIAogICAgICAgICB0aGlzLl9jYWxjdWxhdGVFbnRyb3B5U2NvcGUocmVzdWx0KTsKICAgICAgICAgcmVzdWx0LnMgPSB0aGlzLl9zY29yZShyZXN1bHQpOwotICAgICAgICAKLQotICAgICAgICAKKyAgICAKICAgICAgICAgcmV0dXJuIHJlc3VsdDsgICAgICAgIAogICAgIH0KIAo=',
+            account: 'a_execon',
+            user: 'alkeicam@yahoo.com',
+            project: 'wn04l6pv9y'
+        },
+        eight_invalid_no_remote: {
+            gitlog: 'Y29tbWl0IGM4ZTQ5MTIxOGQ5MThjY2RlZWI4NTJjMWQxOTc4ZmQxZjQ2MDE5MmMKQXV0aG9yOiBNYWNpZWogR3J1bGEgPG1hY2llai5ncnVsYUBleGVjb24ucGw+CkRhdGU6ICAgTW9uIEp1biAxMCAxNjo0NzowMiAyMDI0ICswMjAwCgogICAgbm8gdGkgY2tldCBpZAoKIHNlcnZpY2VzL2dpdGhvb2svbWFuYWdlci5qcyB8IDYgKystLS0tCiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQo=',
+            oper: 'commit',            
+            diff: 'Y29tbWl0IGM4ZTQ5MTIxOGQ5MThjY2RlZWI4NTJjMWQxOTc4ZmQxZjQ2MDE5MmMKQXV0aG9yOiBNYWNpZWogR3J1bGEgPG1hY2llai5ncnVsYUBleGVjb24ucGw+CkRhdGU6ICAgTW9uIEp1biAxMCAxNjo0NzowMiAyMDI0ICswMjAwCgogICAgbm8gdGkgY2tldCBpZAoKZGlmZiAtLWdpdCBhL3NlcnZpY2VzL2dpdGhvb2svbWFuYWdlci5qcyBiL3NlcnZpY2VzL2dpdGhvb2svbWFuYWdlci5qcwppbmRleCBiNmZkZDQ5Li40ZTBjOWI2IDEwMDY0NAotLS0gYS9zZXJ2aWNlcy9naXRob29rL21hbmFnZXIuanMKKysrIGIvc2VydmljZXMvZ2l0aG9vay9tYW5hZ2VyLmpzCkBAIC0zMzksNyArMzM5LDcgQEAgY2xhc3MgTWFuYWdlciB7CiAgICAgICAgICAgICAvLyBmb3IgbG9jYWwgZ2l0IHJlcG9zaXRvcnkgd2hpY2ggZmFpbHMgbmV3IFVSTCBkbyBub3RoaW5nICAgICAgICAgICAgCiAgICAgICAgIH0KIAotICAgICAgICAKKwogICAgICAgICByZXR1cm4gZXZlbnQ7CiAgICAgfQogCkBAIC0zNjEsOSArMzYxLDcgQEAgY2xhc3MgTWFuYWdlciB7CiAgICAgICAgIAogICAgICAgICB0aGlzLl9jYWxjdWxhdGVFbnRyb3B5U2NvcGUocmVzdWx0KTsKICAgICAgICAgcmVzdWx0LnMgPSB0aGlzLl9zY29yZShyZXN1bHQpOwotICAgICAgICAKLQotICAgICAgICAKKyAgICAKICAgICAgICAgcmV0dXJuIHJlc3VsdDsgICAgICAgIAogICAgIH0KIAo=',
+            account: 'a_execon',
+            user: 'alkeicam@yahoo.com',
+            project: 'wn04l6pv9y'
+        },
     }
      
 }

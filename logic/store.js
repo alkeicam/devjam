@@ -175,7 +175,7 @@ class PersistentStore{
         return this.store.get("preferences");
     }
 }
-
+/* istanbul ignore next */
 class MockNewUserPersistentStore extends PersistentStore{
     static getInstance(){
         const store = new MockNewUserPersistentStore();
@@ -189,7 +189,7 @@ class MockNewUserPersistentStore extends PersistentStore{
     }
     
 }
-
+/* istanbul ignore next */
 class MockUserNoCommitsTodayPersistentStore extends PersistentStore{
     static getInstance(){
         const store = new MockUserNoCommitsTodayPersistentStore();
@@ -205,7 +205,7 @@ class MockUserNoCommitsTodayPersistentStore extends PersistentStore{
     }
     
 }
-
+/* istanbul ignore next */
 class MockUserOnlyCommitsTodayPersistentStore extends PersistentStore{
     static getInstance(){
         const store = new MockUserOnlyCommitsTodayPersistentStore();
