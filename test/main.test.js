@@ -50,15 +50,15 @@ describe('hook manager', () => {
         afterEach(()=>{
         })
         it("generates id",async ()=>{
-            const result = theManager._decode(MocksModule.MOCKS.hookEvents.one);
+            const result = await theManager._decode(MocksModule.MOCKS.hookEvents.one);
             expect(result.id.length).gt(6)            
         })        
         it("populates creation timestamp",async ()=>{
-            const result = theManager._decode(MocksModule.MOCKS.hookEvents.one);
+            const result = await  theManager._decode(MocksModule.MOCKS.hookEvents.one);
             expect(result.ct).gt(Date.now()-100);            
         })   
-        it("populates gitlog property",()=>{
-            const result = theManager._decode(MocksModule.MOCKS.hookEvents.one);
+        it("populates gitlog property",async ()=>{
+            const result = await theManager._decode(MocksModule.MOCKS.hookEvents.one);
             let buff = Buffer.from(MocksModule.MOCKS.hookEvents.one.gitlog, 'base64');  
             let message = buff.toString('utf-8');
 
@@ -66,16 +66,16 @@ describe('hook manager', () => {
             expect(result.gitlog.startsWith("commit")).is.true;            
             expect(result.gitlog).eq(message)
         }) 
-        it("populates diff property",()=>{
-            const result = theManager._decode(MocksModule.MOCKS.hookEvents.one);
+        it("populates diff property",async ()=>{
+            const result = await theManager._decode(MocksModule.MOCKS.hookEvents.one);
             expect(result.diff).is.not.empty
             expect(result.diff.startsWith("commit")).is.true;
 
-            const result2 = theManager._decode(MocksModule.MOCKS.hookEvents.two_no_diff);
+            const result2 = await theManager._decode(MocksModule.MOCKS.hookEvents.two_no_diff);
             expect(result2.diff).is.empty;            
         })    
-        it("populates decoded property",()=>{
-            const result = theManager._decode(MocksModule.MOCKS.hookEvents.one);
+        it("populates decoded property",async ()=>{
+            const result = await theManager._decode(MocksModule.MOCKS.hookEvents.one);
             expect(result.decoded).is.not.empty
 
             expect(result.decoded.author.name).eq("Maciej Grula");
@@ -90,33 +90,38 @@ describe('hook manager', () => {
             expect(result.decoded.ticket).eq('PWR-01');
             expect(result.decoded.ticketPrefix).eq('PWR');
 
-            const result2 = theManager._decode(MocksModule.MOCKS.hookEvents.three_no_ticket);
+            const result2 = await theManager._decode(MocksModule.MOCKS.hookEvents.three_no_ticket);
             expect(result2.decoded.ticket).is.empty;
             expect(result2.decoded.ticketPrefix).is.empty;
 
-            const result3 = theManager._decode(MocksModule.MOCKS.hookEvents.five_ticket_bracket_format);
+            const result3 = await theManager._decode(MocksModule.MOCKS.hookEvents.five_ticket_bracket_format);
             expect(result3.decoded.ticket).eq('PWR-11')
             expect(result3.decoded.ticketPrefix).eq('PWR');
         })
 
-        it("populates remote - remote is configured",()=>{
+        it("populates remote - remote is configured",async ()=>{
             // here remote is available
-            const result = theManager._decode(MocksModule.MOCKS.hookEvents.six_remote_user_password);
-            const result2 = theManager._decode(MocksModule.MOCKS.hookEvents.seven_remote_apikey);
+            const result = await theManager._decode(MocksModule.MOCKS.hookEvents.six_remote_user_password);
+            const result2 = await theManager._decode(MocksModule.MOCKS.hookEvents.seven_remote_apikey);
 
             // make sure that api key/credentials are removed from remote and remote is retrieved
             expect(result.remote).includes("https://@github.com/alkeicam/devjam.git");
             expect(result2.remote).includes("https://@github.com/alkeicam/devjam.git");                        
         })
-        it("populates remote - remote is not configured - local dev",()=>{
+        it("populates remote - remote is not configured - local dev",async ()=>{
             // here remote is available
-            const result = theManager._decode(MocksModule.MOCKS.hookEvents.one);
+            const result = await theManager._decode(MocksModule.MOCKS.hookEvents.one);
             
             // make sure that api key/credentials are removed from remote and remote is retrieved
             expect(result.remote).eq(MocksModule.MOCKS.hookEvents.one.remote);            
         })
-        it("populates remote - invalid request - no remote at all",()=>{                        
-            expect(()=>{theManager._decode(MocksModule.MOCKS.hookEvents.eight_invalid_no_remote)}).to.throw("Remote parameter missing")                                
+        it("populates remote - invalid request - no remote at all",()=>{   
+            
+            
+            return theManager._decode(MocksModule.MOCKS.hookEvents.eight_invalid_no_remote).should.be.rejectedWith('Remote parameter missing');                      
+            
+
+            // expect(async()=>{await theManager._decode(MocksModule.MOCKS.hookEvents.eight_invalid_no_remote)}).to.throw("Remote parameter missing")                                
         })
 
     })

@@ -57,7 +57,7 @@ class OnboardingModalController {
         const postCommitCommand = 
 `#!/bin/sh
 GIT_LOG=\`git log --stat -1 HEAD | base64 ${isWin?"-w 0":""}\`
-GIT_DIFF=\`git show --unified | base64 ${isWin?"-w 0":""}\`
+GIT_DIFF=\`git show --unified=0 | base64 ${isWin?"-w 0":""}\`
 REMOTE=\`git config --get remote.origin.url\`
 LOCAL=\`git rev-parse --show-toplevel\`
 ACCOUNT="${item.id}"

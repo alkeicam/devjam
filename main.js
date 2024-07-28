@@ -47,6 +47,17 @@ const createWindow = () => {
     }, 200);    
   })
 
+  // https://stackoverflow.com/questions/63944303/electron-browserwindow-hangs-and-becomes-unresponsive
+  mainWindow.on("unresponsive",()=>{
+    log.warn("Detected unresponsive window. Trying to reload the window ...")
+    mainWindow.reload();
+    log.warn("Detected unresponsive window. Trying to reload the window ... done.")
+  })
+
+  mainWindow.on("responsive",()=>{
+    log.info(`Main window restored - is responsive again.`);
+  })
+
 
   
   // make sure that we recheck recent stats when windows is showed

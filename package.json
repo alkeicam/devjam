@@ -27,7 +27,13 @@
       "icon": "app/build/icon.png",
       "publish": [
         "github"
-      ]
+      ],
+      "target": [
+        {
+          "target": "default",
+          "arch": "universal"
+        }
+      ]      
     },
     "win": {
       "icon": "app/build/icon.png",
