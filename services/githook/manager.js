@@ -4,7 +4,7 @@ var moment = require('moment');
 const {Stats} = require("../../logic/stats");
 const log = require('electron-log');
 
-const {ShanonEntropyScoreModelV2} = require('./model/q247-models-laascloud.umd')
+const {ShanonEntropyScoreModelV1} = require('./model/q247-models-laascloud.umd')
 
 
 class Manager {
@@ -258,7 +258,7 @@ class Manager {
         // this._calculateEntropyScope(result);
         // result.s = this._score(result);
 
-        const model = new ShanonEntropyScoreModelV2();
+        const model = new ShanonEntropyScoreModelV1();
         const score = await model.score(result);
         result.s = score.score;
     
