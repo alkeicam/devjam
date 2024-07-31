@@ -1,6 +1,6 @@
 {
   "name": "laascloud-dev-tool",
-  "version": "1.0.41",
+  "version": "1.0.42",
   "description": "Code, track, measure your dev effort.",
   "main": "main.js",
   "productName": "Dev Workout",
@@ -33,7 +33,7 @@
           "target": "default",
           "arch": "universal"
         }
-      ]      
+      ]
     },
     "win": {
       "icon": "app/build/icon.png",
@@ -95,14 +95,14 @@
     "branches": 100,
     "lines": 100,
     "functions": 100,
-    "statements": 100,        
+    "statements": 100,
     "exclude": [
-      "**/*.d.ts",      
+      "**/*.d.ts",
       "**/*.notest.ts",
       "**/*.mock.ts",
       "**/*.test.ts",
-      "**/*.mock.js", 
+      "**/*.mock.js",
       "**/*.test.js"
-    ]    
+    ]
   }
 }
