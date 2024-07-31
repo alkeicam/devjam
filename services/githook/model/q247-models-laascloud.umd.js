@@ -215,8 +215,8 @@
      * --- a/src/js/version.js
      * +++ b/src/js/version.js
      * @@ -1 +1 @@
-     * -const X_APP_VERSION = '1.0.24'
-     * +const X_APP_VERSION = '1.0.25'
+     * -const X_APP_VERSION = '1.0.42'
+     * +const X_APP_VERSION = '1.0.42'
      *
      */
     class Q247HistoryParser {
