@@ -1,6 +1,6 @@
 {
   "name": "laascloud-dev-tool",
-  "version": "1.0.43",
+  "version": "1.0.44",
   "description": "Code, track, measure your dev effort.",
   "main": "main.js",
   "productName": "Dev Workout",
@@ -89,7 +89,7 @@
     "moment": "2.29.4",
     "axios": "^1.4.0",
     "electron-log": "^4.4.8",
-    "@xenova/transformers":"^2.0.0"
+    "@xenova/transformers": "^2.0.0"
   },
   "nyc": {
     "check-coverage": true,
