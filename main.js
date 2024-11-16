@@ -36,7 +36,7 @@ const createWindow = () => {
   mainWindow.loadFile('app/index.html')
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   const appMenu = new AppMenu(mainWindow);
   appMenu.updateMenu();

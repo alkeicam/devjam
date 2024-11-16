@@ -5,6 +5,7 @@ const {Stats} = require("../../logic/stats");
 const log = require('electron-log');
 
 const {ShanonEntropyScoreModelV1} = require('./model/q247-models-laascloud.umd')
+// const {AIScoreModelV2} = require('./model/aimodel')
 
 
 class Manager {
@@ -259,6 +260,7 @@ class Manager {
         // result.s = this._score(result);
 
         const model = new ShanonEntropyScoreModelV1();
+        // const model = new AIScoreModelV2();
         const score = await model.score(result);
         result.s = score.score;
     
